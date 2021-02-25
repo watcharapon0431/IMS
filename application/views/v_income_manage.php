@@ -12,9 +12,9 @@
                             <div class="col-md-6" align="right">
                                 <br>
                                 <!-- --------------------------------------------- start report insert button ------------------------------------------------------ -->
-                                <a id="insert-btn" href="#" class="btn btn-info" type="button" class="model_img img-responsive">
-                                    <span class="btn-label"><i class="mdi mdi-plus-circle "></i></span>เพิ่มรายการรายรับ-รายจ่าย
-                                </a>
+                                <a class="btn btn-info" type="button" data-toggle="modal" data-target="#modal_insert" class="model_img img-responsive">
+									<span class="btn-label"><i class="mdi mdi-plus-circle "></i></span>เพิ่มรายการรายรับ-รายจ่าย
+								</a>
                                 <!-- ---------------------------------------------- end report insert button ------------------------------------------------------- -->
                             </div>
                         </div>
@@ -64,6 +64,51 @@
         </div>
     </div>
 </div>
+<!-- --------------------------------------------- start modal master data insert  --------------------------------------------- -->
+<div id="modal_insert" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button onclick="btn_clear();" type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
+				<h4 class="modal-title" id="myModalLabel">เพิ่มรายการรายรับ-รายจ่าย</h4>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal" id="master_data_insert_form" onsubmit='return false'>
+					<div class="form-group">
+						<div class="col-md-12">
+							<label class="col-md-12">ประเภทรายการ : </label>
+							<div class="col-md-2">
+							</div>
+						</div>
+					</div>
+
+
+					<div class="form-group">
+						<div class="col-md-12">
+							<label class="col-md-12">ชื่อ : <span style="color:red;"> * </span></label>
+							<div class="col-md-12">
+								<input type="text" class="form-control" id="name" maxlength="200">
+							</div>
+						</div>
+					</div>
+					
+			</div>
+			<div class="modal-footer">
+				<div class="col-md-12" align="right">
+					<!-- ----------------------- start ยกเลิก submit ----------------------- -->
+					<button onclick="btn_clear();" class="btn btn-default" data-dismiss="modal" aria-hidden="true"><span class="btn-label"><i class="fa fa-times"></i></span>ยกเลิก</button>
+					<!-- ----------------------- End ยกเลิก submit ----------------------- -->
+					&nbsp;&nbsp;&nbsp;
+					<!-- ----------------------- start ส่งข้อมูล input ----------------------- -->
+					<button onclick="master_data_insert(); btn_clear();" class="btn btn-success" type="button"><span class="btn-label"><i class="fa fa-save"></i></span>บันทึก</button>
+					<!-- ----------------------- End ส่งข้อมูล input ----------------------- -->
+				</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- ---------------------------------------------- end modal master data insert  ---------------------------------------------- -->
 <script>
     $(document).ready(() => {
 
@@ -250,4 +295,5 @@
         $('#section_page').val(change_section_page_value)
         report_get_table_by_page_number_search(max_count)
     }
+
 </script>
