@@ -16,7 +16,8 @@ class Income_manage_controller extends IMS_controller
 	}
 
 	function insert_data(){
-		$this->load->model('M_income', 'mc');
+		$this->load->model('M_income','mc');
+		$this->mc->list_user_id = $this->session->case_code;
 	    $this->mc->list_type = $this->input->post("list_type");
 		$this->mc->list_detail = $this->input->post("list_detail");
 		$this->mc->list_category_id = $this->input->post("list_category_id");
