@@ -79,11 +79,11 @@
                             <label class="col-md-12">ประเภทรายการ : <span style="color:red;"> * </span></label>
                             <div class="col-md-9">
                                 <div class="col-md-3">
-                                    <input type="radio" id="get" name="type">
+                                    <input type="radio" id="type1" name="type">
                                     <label for="female"> รายรับ</label>
                                 </div>
                                 <div class="col-md-3">
-                                    <input type="radio" id="pay" name="type">
+                                    <input type="radio" id="type2" name="type">
                                     <label for="female"> รายจ่าย</label>
                                 </div>
                             </div>
@@ -95,7 +95,7 @@
                         <div class="col-md-12">
                             <label class="col-md-12">ชื่อรายการ : <span style="color:red;"> * </span></label>
                             <div class="col-md-12">
-                                <input type="text" class="form-control" id="name" maxlength="200">
+                                <input type="text" class="form-control" id="list" maxlength="200">
                             </div>
                         </div>
                     </div>
@@ -112,35 +112,23 @@
                                 </select>
                             </div>
                         </div>
+                    </div>
 
-
-                        <div class="form-group">
-                            <div class="col-md-4">
-                                <br>
-                                <div class="form-group">
-                                    <label class="col-md-12">วันที่ : <span class="help"> *</span></label>
-                                    <div class="col-md-12">
-                                        <br>
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" id="create_report" value="" placeholder="วัน/เดือน/ปี"> <span class="input-group-addon"><i class="icon-calender"></i></span>
-                                            <!-- ----------------------- Start date validate ----------------------- -->
-                                            <span style="color:red;">
-                                                <p for="" id="validate_create_report"></p>
-                                            </span>
-                                            <!-- ----------------------- End date validate ----------------------- -->
-                                        </div>
-                                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <label class="col-md-5">วันที่ : <span class="help"> *</span></label>
+                            <label class="col-md-5">เวลา : <span class="help"> *</span></label>
+                            <div class="col-md-5">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="create_report" value="" placeholder="วัน/เดือน/ปี"> <span class="input-group-addon"><i class="icon-calender"></i></span>
+                                    <!-- ----------------------- Start date validate ----------------------- -->
+                                    <span style="color:red;">
+                                        <p for="" id="validate_create_report"></p>
+                                    </span>
+                                    <!-- ----------------------- End date validate ----------------------- -->
                                 </div>
                             </div>
-                        </div>
-                        <!-- ----------------------- End date input ----------------------- -->
-
-                        <!-- ----------------------- Start time input ----------------------- -->
-
-                        <div class="form-group">
-                            <label class="col-md-12">เวลา : <span class="help"> *</span></label>
-                            <div class="col-md-3">
-                                <br>
+                            <div class="col-md-2">
                                 <select id="hour" class="form-control">
                                     <option value="0">0</option>
                                     <option value="1">1</option>
@@ -168,8 +156,7 @@
                                     <option value="23">23</option>
                                 </select>
                             </div>
-                            <div class="col-md-3">
-                                <br>
+                            <div class="col-md-2">
                                 <select id="minute" class="form-control">
                                     <option value="0">0</option>
                                     <option value="1">1</option>
@@ -234,16 +221,14 @@
                                 </select>
                             </div>
                         </div>
-
-                        <div class="form-group">
-                            <div class="col-md-12">
-                                <label class="col-md-12">จำนวนเงิน : <span style="color:red;"> * </span></label>
-                                <div class="col-md-6">
-                                    <input type="number" class="form-control" id="name" maxlength="50">
-                                </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <label class="col-md-12">จำนวนเงิน : <span style="color:red;"> * </span></label>
+                            <div class="col-md-4">
+                                <input type="number" class="form-control" id="money" maxlength="50">
                             </div>
                         </div>
-
                     </div>
                     <div class="modal-footer">
                         <div class="col-md-12" align="right">
@@ -457,4 +442,25 @@
         todayHighlight: true,
         format: 'dd/mm/yyyy',
     }).datepicker("setDate", 'now');
+
+    function master_data_insert() {
+        if ($("#type1").is(":checked") == true) {
+            case_status = "รายรับ"
+        } else if ($("#type2").is(":checked") == true) {
+            case_status = "รายจ่าย"
+        }
+        let list = $('#list').val()
+        let is_active_search = $('#is_active_search').val()
+        let date = $('#create_report').val()
+        let hour = $('#hour').val()
+        let minute = $('#minute').val()
+        let money = $('#money').val()
+        console.log(case_status)
+        console.log(list)
+        console.log(is_active_search)
+        console.log(create_report)
+        console.log(hour)
+        console.log(minute)
+        console.log(money)
+    }
 </script>
