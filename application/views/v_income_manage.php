@@ -1,3 +1,4 @@
+
 <div id="page-wrapper">
     <div class="container-fluid">
         <br>
@@ -13,8 +14,8 @@
                                 <br>
                                 <!-- --------------------------------------------- start report insert button ------------------------------------------------------ -->
                                 <a class="btn btn-info" type="button" data-toggle="modal" data-target="#modal_insert" class="model_img img-responsive">
-									<span class="btn-label"><i class="mdi mdi-plus-circle "></i></span>เพิ่มรายการรายรับ-รายจ่าย
-								</a>
+                                    <span class="btn-label"><i class="mdi mdi-plus-circle "></i></span>เพิ่มรายการรายรับ-รายจ่าย
+                                </a>
                                 <!-- ---------------------------------------------- end report insert button ------------------------------------------------------- -->
                             </div>
                         </div>
@@ -46,72 +47,164 @@
 
                             <!-- --------------------------------------------- start pagination ------------------------------------------------------ -->
                             <div class=" col-md-12">
-                                <div class="col-md-4" align="left">
-                                    <p id="count_of_master_data"></p>
-                                </div>
-                                <input type="hidden" id="current_page" value="1">
-                                <input type="hidden" id="section_page" value="1">
-                                <div id="page_option" class="col-md-8" align="right">
+                                            <div class="col-md-4" align="left">
+                                                <p id="count_of_master_data"></p>
+                                            </div>
+                                            <input type="hidden" id="current_page" value="1">
+                                            <input type="hidden" id="section_page" value="1">
+                                            <div id="page_option" class="col-md-8" align="right">
 
-                                </div>
-                            </div>
-                            <!-- ---------------------------------------------- end pagination ------------------------------------------------------- -->
-
+                                            </div>
                         </div>
+                        <!-- ---------------------------------------------- end pagination ------------------------------------------------------- -->
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+</div>
 <!-- --------------------------------------------- start modal master data insert  --------------------------------------------- -->
 <div id="modal_insert" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button onclick="btn_clear();" type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
-				<h4 class="modal-title" id="myModalLabel">เพิ่มรายการรายรับ-รายจ่าย</h4>
-			</div>
-			<div class="modal-body">
-				<form class="form-horizontal" id="master_data_insert_form" onsubmit='return false'>
-					<div class="form-group">
-						<div class="col-md-12">
-							<label class="col-md-12">ประเภทรายการ : </label>
-							<div class="col-md-2">
-							</div>
-						</div>
-					</div>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button onclick="btn_clear();" type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
+                <h4 class="modal-title" id="myModalLabel">เพิ่มรายรับ-รายจ่าย</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" id="master_data_insert_form" onsubmit='return false'>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <label class="col-md-12">ประเภทรายการ : <span style="color:red;"> * </span></label>
+                            <div class="col-md-9">
+                                <div class="col-md-3">
+                                    <input type="radio" id="get" name="type">
+                                    <label for="female"> รายรับ</label>
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="radio" id="pay" name="type">
+                                    <label for="female"> รายจ่าย</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
 
-					<div class="form-group">
-						<div class="col-md-12">
-							<label class="col-md-12">ชื่อ : <span style="color:red;"> * </span></label>
-							<div class="col-md-12">
-								<input type="text" class="form-control" id="name" maxlength="200">
-							</div>
-						</div>
-					</div>
-					
-			</div>
-			<div class="modal-footer">
-				<div class="col-md-12" align="right">
-					<!-- ----------------------- start ยกเลิก submit ----------------------- -->
-					<button onclick="btn_clear();" class="btn btn-default" data-dismiss="modal" aria-hidden="true"><span class="btn-label"><i class="fa fa-times"></i></span>ยกเลิก</button>
-					<!-- ----------------------- End ยกเลิก submit ----------------------- -->
-					&nbsp;&nbsp;&nbsp;
-					<!-- ----------------------- start ส่งข้อมูล input ----------------------- -->
-					<button onclick="master_data_insert(); btn_clear();" class="btn btn-success" type="button"><span class="btn-label"><i class="fa fa-save"></i></span>บันทึก</button>
-					<!-- ----------------------- End ส่งข้อมูล input ----------------------- -->
-				</div>
-				</form>
-			</div>
-		</div>
-	</div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <label class="col-md-12">ชื่อรายการ : <span style="color:red;"> * </span></label>
+                            <div class="col-md-12">
+                                <input type="text" class="form-control" id="name" maxlength="200">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <label class="col-md-12">ประเภทการใช้จ่าย : <span style="color:red;"> * </span></label>
+                            <div class="col-md-6">
+                                <select class="form-control" id="is_active_search">
+                                    <option value='' selected>- เลือกประเภทการใช้จ่ายที่ต้องการ -</option>
+                                    <option value='1'>ใช้หนี้</option>
+                                    <option value='2'>เงินเดือน</option>
+                                    <option value='3'>อาหาร</option>
+                                </select>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <div class="col-md-4">
+                                <br>
+                                <div class="form-group">
+                                    <label class="col-md-12">วันที่ : <span class="help"> *</span></label>
+                                    <div class="col-md-12">
+                                        <br>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="create_report" value="" placeholder="วัน/เดือน/ปี"> <span class="input-group-addon"><i class="icon-calender"></i></span>
+                                            <!-- ----------------------- Start date validate ----------------------- -->
+                                            <span style="color:red;">
+                                                <p for="" id="validate_create_report"></p>
+                                            </span>
+                                            <!-- ----------------------- End date validate ----------------------- -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- ----------------------- End date input ----------------------- -->
+
+                        <!-- ----------------------- Start time input ----------------------- -->
+
+                        <div class="col-md-4">
+
+                            <div class="form-group">
+                                <label class="col-md-12">เวลา : </label>
+                                <div class="col-md-4">
+                                    <br>
+                                    <select id="hour" class="form-control">
+                                        <?php
+                                        // declare hour												
+                                        $hour = 0;
+                                        /* Start Loop hour 0 to 23 */
+                                        while ($hour < 24) {
+                                        ?>
+                                            <option value="<?php echo $hour; ?>"><?php echo $hour; ?></option>
+                                        <?php
+                                            $hour += 1;
+                                        }
+                                        /* End Loop hour 0 to 23 */
+                                        ?>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <br>
+                                    <select id="minute" class="form-control">
+                                        <?php
+                                        // declare minute												
+                                        $minute = 0;
+                                        /* Start Loop minute 0 to 59 */
+                                        while ($minute < 60) {
+                                        ?>
+                                            <option value="<?php echo $minute; ?>"><?php echo $minute; ?></option>
+                                        <?php
+                                            $minute += 1;
+                                        }
+                                        /* End Loop minute 0 to 59 */
+                                        ?>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+            </div>
+            <div class="modal-footer">
+                <div class="col-md-12" align="right">
+                    <!-- ----------------------- start ยกเลิก submit ----------------------- -->
+                    <button onclick="btn_clear();" class="btn btn-default" data-dismiss="modal" aria-hidden="true"><span class="btn-label"><i class="fa fa-times"></i></span>ยกเลิก</button>
+                    <!-- ----------------------- End ยกเลิก submit ----------------------- -->
+                    &nbsp;&nbsp;&nbsp;
+                    <!-- ----------------------- start ส่งข้อมูล input ----------------------- -->
+                    <button onclick="master_data_insert(); btn_clear();" class="btn btn-success" type="button"><span class="btn-label"><i class="fa fa-save"></i></span>บันทึก</button>
+                    <!-- ----------------------- End ส่งข้อมูล input ----------------------- -->
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 <!-- ---------------------------------------------- end modal master data insert  ---------------------------------------------- -->
 <script>
     $(document).ready(() => {
-
+        var today = new Date();
+        // set input id hour = current hour
+        $("#hour").val(today.getHours())
+        // set input id minute = current minute
+        $("#minute").val(today.getMinutes())
+    
         // When Click toggle sorting
         $("#sorting_date").click(function() {
             if ($("#type_sorting_date").val() == "ASC") {
@@ -296,4 +389,8 @@
         report_get_table_by_page_number_search(max_count)
     }
 
+    jQuery('#create_report').datepicker({
+        todayHighlight: true,
+        format: 'dd/mm/yyyy',
+    }).datepicker("setDate", 'now');
 </script>
