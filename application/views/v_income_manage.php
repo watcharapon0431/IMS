@@ -77,6 +77,9 @@
                     <div class="form-group">
                         <div class="col-md-12">
                             <label class="col-md-12">ประเภทรายการ : <span style="color:red;"> * </span></label>
+                            <span style="color:red;">
+                                <p for="" id="validate_type_id"></p>
+                            </span>
                             <div class="col-md-9">
                                 <div class="col-md-3">
                                     <input type="radio" id="type1" name="type">
@@ -454,30 +457,53 @@
         let date = $('#create_report').val()
         var create_date = parseInt($("#create_report").data('datepicker').getFormattedDate('yyyy') - 543) + $("#create_report").data('datepicker').getFormattedDate('-mm-dd') + ' ' + $("#hour").val() + ':' + $("#minute").val() + ':' + '00'
         let money = $('#money').val()
-        console.log(case_status)
-        console.log(list)
-        console.log(is_active_search)
-        console.log(create_date)
-        console.log(money)
-        $.ajax({
-            type: "POST",
-            url: "<?php echo site_url() . "/Income_manage_controller/insert_data/" ?>",
-            data: {
+        if ($("#type1").is(":checked") == true || $("#type2").is(":checked") == true) {
+            if (list != '') {
+                if (is_active_search == 0) {
+                    $('#is_active_search').css("border", "1px solid red");
+                    $('#is_active_search').focus();
+                }
+                if (money == '') {
+                    $('#money').css("border", "1px solid red");
+                    $('#money').focus();
+                } else {
+                    $.ajax({
+                        type: "POST",
+                        url: "<?php echo site_url() . "/Income_manage_controller/insert_data/" ?>",
+                        data: {
 
-                'list_type': case_status,
-                'list_detail': list,
-                'list_category_id': is_active_search,
-                'list_create_date': create_date,
-                'list_cost': money,
-                // 'department_type_id': department_type_id_insert
-            },
-            dataType: 'JSON',
-            async: false,
-            success: function(json_data) {
+                            'list_type': case_status,
+                            'list_detail': list,
+                            'list_category_id': is_active_search,
+                            'list_create_date': create_date,
+                            'list_cost': money,
+
+                        },
+                        dataType: "text",
+                        async: false,
+                        success: function(data) {
+
+
+                            swal({
+                                title: "บันทึกข้อมูลสำเร็จ",
+                                text: "ข้อมูลของคุณถูกบันทึกเรียบร้อย",
+                                type: "success",
+                                confirmButtonText: "ตกลง",
+                            })
+
+                            window.location.reload();
 
 
 
+                        }
+                    })
+                }
+            } else {
+                $('#list').css("border", "1px solid red");
+                $('#list').focus();
             }
-        })
+        } else {
+            $('#validate_type_id').text('กรุณาเลือกประเภทรายรับ - รายจ่าย')
+        }
     }
 </script>
