@@ -106,9 +106,9 @@
                             <div class="col-md-6">
                                 <select class="form-control" id="is_active_search">
                                     <option value='' selected>- เลือกประเภทการใช้จ่ายที่ต้องการ -</option>
-                                    <option value='1'>ใช้หนี้</option>
-                                    <option value='2'>เงินเดือน</option>
-                                    <option value='3'>อาหาร</option>
+                                    <option value=1>ใช้หนี้</option>
+                                    <option value=2>เงินเดือน</option>
+                                    <option value=3>อาหาร</option>
                                 </select>
                             </div>
                         </div>
@@ -445,22 +445,39 @@
 
     function master_data_insert() {
         if ($("#type1").is(":checked") == true) {
-            case_status = "รายรับ"
+            case_status = 1
         } else if ($("#type2").is(":checked") == true) {
-            case_status = "รายจ่าย"
+            case_status = 2
         }
         let list = $('#list').val()
         let is_active_search = $('#is_active_search').val()
         let date = $('#create_report').val()
-        let hour = $('#hour').val()
-        let minute = $('#minute').val()
+        var create_date = parseInt($("#create_report").data('datepicker').getFormattedDate('yyyy') - 543) + $("#create_report").data('datepicker').getFormattedDate('-mm-dd') + ' ' + $("#hour").val() + ':' + $("#minute").val() + ':' + '00'
         let money = $('#money').val()
         console.log(case_status)
         console.log(list)
         console.log(is_active_search)
-        console.log(create_report)
-        console.log(hour)
-        console.log(minute)
+        console.log(create_date)
         console.log(money)
+        $.ajax({
+            type: "POST",
+            url: "<?php echo site_url() . "/Income_manage_controller/insert_data/" ?>",
+            data: {
+
+                'list_type': case_status,
+                'list_detail': list,
+                'list_category_id': is_active_search,
+                'list_create_date': create_date,
+                'list_cost': money,
+                // 'department_type_id': department_type_id_insert
+            },
+            dataType: 'JSON',
+            async: false,
+            success: function(json_data) {
+
+
+
+            }
+        })
     }
 </script>
