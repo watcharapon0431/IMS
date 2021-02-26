@@ -29,7 +29,7 @@ class Income_manage_controller extends IMS_controller
 	// 
 	public function delete_list()
 	{	
-		$this->load->model('DA_income', 'dm');
+		$this->load->model('Da_income', 'dm');
 		$this->load->model('M_income', 'mc');
 		$this->mc->list_id = $this->input->post("list_id");
 		$this->dm->delete();
