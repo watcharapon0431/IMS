@@ -506,4 +506,49 @@
             $('#validate_type_id').text('กรุณาเลือกประเภทรายรับ - รายจ่าย')
         }
     }
+    function delete_list(delete_id) {
+        swal({
+                title: "คุณต้องการลบรายการนี้ใช่หรือไม่",
+                text: "ข้อมูลของคุณจะสูญหาย!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: 'red',
+                confirmButtonText: "ยืนยัน",
+                closeOnConfirm: false,
+                cancelButtonText: 'ยกเลิก'
+            },
+            function(result) {
+
+                if (result) {
+                    $.ajax({
+                        type: "POST",
+                        url: "<?php echo site_url() . "/Income_mange_controller/delete_list"; ?>",
+                        data: {
+                            'list_id': delete_id
+                        },
+                        dataType: 'JSON',
+                        async: false,
+                        success: function(json_data) {                        
+                            if (json_data == true) {                          
+                                swal({
+                                    title: "ลบข้อมูลสำเร็จ",
+                                    text: "ข้อมูลของคุณถูกลบเรียบร้อย",
+                                    type: "success",
+                                    confirmButtonText: "ตกลง"
+                                })                              
+                            } else {
+                                swal({
+                                    title: "ไม่สามารถทำการลบข้อมูลนี้ได้",
+                                    text: "เนื่องจาก ข้อมูลนี้ถูกนำไปอ้างอิงในรายการเรื่องร้องเรียน",
+                                    type: "error",
+                                    confirmButtonText: "ตกลง"
+                                })
+                            }
+                            // show();
+                           // window.location.reload();
+                        }
+                    })
+                }
+            })
+    }
 </script>
