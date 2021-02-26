@@ -475,7 +475,7 @@
 
         if ($("#type1").is(":checked") == false && $("#type2").is(":checked") == false) {
             $('#validate_type_id').text('กรุณาเลือกประเภทรายรับ - รายจ่าย')
-        } else {
+        }else if (money != '' && money > 0 && list != ''){
             $.ajax({
                 type: "POST",
                 url: "<?php echo site_url() . "/Income_manage_controller/insert_data/" ?>",
