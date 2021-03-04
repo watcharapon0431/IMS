@@ -8,6 +8,7 @@ class M_income extends Da_income
 	{
 		$sql = "DELETE FROM list
     	WHERE list_id = ?";
+		// echo $sql;
 		$this->db->query($sql, array($this->list_id));
 	}
 
