@@ -1,7 +1,10 @@
 <script>
     $(document).ready(() => {
         report_get_table_by_page_number_search(1);
-
+        jQuery('#create_date_list').datepicker({
+            todayHighlight: true,
+            format: 'dd/mm/yyyy',
+        }).datepicker("setDate", 'now');
     })
     report_get_table_by_page_number_search(1);
 
@@ -46,9 +49,9 @@
                         )
                         count_data++
                     })
-                    $("#income_all").text(json_data.sum_income[0].sl_income+" บาท")
-                    $("#expend_all").text(json_data.sum_income[0].sl_expend+" บาท")
-                    $("#balance_all").text(json_data.sum_income[0].sl_balance+" บาท")
+                    $("#income_all").text(json_data.sum_income[0].sl_income + " บาท")
+                    $("#expend_all").text(json_data.sum_income[0].sl_expend + " บาท")
+                    $("#balance_all").text(json_data.sum_income[0].sl_balance + " บาท")
                     //--------------------------------  start declare count number pagination -------------------------------------------------
                     let count_section_page = $("#section_page").val()
                     let current_page = $("#current_page").val()
@@ -58,7 +61,7 @@
                     }
                     if ((count_section_page * 10) % 10 != 0) {
                         count_section_page = Math.floor(count_section_page)
-                        count_section_page++ 
+                        count_section_page++
                         $("#section_page").val(count_section_page)
                     }
                     max_page = Math.floor(max_page)
@@ -130,6 +133,131 @@
         $('#section_page').val(change_section_page_value)
         report_get_table_by_page_number_search(max_count)
     }
+
+
+    function master_data_edit(id) {
+        var list_id = id;
+
+        try {
+            $.ajax({
+                type: "POST",
+                url: "<?php echo site_url() . "/Income_manage_controller/list_edit/" ?>",
+                data: {
+                    'list_id': list_id
+                },
+                dataType: "json",
+                async: false,
+                success: function(json_data) {
+                    console.log(json_data)
+                    $('#list_id_edit').val(json_data[0].list_id)
+                    if ((json_data[0].list_type) == "1") {
+                        $("#type1_edit").prop('checked', false).trigger("click")
+                    } else {
+                        $("#type2_edit").prop('checked', true).trigger("click")
+                    }
+                    $('#list_edit').val(json_data[0].list_detail)
+                    var hour = moment(json_data[0].list_create_date, 'YYYY-MM-DD h:m:s').format('HH');
+                    var minute = moment(json_data[0].list_create_date, 'YYYY-MM-DD h:m:s').format('mm');
+
+                    if (hour[0] == 0) {
+                        var hour_edit = (hour * 10) / 10
+
+                        $('#hour_edit option[value=' + hour_edit + ']').attr('selected', 'selected');
+                    } else {
+                        $('#hour_edit option[value=' + hour + ']').attr('selected', 'selected');
+                    }
+
+                    if (minute[0] == 0) {
+                        var minute_edit = (minute * 10) / 10
+                        $('#minute_edit option[value=' + minute_edit + ']').attr('selected', 'selected');
+
+                    } else {
+                        $('#minute_edit option[value=' + minute + ']').attr('selected', 'selected');
+                    }
+
+
+                    $('#list_category_edit option[value=' + json_data[0].list_category_id + ']').attr('selected', 'selected');
+                    var today = new Date();
+                    const dateTime = json_data[0].list_create_date;
+                    const parts = dateTime.split(/[- :]/);
+                    const wanted = `${parts[2]}/${parts[1]}/${parts[0]}`;
+                    $('#create_date_list').val(wanted)
+                    $('#money_list_edit').val(json_data[0].list_cost)
+                }
+            })
+        } catch (e) {
+            // alert when can't edit 
+            swal({
+                title: "แก้ไขข้อมูลไม่สำเร็จ",
+                text: "ข้อมูลของคุณไม่ได้ถูกแก้ไข",
+                type: "error",
+                confirmButtonText: "ตกลง"
+            })
+        }
+        // end try catch 
+    }
+
+    function list_data_update() {
+
+        let list_id_edit = $('#list_id_edit').val()
+        let list_category_edit = $('#list_category_edit').val()
+        let const_list_edit = $('#money_list_edit').val()
+        let hour_edit = $('#hour_edit').val()
+        let minute_edit = $('#minute_edit').val()
+
+        if (hour_edit < 10) {
+            hour_edit = '0' + hour_edit
+        }
+        if (minute_edit < 10) {
+            minute_edit = '0' + minute_edit
+        }
+
+        let list_create_date = parseInt($("#create_date_list").data('datepicker').getFormattedDate('yyyy') - 543) + $("#create_date_list").data('datepicker').getFormattedDate('-mm-dd') + ' ' + hour_edit + ':' + minute_edit + ':' + '00'
+        // let list_create_date = parseInt($("#create_date_list").data('datepicker').getFormattedDate('yyyy') - 543) + $("#create_date_list").data('datepicker').getFormattedDate('-mm-dd') + ' ' + $("#hour").val() + ':' + $("#minute").val() + ':' + '00'
+        let date = parseInt($("#create_date_list").data('datepicker').getFormattedDate('yyyy') - 543)
+        let mount = $("#create_date_list").data('datepicker').getFormattedDate('m')
+        let list_detail = $('#list_edit').val()
+        let list_type = $('input[name=type]:checked', '#type_list').val()
+
+        $.ajax({
+            type: "POST",
+            url: "<?php echo site_url() . "/Income_manage_controller/list_update/" ?>",
+            data: {
+                'list_id_edit': list_id_edit,
+                'list_category_edit': list_category_edit,
+                'const_list_edit': const_list_edit,
+                'list_create_date': list_create_date,
+                'list_detail': list_detail,
+                'list_type': list_type,
+                // 'date': date,
+                // 'mount': mount
+            },
+            dataType: "json",
+            async: false,
+            success: function(data) {
+                if (data == true) {
+                    $('#modal_edit').modal('toggle')
+                    // notify alert when update success
+                    swal({
+                        title: "แก้ไขข้อมูลสำเร็จ",
+                        text: "ข้อมูลของคุณถูกแก้ไขเรียบร้อย",
+                        type: "success",
+                        confirmButtonText: "ตกลง"
+                    })
+                    window.location.reload();
+
+                } else {
+                    // notify alert when update unsuccess
+                    swal({
+                        title: "แก้ไขข้อมูลไม่สำเร็จ",
+                        type: "error",
+                        confirmButtonText: "ตกลง"
+                    })
+
+                }
+            }
+        });
+    }
 </script>
 
 <div id="page-wrapper">
@@ -150,8 +278,8 @@
                                     <center>
                                         <h1 id="income_all" style="color: blue; margin-top: 10px;"></h1>
                                     </center>
-                                    
-                                    
+
+
                                 </div>
                                 <div class="col-md-2">
                                     <center><b>รายจ่ายทั้งหมด</b></center>
@@ -159,8 +287,8 @@
                                     <center>
                                         <h1 id="expend_all" style="color: red; margin-top: 10px;"></h1>
                                     </center>
-                                    
-                                    
+
+
                                 </div>
                                 <div class="col-md-2">
                                     <center><b>คงเหลือ</b></center>
@@ -168,8 +296,8 @@
                                     <center>
                                         <h1 id="balance_all" style="color: green; margin-top: 10px;"></h1>
                                     </center>
-                      
-                                    
+
+
                                 </div>
                             </div>
 
@@ -232,6 +360,145 @@
     </div>
 </div>
 </div>
+
+<div id="modal_edit" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h4 class="modal-title" id="myModalLabel">เเก้ไขรายรับ-รายจ่าย</h4>
+                <input type="radio" id="list_id_edit" name="type" hidden>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" id="master_data_edit_form" onsubmit='return false'>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <label class="col-md-12">ประเภทรายการ : <span style="color:red;"> * </span></label>
+                            <span style="color:red;">
+                                <p for="" id="validate_type_id_edit"></p>
+                            </span>
+                            <div id="type_list">
+                                <div class="col-md-9">
+                                    <div class="col-md-3">
+                                        <input type="radio" id="type1_edit" name="type" value="1">
+                                        <label for="female"> รายรับ</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="radio" id="type2_edit" name="type" value="2">
+                                        <label for="female"> รายจ่าย</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <label class="col-md-12">ชื่อรายการ : <span style="color:red;"> * </span></label>
+                            <div class="col-md-12">
+                                <input type="text" class="form-control" id="list_edit" maxlength="100">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <label class="col-md-12">ประเภทการใช้จ่าย : <span style="color:red;"> * </span></label>
+                            <div class="col-md-6">
+                                <select class="form-control" id="list_category_edit">
+                                    <option value='' selected>- เลือกประเภทการใช้จ่ายที่ต้องการ -</option>
+                                    <option value=1>ใช้หนี้</option>
+                                    <option value=2>เงินเดือน</option>
+                                    <option value=3>อาหาร</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <label class="col-md-5">วันที่ใช้จ่าย : <span class="help"> *</span></label>
+                            <label class="col-md-5">เวลา : <span class="help"> *</span></label>
+                            <div class="col-md-5">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="create_date_list" value="" placeholder="วัน/เดือน/ปี"> <span class="input-group-addon"><i class="icon-calender"></i></span>
+                                    <!-- ----------------------- Start date validate ----------------------- -->
+                                    <span style="color:red;">
+                                        <p for="" id="validate_create_report_edit"></p>
+                                    </span>
+                                    <!-- ----------------------- End date validate ----------------------- -->
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <select id="hour_edit" class="form-control">
+                                    <?php
+                                    for ($i = 0; $i < 24; $i++) {
+                                    ?>
+                                        <?php
+                                        if ($i < 10) {
+                                        ?>
+                                            <option value="<?php echo $i; ?>"><?php echo "0" . $i; ?></option>
+                                        <?php
+                                        } else {
+                                        ?>
+                                            <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+                                        <?php
+                                        }
+                                        ?>
+                                    <?php
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <select id="minute_edit" class="form-control">
+                                    <?php
+                                    for ($i = 0; $i < 60; $i++) {
+                                    ?>
+                                        <?php
+                                        if ($i < 10) {
+                                        ?>
+                                            <option value="<?php echo $i; ?>"><?php echo "0" . $i; ?></option>
+                                        <?php
+                                        } else {
+                                        ?>
+                                            <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+                                        <?php
+                                        }
+                                        ?>
+                                    <?php
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <label class="col-md-12">จำนวนเงิน : <span style="color:red;"> * </span></label>
+                            <div class="col-md-4">
+                                <input type="number" class="form-control" id="money_list_edit" maxlength="50" min="1">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="col-md-12" align="center">
+                            <!-- ----------------------- start ยกเลิก submit ----------------------- -->
+                            <button onclick="btn_clear2();" class="btn btn-default" data-dismiss="modal" aria-hidden="true"><span class="btn-label"><i class="fa fa-times"></i></span>ยกเลิก</button>
+                            <!-- ----------------------- End ยกเลิก submit ----------------------- -->
+                            &nbsp;&nbsp;&nbsp;
+                            <!-- ----------------------- start ส่งข้อมูล input ----------------------- -->
+                            <button onclick="list_data_update(); " class="btn btn-success" type="button"><span class="btn-label"><i class="fa fa-save"></i></span>บันทึก</button>
+                            <!-- ----------------------- End ส่งข้อมูล input ----------------------- -->
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- --------------------------------------------- start modal master data insert  --------------------------------------------- -->
 <div id="modal_insert" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -276,7 +543,7 @@
                             <label class="col-md-12">ประเภทการใช้จ่าย : <span style="color:red;"> * </span></label>
                             <div class="col-md-6">
                                 <select class="form-control" id="category_id">
-                                <!-- <option value='' selected>- เลือกประเภทการใช้จ่ายที่ต้องการ -</option> -->
+                                    <!-- <option value='' selected>- เลือกประเภทการใช้จ่ายที่ต้องการ -</option> -->
                                 </select>
                             </div>
                         </div>
@@ -529,7 +796,7 @@
 
     }
 
-    function delete_list(delete_id,cost_list,type_list) {
+    function delete_list(delete_id, cost_list, type_list) {
         swal({
                 title: "คุณต้องการลบรายการนี้ใช่หรือไม่",
                 text: "ข้อมูลของคุณจะสูญหาย!",
@@ -554,7 +821,7 @@
                         },
                         dataType: 'JSON',
                         async: false,
-                       
+
                         success: function(json_data) {
                             swal({
                                 title: "ลบข้อมูลสำเร็จ",
@@ -576,7 +843,7 @@
     }
 
     // function btn_clear_modal() {
-        
+
     //     $('#modal_insert').modal('toggle');
     //     report_get_table_by_page_number_search(1)
     // }

@@ -29,9 +29,9 @@ class Da_income extends CI_Model
 	function update()
 	{
 		$sql = "UPDATE list
-    			SET list_cost=?, list_user_id=?, list_category_id=?,list_detail=? , list_create_date=?,list_type=?
+    			SET list_cost=?, list_category_id=?,list_detail=? , list_create_date=?,list_type=?
     			WHERE `list_id`=?";
-		$this->db->query($sql, array($this->list_id, $this->list_cost, $this->list_user_id, $this->list_category_id, $this->list_detail, $this->list_create_date, $this->list_type));
+		$this->db->query($sql, array( $this->list_cost, $this->list_category_id, $this->list_detail, $this->list_create_date, $this->list_type,$this->list_id));
 	}
 
 	function delete()

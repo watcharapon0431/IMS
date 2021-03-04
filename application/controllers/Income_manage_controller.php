@@ -79,6 +79,31 @@ class Income_manage_controller extends IMS_controller
 		echo json_encode($data);
 	}
 
+	public function list_edit()
+	{
+		$this->load->model('M_income', 'mc');
+		$this->mc->list_id = $this->input->post("list_id");
+		$rs_list = $this->mc->get_by_key()->result();
+		// load department model
+		echo json_encode($rs_list);
+	}
+
+	public function list_update()
+	{
+		$this->load->model('M_income', 'mc');
+		$this->mc->list_id = $this->input->post("list_id_edit");
+		$this->mc->list_cost = $this->input->post("const_list_edit");
+		$this->mc->list_category_id = $this->input->post("list_category_edit");
+		$this->mc->list_detail = $this->input->post("list_detail");
+		$this->mc->list_create_date = $this->input->post("list_create_date");
+		$this->mc->list_type = $this->input->post("list_type");
+	
+		$this->mc->update();
+		$check = true;
+		$date = $this->input->post("date");
+		$mount = $this->input->post("mount");
+		echo json_encode($check);
+	}
 		/*
 	* report_search
 	* Search data from v_report and query search's data 
@@ -138,7 +163,7 @@ class Income_manage_controller extends IMS_controller
 					'create_date' => $temp_date,
 					'status' => $income_status,
 					'cost' => '<p>' . $row->list_cost . '</p>',
-					'btn_edit' => '<a href="' . site_url() . '/Case_report_controller_ajax/load_v_edit_report/' . '" type="button" class="btn btn-warning btn-circle" title="แก้ไข"><i class="fa fa-pencil "></i></a >',
+					'btn_edit' => '<a data-toggle="modal" data-target="#modal_edit"  onclick="master_data_edit(' . $row->list_id . ')" type="button" class="btn btn-warning btn-circle" title="แก้ไข"><i class="fa fa-pencil "></i></a >',
 					'btn_delete' => '<a id="btn-delete" onclick="delete_list( '. $row->list_id.','.$row->list_cost.','.$row->list_type.')"  type="button" class="btn btn-danger btn-circle" title="ลบ"><i class="fa fa-minus-circle "></i></a >'
 				)
 			);
