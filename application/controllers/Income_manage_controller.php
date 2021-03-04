@@ -19,7 +19,7 @@ class Income_manage_controller extends IMS_controller
 	function insert_data()
 	{
 		$this->load->model('M_income', 'mc');
-		$this->mc->list_user_id = $this->session->case_code;
+		$this->mc->list_user_id = $this->session->user_id;
 		$this->mc->list_type = $this->input->post("list_type");
 		$this->mc->list_detail = $this->input->post("list_detail");
 		$this->mc->list_category_id = $this->input->post("list_category_id");
@@ -60,9 +60,9 @@ class Income_manage_controller extends IMS_controller
 		$this->load->model('M_income', 'mis');
 		// set start_limit is with page_number
 		$this->mis->start_limit = ($this->input->post('page_number') - 1) * 10;
-		// set user_name at M_user by session case_code	
+		// set user_name at M_user by session user_id	
 		
-		$this->mis->list_user_id = $this->session->case_code;
+		$this->mis->list_user_id = $this->session->user_id;
 		//echo $this->mis->list_user_id;
 		$this->mis->start_limit = ($this->input->post('page_number') - 1) * 10;
 		// $type_sorting_date = $this->input->post("type_sorting_date");
@@ -142,7 +142,7 @@ class Income_manage_controller extends IMS_controller
 
 		// load model M_user
 		// $this->load->model('Master_data/M_user', 'mus');
-		// $this->mus->user_name = $this->session->case_code;
+		// $this->mus->user_name = $this->session->user_id;
 		// $data['rs_department'] = ($this->mus->get_position_by_username()->result())[0]->department_id;
 
 		// // Json's data sent back to Ajax form

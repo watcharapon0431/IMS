@@ -30,14 +30,14 @@
                     <li class="dropdown">
                         <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="javascript:void(0)">
                             <b class="hidden-xs"><?php echo $_SESSION['case_job'] . " : "; ?></b>
-                            <b class="hidden-xs" id="name_topbar"><?php echo $_SESSION['case_fname'] . ' ' . $_SESSION['case_lname']; ?></b>
+                            <b class="hidden-xs" id="name_topbar"><?php echo $_SESSION['user_fname'] . ' ' . $_SESSION['user_lname']; ?></b>
                             <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu dropdown-user animated flipInY">
                             <li>
                                 <div class="dw-user-box">
                                     <div class="u-text">
-                                        <h5 id="name_topbar_menu"><?php echo $_SESSION['case_fname'] . ' ' . $_SESSION['case_lname']; ?></h5>
+                                        <h5 id="name_topbar_menu"><?php echo $_SESSION['user_fname'] . ' ' . $_SESSION['user_lname']; ?></h5>
                                         <h6><?php echo $_SESSION['case_job']; ?></h6>
                                     </div>
                                 </div>

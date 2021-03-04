@@ -20,13 +20,13 @@ class User_controller extends IMS_controller
         if ($user_info != null) {
             $this->session->aurthentication = true;
             // case_code is user_id
-            $this->session->case_code = $user_info[0]->user_id;
+            $this->session->user_id = $user_info[0]->user_id;
             // case_fname is user_fname
-            $this->session->case_fname = $user_info[0]->user_fname;
+            $this->session->user_fname = $user_info[0]->user_fname;
             // case_lname is user_lname
-            $this->session->case_lname = $user_info[0]->user_lname;
+            $this->session->user_lname = $user_info[0]->user_lname;
             // case_job is user_position
-            $this->session->case_job = $user_position[0]->position_name;
+            $this->session->position_name = $user_position[0]->position_name;
             $data['user'] = $user_info;
             $data['check'] = true;
         } else {
