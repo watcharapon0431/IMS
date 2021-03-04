@@ -209,7 +209,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button onclick="btn_clear();" type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
+                <button onclick="btn_clear2();" type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
                 <h4 class="modal-title" id="myModalLabel">เพิ่มรายรับ-รายจ่าย</h4>
             </div>
             <div class="modal-body">
@@ -238,7 +238,7 @@
                         <div class="col-md-12">
                             <label class="col-md-12">ชื่อรายการ : <span style="color:red;"> * </span></label>
                             <div class="col-md-12">
-                                <input type="text" class="form-control" id="list" maxlength="200">
+                                <input type="text" class="form-control" id="list" maxlength="100">
                             </div>
                         </div>
                     </div>
@@ -259,7 +259,7 @@
 
                     <div class="form-group">
                         <div class="col-md-12">
-                            <label class="col-md-5">วันที่ : <span class="help"> *</span></label>
+                            <label class="col-md-5">วันที่ใช้จ่าย : <span class="help"> *</span></label>
                             <label class="col-md-5">เวลา : <span class="help"> *</span></label>
                             <div class="col-md-5">
                                 <div class="input-group">
@@ -369,14 +369,14 @@
                         <div class="col-md-12">
                             <label class="col-md-12">จำนวนเงิน : <span style="color:red;"> * </span></label>
                             <div class="col-md-4">
-                                <input type="number" class="form-control" id="money" maxlength="50">
+                                <input type="number" class="form-control" id="money" maxlength="50" min="1">
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <div class="col-md-12" align="right">
+                        <div class="col-md-12" align="center">
                             <!-- ----------------------- start ยกเลิก submit ----------------------- -->
-                            <button onclick="btn_clear();" class="btn btn-default" data-dismiss="modal" aria-hidden="true"><span class="btn-label"><i class="fa fa-times"></i></span>ยกเลิก</button>
+                            <button onclick="btn_clear2();" class="btn btn-default" data-dismiss="modal" aria-hidden="true"><span class="btn-label"><i class="fa fa-times"></i></span>ยกเลิก</button>
                             <!-- ----------------------- End ยกเลิก submit ----------------------- -->
                             &nbsp;&nbsp;&nbsp;
                             <!-- ----------------------- start ส่งข้อมูล input ----------------------- -->
@@ -462,54 +462,58 @@
         let date = $('#create_report').val()
         var create_date = parseInt($("#create_report").data('datepicker').getFormattedDate('yyyy') - 543) + $("#create_report").data('datepicker').getFormattedDate('-mm-dd') + ' ' + $("#hour").val() + ':' + $("#minute").val() + ':' + '00'
         let money = $('#money').val()
-        if ($("#type1").is(":checked") == true || $("#type2").is(":checked") == true) {
-            if (list != '') {
-                if (is_active_search == 0) {
-                    $('#is_active_search').css("border", "1px solid red");
-                    $('#is_active_search').focus();
-                }
-                if (money == '') {
-                    $('#money').css("border", "1px solid red");
-                    $('#money').focus();
-                } else {
-                    $.ajax({
-                        type: "POST",
-                        url: "<?php echo site_url() . "/Income_manage_controller/insert_data/" ?>",
-                        data: {
 
-                            'list_type': case_status,
-                            'list_detail': list,
-                            'list_category_id': is_active_search,
-                            'list_create_date': create_date,
-                            'list_cost': money,
-
-                        },
-                        dataType: "text",
-                        async: false,
-                        success: function(data) {
-
-
-                            swal({
-                                title: "บันทึกข้อมูลสำเร็จ",
-                                text: "ข้อมูลของคุณถูกบันทึกเรียบร้อย",
-                                type: "success",
-                                confirmButtonText: "ตกลง",
-                            })
-
-                            window.location.reload();
-
-
-
-                        }
-                    })
-                }
-            } else {
-                $('#list').css("border", "1px solid red");
-                $('#list').focus();
-            }
-        } else {
-            $('#validate_type_id').text('กรุณาเลือกประเภทรายรับ - รายจ่าย')
+        if (is_active_search == 0) {
+            $('#is_active_search').css("border", "1px solid red");
+            $('#is_active_search').focus();
         }
+
+        if (money == '' || money < 1) {
+            $('#money').css("border", "1px solid red");
+            $('#money').focus();
+        }
+
+        if (list == '') {
+            $('#list').css("border", "1px solid red");
+            $('#list').focus();
+        }
+
+        if ($("#type1").is(":checked") == false && $("#type2").is(":checked") == false) {
+            $('#validate_type_id').text('กรุณาเลือกประเภทรายรับ - รายจ่าย')
+        }else if (money != '' && money > 0 && list != ''){
+            $.ajax({
+                type: "POST",
+                url: "<?php echo site_url() . "/Income_manage_controller/insert_data/" ?>",
+                data: {
+
+                    'list_type': case_status,
+                    'list_detail': list,
+                    'list_category_id': is_active_search,
+                    'list_create_date': create_date,
+                    'list_cost': money,
+
+                },
+                dataType: "text",
+                async: false,
+                success: function(data) {
+
+
+                    swal({
+                        title: "บันทึกข้อมูลสำเร็จ",
+                        text: "ข้อมูลของคุณถูกบันทึกเรียบร้อย",
+                        type: "success",
+                        confirmButtonText: "ตกลง",
+                    })
+
+                    window.location.reload();
+
+
+
+                }
+            })
+        }
+
+
     }
 
     function delete_list(delete_id) {
@@ -556,5 +560,10 @@
                     })
                 }
             })
+    }
+
+    function btn_clear2() {
+        document.getElementById('master_data_insert_form').reset()
+        window.location.reload();
     }
 </script>

@@ -21,8 +21,8 @@ class Da_income extends CI_Model
 	function insert()
 	{
 		$sql = "INSERT INTO list (list_remine, list_user_id,list_cost,list_category_id,list_detail , list_create_date,list_type )
-    VALUES (0,?,?, ?, ?, NOW(), ?)";
-		$this->db->query($sql, array($this->list_user_id, $this->list_cost, $this->list_category_id, $this->list_detail, $this->list_type));
+    VALUES (0,?,?, ?, ?, ?, ?)";
+		$this->db->query($sql, array($this->list_user_id, $this->list_cost, $this->list_category_id, $this->list_detail, $this->list_create_date, $this->list_type));
 		$this->last_insert_id = $this->db->insert_id();
 		return true;
 	}
