@@ -36,6 +36,13 @@ class M_income extends Da_income
 		return $query;
 	}
 
-
+	function get_category_dropdown()
+	{
+		$sql = "SELECT category_id, category_name, category_type
+    			FROM category
+    			WHERE category_status=1";
+		$query = $this->db->query($sql);
+		return $query;
+	}
 	
 }

@@ -176,7 +176,7 @@
                             <div class="col-md-2" align="right">
                                 <br>
                                 <!-- --------------------------------------------- start report insert button ------------------------------------------------------ -->
-                                <a class="btn btn-info" type="button" data-toggle="modal" data-target="#modal_insert" class="model_img img-responsive">
+                                <a class="btn btn-info" type="button" onclick="check_category(2)" data-toggle="modal" data-target="#modal_insert" class="model_img img-responsive">
                                     <span class="btn-label"><i class="mdi mdi-plus-circle "></i></span>เพิ่มรายการรายรับ-รายจ่าย
                                 </a>
                                 <!-- ---------------------------------------------- end report insert button ------------------------------------------------------- -->
@@ -250,11 +250,11 @@
                             </span>
                             <div class="col-md-9">
                                 <div class="col-md-3">
-                                    <input type="radio" id="type1" name="type">
+                                    <input type="radio" id="type1" name="type" onclick="check_category(1)">
                                     <label for="female"> รายรับ</label>
                                 </div>
                                 <div class="col-md-3">
-                                    <input type="radio" id="type2" name="type" checked>
+                                    <input type="radio" id="type2" name="type" checked onclick="check_category(2)">
                                     <label for="female"> รายจ่าย</label>
                                 </div>
                             </div>
@@ -275,11 +275,8 @@
                         <div class="col-md-12">
                             <label class="col-md-12">ประเภทการใช้จ่าย : <span style="color:red;"> * </span></label>
                             <div class="col-md-6">
-                                <select class="form-control" id="is_active_search">
-                                    <option value='' selected>- เลือกประเภทการใช้จ่ายที่ต้องการ -</option>
-                                    <option value=1>ใช้หนี้</option>
-                                    <option value=2>เงินเดือน</option>
-                                    <option value=3>อาหาร</option>
+                                <select class="form-control" id="category_id">
+                                <!-- <option value='' selected>- เลือกประเภทการใช้จ่ายที่ต้องการ -</option> -->
                                 </select>
                             </div>
                         </div>
@@ -301,11 +298,11 @@
                             </div>
                             <div class="col-md-2">
                                 <select id="hour" class="form-control">
-                                <?php
+                                    <?php
                                     for ($i = 0; $i < 24; $i++) {
                                     ?>
                                         <?php
-                                        if ($i == 0 || $i == 1 || $i == 2 || $i == 3 || $i == 4 || $i == 5 || $i == 6 || $i == 7 || $i == 8 || $i == 9) {
+                                        if ($i < 10) {
                                         ?>
                                             <option value="<?php echo $i; ?>"><?php echo "0" . $i; ?></option>
                                         <?php
@@ -322,11 +319,11 @@
                             </div>
                             <div class="col-md-2">
                                 <select id="minute" class="form-control">
-                                <?php
+                                    <?php
                                     for ($i = 0; $i < 60; $i++) {
                                     ?>
                                         <?php
-                                        if ($i == 0 || $i == 1 || $i == 2 || $i == 3 || $i == 4 || $i == 5 || $i == 6 || $i == 7 || $i == 8 || $i == 9) {
+                                        if ($i < 10) {
                                         ?>
                                             <option value="<?php echo $i; ?>"><?php echo "0" . $i; ?></option>
                                         <?php
@@ -441,6 +438,31 @@
         format: 'dd/mm/yyyy',
     }).datepicker("setDate", 'now');
 
+    function check_category(case_status) {
+        $("#category_id").empty();
+        if ($("#type1").is(":checked") == true) {
+            var case_status = 1
+        } else if ($("#type2").is(":checked") == true) {
+            var case_status = 2
+        }
+        $.ajax({
+            type: "POST",
+            url: "<?php echo site_url() . "/Income_manage_controller/get_category/" ?>",
+            dataType: "json",
+            async: false,
+            success: function(json_data) {
+                console.log(json_data)
+                // alert("success")
+                json_data.rs_category.forEach(function(element) {
+                    if (element.category_type == case_status) {
+                        $("#category_id").append(new Option(element.category_name, element.category_id));
+                    }
+
+                })
+            }
+        })
+    }
+
     function master_data_insert() {
         if ($("#type1").is(":checked") == true) {
             case_status = 1
@@ -448,14 +470,14 @@
             case_status = 2
         }
         let list = $('#list').val()
-        let is_active_search = $('#is_active_search').val()
+        let is_active_search = $('#category_id').val()
         let date = $('#create_report').val()
         var create_date = parseInt($("#create_report").data('datepicker').getFormattedDate('yyyy') - 543) + $("#create_report").data('datepicker').getFormattedDate('-mm-dd') + ' ' + $("#hour").val() + ':' + $("#minute").val() + ':' + '00'
         let money = $('#money').val()
 
         if (is_active_search == 0) {
-            $('#is_active_search').css("border", "1px solid red");
-            $('#is_active_search').focus();
+            $('#category_id').css("border", "1px solid red");
+            $('#category_id').focus();
         }
 
         if (money == '' || money < 1) {
@@ -496,6 +518,7 @@
                     })
 
                     window.location.reload();
+                    // btn_clear_modal();
 
 
 
@@ -551,4 +574,10 @@
         document.getElementById('master_data_insert_form').reset()
         window.location.reload();
     }
+
+    // function btn_clear_modal() {
+        
+    //     $('#modal_insert').modal('toggle');
+    //     report_get_table_by_page_number_search(1)
+    // }
 </script>

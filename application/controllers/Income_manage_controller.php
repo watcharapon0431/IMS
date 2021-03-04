@@ -159,5 +159,13 @@ class Income_manage_controller extends IMS_controller
 		echo json_encode($data);
 	}
 
+	function get_category()
+	{
+		$this->load->model('M_income', 'mis');
+		// $status = $this->input->post('case_status');
+		$data['rs_category'] = $this->mis->get_category_dropdown()->result();
+		echo json_encode($data);
+	}
+
 
 }
