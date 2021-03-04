@@ -24,8 +24,6 @@
             async: false,
             success: function(json_data) {
                 let count_data = 0
-                console.log("sa")
-                console.log(json_data)
                 if (json_data.rs_income.length > 0) {
                     json_data.rs_income.forEach(function(element) {
                         var button = "<center>" + element.btn_edit + ' ' + element.btn_delete + "</center>"
