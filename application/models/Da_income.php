@@ -39,7 +39,7 @@ class Da_income extends CI_Model
 	{
 		// if there is no primary key, please remove WHERE clause.
 		$sql = "DELETE FROM list
-    WHERE `list_id`=?";
+    	WHERE `list_id`=?";
 		$this->db->query($sql, array($this->list_id));
 	}
 

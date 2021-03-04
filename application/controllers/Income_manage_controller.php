@@ -30,11 +30,10 @@ class Income_manage_controller extends IMS_controller
 	// 
 	public function delete_list()
 	{	
-		$this->load->model('Da_income', 'dm');
-		$this->load->model('M_income', 'mc');
-		$this->mc->list_id = $this->input->post("list_id");
-		$this->dm->delete();
-		$this->mc->update_delete();
+		$this->load->model('M_income', 'mic');
+		$this->mic->list_id = $this->input->post("list_id");
+		$this->mic->delete_list();
+		// $this->mc->update_delete();
 		$data =  true;
 		echo json_encode($data);
 	}
@@ -76,6 +75,7 @@ class Income_manage_controller extends IMS_controller
 		// 	$create_date = splitDateForm6($temp_date);
 		// }
 
+		
 		// // if condition when create_date is not null
 		// if ($modify_date != "") {
 		// 	// set temp_date is date type by input post date_end
@@ -131,7 +131,7 @@ class Income_manage_controller extends IMS_controller
 					'status' => $income_status,
 					'cost' => '<p>' . $row->list_cost . '</p>',
 					'btn_edit' => '<a href="' . site_url() . '/Case_report_controller_ajax/load_v_edit_report/' . '" type="button" class="btn btn-warning btn-circle" title="แก้ไข"><i class="fa fa-pencil "></i></a >',
-					'btn_delete' => '<a id="btn-delete" onclick="report_delete(' . "," . "'" . "'" . ')"  type="button" class="btn btn-danger btn-circle" title="ลบ"><i class="fa fa-minus-circle "></i></a >',
+					'btn_delete' => '<a id="btn-delete" onclick="delete_list( '. $row->list_id .')"  type="button" class="btn btn-danger btn-circle" title="ลบ"><i class="fa fa-minus-circle "></i></a >',
 					'btn_detail' => '<a href="' . site_url() . '/Case_report_controller_ajax/report_get_detail/' . '" type="button" class="btn btn-info btn-circle" title="รายละเอียด"><i class="fa fa-info "></i></a >',
 				)
 			);

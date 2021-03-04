@@ -4,11 +4,10 @@ require_once(dirname(__FILE__) . "/Da_income.php");
 
 class M_income extends Da_income
 {
-    function update_delete()
+	function delete_list()
 	{
-		$sql = " UPDATE list
-		SET list_id = list_id-1
-	    WHERE list_id > ? ";
+		$sql = "DELETE FROM list
+    	WHERE list_id = ?";
 		$this->db->query($sql, array($this->list_id));
 	}
 
