@@ -34,25 +34,6 @@
             login_authentication()
         });
 
-        $("#case_forget_username").keyup(function() {
-            /* Start validate_username */
-            if ($('#case_forget_username').val() == '') {
-                $('#case_forget_username').css("border", "1px solid red");
-                $('#case_forget_username').focus();
-                $('#validate_username').text('กรุณาระบุชื่อผู้ใช้งาน')
-            }
-            /* End validate_username */
-        });
-
-        $("#case_forget_password").keyup(function() {
-            /* Start validate con_phone_no */
-            if ($('#case_forget_password').val() == '') {
-                $('#case_forget_password').css("border", "1px solid red");
-                $('#case_forget_password').focus();
-                $('#validate_email_address').text('กรุณาระบุอีเมลที่มีอยู่ในระบบ')
-            }
-            /* End validate con_phone_no */
-        });
     });
     // end $(document).ready()
 
