@@ -11,6 +11,7 @@ class Da_income extends CI_Model
 	public $list_detail;
 	public $list_create_date;
 	public $list_type;
+	public $start_limit;
 
 	function __construct()
 	{

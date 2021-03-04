@@ -1,3 +1,139 @@
+<script>
+    $(document).ready(() => {
+        report_get_table_by_page_number_search(1);
+        console.log("sa")
+    })
+    report_get_table_by_page_number_search(1);
+
+    function report_get_table_by_page_number_search(page_number) {
+        let table = $("#report_table tbody")
+		let page = $("#page_option")
+		table.empty()
+		page.empty()
+		let count_of_master_data = $("#count_of_master_data")
+		count_of_master_data.empty()
+		$('#current_page').val(page_number)
+        
+        $.ajax({
+            type: "POST",
+            url: "<?php echo site_url() . "/Income_manage_controller/income_search/" ?>",
+            data: {'page_number': page_number},
+            dataType: 'JSON',
+            async: false,
+            success: function(json_data) {
+                let count_data = 0
+                console.log(json_data)
+                if (json_data.rs_income.length > 0) {
+                    json_data.rs_income.forEach(function(element) {
+                        var button = "<center>" + element.btn_edit + ' ' + element.btn_delete + "</center>"
+                        var blank = "<p></p>";
+                        var add;
+                        var del;
+                        if (element.status == "รายรับ") {
+                            add = element.cost;
+                            del= blank;
+                        } else {
+                            add = blank;
+                            del = element.cost;
+                        }
+                        table.append($('<tr>')
+                            .append($('<td>').append("<center>" + element.create_date + "</center>"))
+                            .append($('<td>').append(element.name))
+                            .append($('<td>').append("<center>" + add + "</center>"))
+                            .append($('<td>').append("<center>" + del + "</center>"))
+                            .append($('<td>').append(button))
+                        )
+                        count_data++
+                    })
+                
+
+
+                	//--------------------------------  start declare count number pagination -------------------------------------------------
+                	let count_section_page = $("#section_page").val()
+                	let current_page = $("#current_page").val()
+                	let max_page = json_data.case_count[0].count_case / 10
+                	if (json_data.case_count[0].count_case % 10 != 0) {
+                		max_page++
+                	}
+                	if ((count_section_page * 10) % 10 != 0) {
+                		count_section_page = Math.floor(count_section_page)
+                		count_section_page++
+                		$("#section_page").val(count_section_page)
+                	}
+                	max_page = Math.floor(max_page)
+                	let count_loop = null
+                	if (max_page >= 10) {
+                		count_loop = (10 * count_section_page) - 9
+                	} else if (max_page < 10) {
+                		count_loop = 1
+                	}
+                	//---------------------------------  end declare count number pagination --------------------------------------------------
+
+                	page.append('<a style="color:black; " href="javascript:report_search_first_page()">&emsp;< |&emsp;</a>')
+                	page.append('<a style="color:black; " href="javascript:report_search_page_previous()">&emsp;<&emsp;</a>')
+                	$("#count_of_master_data").text("แสดง " + count_data + " ข้อมูล จาก " + json_data.case_count[0].count_case + " ข้อมูล")
+                	for (count = count_loop; count <= max_page; count++) {
+                		if (count <= count_section_page * 10) {
+                			if (current_page == count) {
+                				page.append('<a style="color:#0000FF; font-weight:bold" href="javascript:report_get_table_by_page_number_search(' + count + ')">&emsp;' + count + '&emsp;</a>')
+                			} else {
+                				page.append('<a style="color:black; " href="javascript:report_get_table_by_page_number_search(' + count + ')">&emsp;' + count + '&emsp;</a>')
+                			}
+
+                		}
+                	}
+                	page.append('<a style="color:black; " href="javascript:report_search_page_next(' + max_page + ')">&emsp;>&emsp;</a>')
+                	page.append('<a style="color:black; " href="javascript:report_search_last_page(' + max_page + ')">&emsp;| >&emsp;</a>')
+                } else {
+                	let text_no_data = '<center><b><p>ไม่มีรายการเรื่องร้องเรียน</p></b></center>'
+                	table.append($('<tr>').append('<td colspan="8">' + text_no_data + '</td>'))
+                }
+
+                // end if condition when have case's data equal or more than 1 data
+            }
+        })
+    }
+
+    function report_search_page_previous() {
+        let current_page = $('#current_page').val()
+        if (current_page > 1) {
+            if (current_page % 10 == 1) {
+                let new_section_page = parseInt($('#section_page').val()) - 1
+                $('#section_page').val(new_section_page)
+            }
+            page_temp = parseInt($('#current_page').val()) - 1
+            report_get_table_by_page_number_search(page_temp)
+        }
+    }
+
+    function report_search_page_next(max_count) {
+        let current_page = $('#current_page').val()
+        if (current_page < max_count) {
+            if (current_page % 10 == 0 && current_page != max_count) {
+                let new_section_page = parseInt($('#section_page').val()) + 1
+                $('#section_page').val(new_section_page)
+            }
+            page_temp = parseInt($('#current_page').val()) + 1
+            report_get_table_by_page_number_search(page_temp)
+        }
+    }
+
+    function report_search_first_page() {
+        $('#section_page').val(1)
+        report_get_table_by_page_number_search(1)
+    }
+
+    function report_search_last_page(max_count) {
+        let change_section_page_value = max_count
+        if (max_count >= 10) {
+            change_section_page_value = (max_count / 10)
+        }
+        $('#section_page').val(change_section_page_value)
+        report_get_table_by_page_number_search(max_count)
+    }
+
+</script>
+
 <div id="page-wrapper">
     <div class="container-fluid">
         <br>
@@ -23,23 +159,27 @@
             </div>
             <div class="col-md-12">
                 <div class="white-box">
-
                     <div class="table-responsive">
                         <div class="dataTables_wrapper no-footer">
-
-                            <!-- --------------------------------------------- start report data table ------------------------------------------------------ -->
+                            <!-- ------------------------------------------ start report data table ------------------------------------------------------ -->
                             <table id="report_table" class="table table-striped dataTable no-footer display" role="grid" aria-describedby="myTable_info">
                                 <thead>
                                     <tr>
-                                        <th style="text-align:center; width: 10%"">ลำดับ</th>
+                                        <th style="text-align:center; width: 10%"">วันที่</th>
                                         <th style=" text-align:center; width: 30%">รายการ</th>
-                                        <th style="text-align:center; width: 20%"">วันที่</th>
-                                        <th style=" text-align:center; width: 20%"">สถานะ</th>
+                                        <th style="text-align:center; width: 20%"">รายรับ</th>
+                                        <th style=" text-align:center; width: 20%"">รายจ่าย</th>
                                         <th style="text-align:center; width: 20%"">ดำเนินการ</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-
+                                <tr>
+                                        <td style="text-align:center; width: 10%"">วันที่</th>
+                                        <td style=" text-align:center; width: 30%">รายการ</th>
+                                        <td style="text-align:center; width: 20%"">รายรับ</th>
+                                        <td style=" text-align:center; width: 20%"">รายจ่าย</th>
+                                        <td style="text-align:center; width: 20%"">ดำเนินการ</th>
+                                    </tr>
                                 </tbody>
                             </table>
                             <!-- ---------------------------------------------- end report data table ------------------------------------------------------- -->
@@ -304,143 +444,8 @@
         })
     })
 
-    function report_get_table_by_page_number_search(page_number) {
-        let table = $("#report_table tbody")
-        let page = $("#page_option")
 
-        table.empty()
-        page.empty()
-
-        let count_of_master_data = $("#count_of_master_data")
-        count_of_master_data.empty()
-
-        $('#current_page').val(page_number)
-
-        $.ajax({
-            type: "POST",
-            url: "<?php echo site_url() . "/Question_manage_controller/question_data_table/" ?>",
-            data: {},
-            dataType: 'JSON',
-            async: false,
-            success: function(json_data) {
-                let count_data = 0
-
-                if (json_data.rs_question.length > 0) {
-                    // start loop foreach display case's data on table
-                    json_data.rs_question.forEach(function(element) {
-                        table.append($('<tr>')
-                            .append($('<td>').append("<center>" + element.q_seq + "</center>"))
-                            .append($('<td>').append(element.q_name))
-                            .append($('<td>').append("<center>" + element.ca_name + "</center>"))
-                            .append($('<td>').append("<center>" + element.q_status + "</center>"))
-                            .append($('<td>').append("<center>" + element.btn_edit + ' ' + element.btn_delete + "</center>"))
-                        )
-                        count_data++
-                    })
-                    // end loop foreach display case's data on table
-                    // console.log(table);
-                    //--------------------------------  start declare count number pagination -------------------------------------------------
-                    let count_section_page = $("#section_page").val()
-                    let current_page = $("#current_page").val()
-                    let max_page = json_data.count_question / 10
-                    if (json_data.count_question % 10 != 0) {
-                        max_page++
-                    }
-                    if ((count_section_page * 10) % 10 != 0) {
-                        count_section_page = Math.floor(count_section_page)
-                        count_section_page++
-                        $("#section_page").val(count_section_page)
-                    }
-                    max_page = Math.floor(max_page)
-                    let count_loop = null
-                    if (max_page >= 10) {
-                        count_loop = (10 * count_section_page) - 9
-                    } else if (max_page < 10) {
-                        count_loop = 1
-                    }
-                    //---------------------------------  end declare count number pagination --------------------------------------------------
-
-                    page.append('<a style="color:black; " href="javascript:report_search_first_page()">&emsp;< |&emsp;</a>')
-                    page.append('<a style="color:black; " href="javascript:report_search_page_previous()">&emsp;<&emsp;</a>')
-                    $("#count_of_master_data").text("แสดง " + count_data + " ข้อมูล จาก " + json_data.count_question + " ข้อมูล")
-                    for (count = count_loop; count <= max_page; count++) {
-                        if (count <= count_section_page * 10) {
-                            if (current_page == count) {
-                                page.append('<a style="color:#0000FF; font-weight:bold" href="javascript:report_get_table_by_page_number_search(' + count + ')">&emsp;' + count + '&emsp;</a>')
-                            } else {
-                                page.append('<a style="color:black; " href="javascript:report_get_table_by_page_number_search(' + count + ')">&emsp;' + count + '&emsp;</a>')
-                            }
-
-                        }
-                    }
-                    page.append('<a style="color:black; " href="javascript:report_search_page_next(' + max_page + ')">&emsp;>&emsp;</a>')
-                    page.append('<a style="color:black; " href="javascript:report_search_last_page(' + max_page + ')">&emsp;| >&emsp;</a>')
-                } else {
-                    let text_no_data = '<center><b><p>ไม่มีรายการแบบทดสอบ</p></b></center>'
-                    table.append($('<tr>').append('<td colspan="8">' + text_no_data + '</td>'))
-                }
-                // end if condition when have case's data equal or more than 1 data
-            }
-        })
-    }
-
-    function report_get_table_by_page_number_search(page_number) {
-        let table = $("#report_table tbody")
-        let page = $("#page_option")
-
-        table.empty()
-        page.empty()
-
-        let count_of_master_data = $("#count_of_master_data")
-        count_of_master_data.empty()
-
-        $('#current_page').val(page_number)
-
-        // set type_sorting_date 
-        let type_sorting_date = $("#type_sorting_date").val()
-
-        let user_login = '<?php echo $this->session->case_code; ?>'
-        let user_login_position = null
-    }
-
-    function report_search_page_previous() {
-        let current_page = $('#current_page').val()
-        if (current_page > 1) {
-            if (current_page % 10 == 1) {
-                let new_section_page = parseInt($('#section_page').val()) - 1
-                $('#section_page').val(new_section_page)
-            }
-            page_temp = parseInt($('#current_page').val()) - 1
-            report_get_table_by_page_number_search(page_temp)
-        }
-    }
-
-    function report_search_page_next(max_count) {
-        let current_page = $('#current_page').val()
-        if (current_page < max_count) {
-            if (current_page % 10 == 0 && current_page != max_count) {
-                let new_section_page = parseInt($('#section_page').val()) + 1
-                $('#section_page').val(new_section_page)
-            }
-            page_temp = parseInt($('#current_page').val()) + 1
-            report_get_table_by_page_number_search(page_temp)
-        }
-    }
-
-    function report_search_first_page() {
-        $('#section_page').val(1)
-        report_get_table_by_page_number_search(1)
-    }
-
-    function report_search_last_page(max_count) {
-        let change_section_page_value = max_count
-        if (max_count >= 10) {
-            change_section_page_value = (max_count / 10)
-        }
-        $('#section_page').val(change_section_page_value)
-        report_get_table_by_page_number_search(max_count)
-    }
-
+   
     jQuery('#create_report').datepicker({
         todayHighlight: true,
         format: 'dd/mm/yyyy',
@@ -506,6 +511,7 @@
             $('#validate_type_id').text('กรุณาเลือกประเภทรายรับ - รายจ่าย')
         }
     }
+
     function delete_list(delete_id) {
         swal({
                 title: "คุณต้องการลบรายการนี้ใช่หรือไม่",
@@ -528,14 +534,14 @@
                         },
                         dataType: 'JSON',
                         async: false,
-                        success: function(json_data) {                        
-                            if (json_data == true) {                          
+                        success: function(json_data) {
+                            if (json_data == true) {
                                 swal({
                                     title: "ลบข้อมูลสำเร็จ",
                                     text: "ข้อมูลของคุณถูกลบเรียบร้อย",
                                     type: "success",
                                     confirmButtonText: "ตกลง"
-                                })                              
+                                })
                             } else {
                                 swal({
                                     title: "ไม่สามารถทำการลบข้อมูลนี้ได้",
@@ -545,7 +551,7 @@
                                 })
                             }
                             // show();
-                           // window.location.reload();
+                            // window.location.reload();
                         }
                     })
                 }
