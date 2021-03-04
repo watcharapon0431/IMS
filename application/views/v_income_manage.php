@@ -87,7 +87,7 @@
                     page.append('<a style="color:black; " href="javascript:report_search_page_next(' + max_page + ')">&emsp;>&emsp;</a>')
                     page.append('<a style="color:black; " href="javascript:report_search_last_page(' + max_page + ')">&emsp;| >&emsp;</a>')
                 } else {
-                    let text_no_data = '<center><b><p>ไม่มีรายการเรื่องร้องเรียน</p></b></center>'
+                    let text_no_data = '<center><b><p>ไม่มีรายการรายรับ - รายจ่าย</p></b></center>'
                     table.append($('<tr>').append('<td colspan="8">' + text_no_data + '</td>'))
                 }
                 // end if condition when have case's data equal or more than 1 data
@@ -256,7 +256,7 @@
                                     <label for="female"> รายรับ</label>
                                 </div>
                                 <div class="col-md-3">
-                                    <input type="radio" id="type2" name="type">
+                                    <input type="radio" id="type2" name="type" checked>
                                     <label for="female"> รายจ่าย</label>
                                 </div>
                             </div>
@@ -303,94 +303,44 @@
                             </div>
                             <div class="col-md-2">
                                 <select id="hour" class="form-control">
-                                    <option value="0">0</option>
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                    <option value="6">6</option>
-                                    <option value="7">7</option>
-                                    <option value="8">8</option>
-                                    <option value="9">9</option>
-                                    <option value="10">10</option>
-                                    <option value="11">11</option>
-                                    <option value="12">12</option>
-                                    <option value="13">13</option>
-                                    <option value="14">14</option>
-                                    <option value="15">15</option>
-                                    <option value="16">16</option>
-                                    <option value="17">17</option>
-                                    <option value="18">18</option>
-                                    <option value="19">19</option>
-                                    <option value="20">20</option>
-                                    <option value="21">21</option>
-                                    <option value="22">22</option>
-                                    <option value="23">23</option>
+                                <?php
+                                    for ($i = 0; $i < 24; $i++) {
+                                    ?>
+                                        <?php
+                                        if ($i == 0 || $i == 1 || $i == 2 || $i == 3 || $i == 4 || $i == 5 || $i == 6 || $i == 7 || $i == 8 || $i == 9) {
+                                        ?>
+                                            <option value="<?php echo $i; ?>"><?php echo "0" . $i; ?></option>
+                                        <?php
+                                        } else {
+                                        ?>
+                                            <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+                                        <?php
+                                        }
+                                        ?>
+                                    <?php
+                                    }
+                                    ?>
                                 </select>
                             </div>
                             <div class="col-md-2">
                                 <select id="minute" class="form-control">
-                                    <option value="0">0</option>
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                    <option value="6">6</option>
-                                    <option value="7">7</option>
-                                    <option value="8">8</option>
-                                    <option value="9">9</option>
-                                    <option value="10">10</option>
-                                    <option value="11">11</option>
-                                    <option value="12">12</option>
-                                    <option value="13">13</option>
-                                    <option value="14">14</option>
-                                    <option value="15">15</option>
-                                    <option value="16">16</option>
-                                    <option value="17">17</option>
-                                    <option value="18">18</option>
-                                    <option value="19">19</option>
-                                    <option value="20">20</option>
-                                    <option value="21">21</option>
-                                    <option value="22">22</option>
-                                    <option value="23">23</option>
-                                    <option value="24">24</option>
-                                    <option value="25">25</option>
-                                    <option value="26">26</option>
-                                    <option value="27">27</option>
-                                    <option value="28">28</option>
-                                    <option value="29">29</option>
-                                    <option value="30">30</option>
-                                    <option value="31">31</option>
-                                    <option value="32">32</option>
-                                    <option value="33">33</option>
-                                    <option value="34">34</option>
-                                    <option value="35">35</option>
-                                    <option value="36">36</option>
-                                    <option value="37">37</option>
-                                    <option value="38">38</option>
-                                    <option value="39">39</option>
-                                    <option value="40">40</option>
-                                    <option value="41">41</option>
-                                    <option value="42">42</option>
-                                    <option value="43">43</option>
-                                    <option value="44">44</option>
-                                    <option value="415">45</option>
-                                    <option value="46">46</option>
-                                    <option value="47">47</option>
-                                    <option value="48">48</option>
-                                    <option value="49">49</option>
-                                    <option value="50">50</option>
-                                    <option value="51">51</option>
-                                    <option value="52">52</option>
-                                    <option value="53">53</option>
-                                    <option value="54">54</option>
-                                    <option value="55">55</option>
-                                    <option value="56">56</option>
-                                    <option value="57">57</option>
-                                    <option value="58">58</option>
-                                    <option value="59">59</option>
+                                <?php
+                                    for ($i = 0; $i < 60; $i++) {
+                                    ?>
+                                        <?php
+                                        if ($i == 0 || $i == 1 || $i == 2 || $i == 3 || $i == 4 || $i == 5 || $i == 6 || $i == 7 || $i == 8 || $i == 9) {
+                                        ?>
+                                            <option value="<?php echo $i; ?>"><?php echo "0" . $i; ?></option>
+                                        <?php
+                                        } else {
+                                        ?>
+                                            <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+                                        <?php
+                                        }
+                                        ?>
+                                    <?php
+                                    }
+                                    ?>
                                 </select>
                             </div>
                         </div>
@@ -398,8 +348,8 @@
                     <div class="form-group">
                         <div class="col-md-12">
                             <label class="col-md-12">จำนวนเงิน : <span style="color:red;"> * </span></label>
-                            <div class="col-md-4">
-                                <input type="number" class="form-control" id="money" maxlength="50" min="1">
+                            <div class="col-md-5">
+                                <input type="number" class="form-control check" id="money" maxlength="50" min="1">
                             </div>
                         </div>
                     </div>
@@ -419,8 +369,26 @@
     </div>
 </div>
 <!-- ---------------------------------------------- end modal master data insert  ---------------------------------------------- -->
+<style>
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        /* display: none; <- Crashes Chrome on hover */
+        -webkit-appearance: none;
+        margin: 0;
+        /* <-- Apparently some margin are still there even though it's hidden */
+    }
+
+    input[type=number] {
+        -moz-appearance: textfield;
+        /* Firefox */
+    }
+</style>
 <script>
     $(document).ready(() => {
+        var input = document.querySelector('input.check');
+        input.addEventListener('keyup', function(e) {
+            this.value = this.value.replace(/[^0-9]/, '');
+        });
         var today = new Date();
         // set input id hour = current hour
         $("#hour").val(today.getHours())
