@@ -32,15 +32,19 @@ class Income_manage_controller extends IMS_controller
 	{	
 		$this->load->model('M_income', 'mic');
 		$this->mic->list_id = $this->input->post("list_id");
+		// echo $this->mic->list_id;
 		$this->mic->delete_list();
 		$this->load->model('M_summary', 'ms');
 		$this->ms->sl_user_id = $this->session->user_id;
 		$this->ms->sl_month = 3;
 		$this->ms->sl_year = 2021;
-		$data['sum_income'] = $this->msl->get_summary()->result();
-		$cost_income = $data['sum_income']->sl_income;
-		$cost_expend = $data['sum_income']->sl_expend;
-		$cost_balance = $data['sum_income']->sl_balance;
+		$sum_income = $this->ms->get_summary()->result();
+		$cost_income = intval($sum_income[0]->sl_income);
+		$cost_expend = intval($sum_income[0]->sl_expend);
+		$cost_balance = intval($sum_income[0]->sl_balance);
+		// var_dump($cost_income);
+		// die;
+		// var_dump()
 		$type =  $this->input->post("list_type");
 		$cost =  $this->input->post("list_cost");
 		if($type == 1){
@@ -50,10 +54,17 @@ class Income_manage_controller extends IMS_controller
 			$cost_expend -= $cost;
 			$cost_balance += $cost;
 		}
+		// var_dump($cost_income);
+		// die;
+		$this->ms->sl_income = $cost_income;
+		$this->ms->sl_expend = $cost_expend;
+		$this->ms->sl_balance = $cost_balance;
 		$this->ms->update_sum_list();
+		
 		// $this->mc->update_delete();
 		$data =  true;
 		echo json_encode($data);
+
 	}
 	public function update_summary()
 	{	
@@ -128,7 +139,7 @@ class Income_manage_controller extends IMS_controller
 					'status' => $income_status,
 					'cost' => '<p>' . $row->list_cost . '</p>',
 					'btn_edit' => '<a href="' . site_url() . '/Case_report_controller_ajax/load_v_edit_report/' . '" type="button" class="btn btn-warning btn-circle" title="แก้ไข"><i class="fa fa-pencil "></i></a >',
-					'btn_delete' => '<a id="btn-delete" onclick="delete_list( '. $row->list_id .$row->list_cost.$row->list_type.')"  type="button" class="btn btn-danger btn-circle" title="ลบ"><i class="fa fa-minus-circle "></i></a >'
+					'btn_delete' => '<a id="btn-delete" onclick="delete_list( '. $row->list_id.','.$row->list_cost.','.$row->list_type.')"  type="button" class="btn btn-danger btn-circle" title="ลบ"><i class="fa fa-minus-circle "></i></a >'
 				)
 			);
 			// end set array_case with html and css for view
@@ -141,7 +152,7 @@ class Income_manage_controller extends IMS_controller
 
 		$this->load->model('M_summary', 'msl');
 		$this->msl->sl_user_id = $this->session->user_id;
-		$this->msl->sl_month = 4;
+		$this->msl->sl_month = 3;
 		$this->msl->sl_year = 2021;
 		$data['sum_income'] = $this->msl->get_summary()->result();
 		// echo json back to ajax form
