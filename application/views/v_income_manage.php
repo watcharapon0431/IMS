@@ -60,7 +60,7 @@
                     }
                     if ((count_section_page * 10) % 10 != 0) {
                         count_section_page = Math.floor(count_section_page)
-                        count_section_page++
+                        count_section_page++ 
                         $("#section_page").val(count_section_page)
                     }
                     max_page = Math.floor(max_page)
