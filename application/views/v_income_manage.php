@@ -532,21 +532,12 @@
                         dataType: 'JSON',
                         async: false,
                         success: function(json_data) {
-                            if (json_data == true) {
-                                swal({
-                                    title: "ลบข้อมูลสำเร็จ",
-                                    text: "ข้อมูลของคุณถูกลบเรียบร้อย",
-                                    type: "success",
-                                    confirmButtonText: "ตกลง"
-                                })
-                            } else {
-                                swal({
-                                    title: "ไม่สามารถทำการลบข้อมูลนี้ได้",
-                                    text: "เนื่องจาก ข้อมูลนี้ถูกนำไปอ้างอิงในรายการเรื่องร้องเรียน",
-                                    type: "error",
-                                    confirmButtonText: "ตกลง"
-                                })
-                            }
+                            swal({
+                                title: "ลบข้อมูลสำเร็จ",
+                                text: "ข้อมูลของคุณถูกลบเรียบร้อย",
+                                type: "success",
+                                confirmButtonText: "ตกลง"
+                            })
                             // delete_list();
                             // window.location.reload();
                         }
