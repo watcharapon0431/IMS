@@ -527,14 +527,15 @@
                 closeOnConfirm: false,
                 cancelButtonText: 'ยกเลิก'
             },
+           
             function(result) {
 
                 if (result) {
                     $.ajax({
                         type: "POST",
-                        url: "<?php echo site_url() . "/Income_mange_controller/delete_list"; ?>",
+                        url: "<?php echo site_url() . "/Income_manage_controller/delete_list"; ?>",
                         data: {
-                            'list_id': delete_id
+                            'list_id': delete_id,
                         },
                         dataType: 'JSON',
                         async: false,
@@ -554,9 +555,9 @@
                                     confirmButtonText: "ตกลง"
                                 })
                             }
-                            // show();
+                            // delete_list();
                             // window.location.reload();
-                        }
+                        }   
                     })
                 }
             })
