@@ -14,6 +14,14 @@ class M_summary extends Da_summary
 		return $query;
 	}
 
+	function update_sum_list(){
+	$sql = "UPDATE summary_list
+	SET  sl_income =? , sl_expend =? , sl_balance =?
+	WHERE sl_month =? AND sl_year =?";
+	$query = $this->db->query($sql, array($this->sl_income,$this->sl_expend,$this->sl_balance,$this->sl_month,$this->sl_year));
+	return $query;
+
+	}
 	
 
 

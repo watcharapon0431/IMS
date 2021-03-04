@@ -506,7 +506,26 @@
 
     }
 
-    function delete_list(delete_id) {
+    function delete_list(delete_id,cost_list,type_list) {
+        var cost_income;
+        var cost_expend;
+        // $.ajax({
+        //                 type: "GET",
+        //                 url: "<?php echo site_url() . "/Income_manage_controller/update_summary"; ?>",
+        //                 data: {
+        //                     'list_cost': cost_list,
+        //                     'list_type': type_list,
+        //                 },
+        //                 dataType: 'JSON',
+        //                 async: false,
+        //                 success: function(json_data) {
+        //                 //     if(type_list == 1){
+        //                 //     cost_income = json_data.cost_list;
+        //                 // } else if(type_list == 2){
+        //                 //     cost_expend = json_data.cost_list;
+        //                 // }
+        //                 }
+        //             })
         swal({
                 title: "คุณต้องการลบรายการนี้ใช่หรือไม่",
                 text: "ข้อมูลของคุณจะสูญหาย!",
@@ -526,6 +545,8 @@
                         url: "<?php echo site_url() . "/Income_manage_controller/delete_list"; ?>",
                         data: {
                             'list_id': delete_id,
+                            'list_cost': cost_list,
+                            'list_type': type_list,
                         },
                         dataType: 'JSON',
                         async: false,
@@ -540,6 +561,7 @@
                             // window.location.reload();
                         }
                     })
+                  
                 }
             })
     }
