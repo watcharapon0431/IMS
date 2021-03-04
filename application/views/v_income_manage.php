@@ -148,7 +148,7 @@
                                     <center><b>รายรับทั้งหมด</b></center>
 
                                     <center>
-                                        <h1 id="income_all" style="color: blue; margin-top: 10px;">25</h1>
+                                        <h1 id="income_all" style="color: blue; margin-top: 10px;"></h1>
                                     </center>
                                     
                                     
@@ -157,7 +157,7 @@
                                     <center><b>รายจ่ายทั้งหมด</b></center>
 
                                     <center>
-                                        <h1 id="expend_all" style="color: red; margin-top: 10px;">25</h1>
+                                        <h1 id="expend_all" style="color: red; margin-top: 10px;"></h1>
                                     </center>
                                     
                                     
@@ -166,7 +166,7 @@
                                     <center><b>คงเหลือ</b></center>
 
                                     <center>
-                                        <h1 id="balance_all" style="color: green; margin-top: 10px;">25</h1>
+                                        <h1 id="balance_all" style="color: green; margin-top: 10px;"></h1>
                                     </center>
                       
                                     
