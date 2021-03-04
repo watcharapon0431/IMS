@@ -66,49 +66,16 @@ class Income_manage_controller extends IMS_controller
 		//echo $this->mis->list_user_id;
 		$this->mis->start_limit = ($this->input->post('page_number') - 1) * 10;
 		// $type_sorting_date = $this->input->post("type_sorting_date");
-
-		// // if condition when create_date is not null
-		// if ($create_date != "") {
-		// 	// set temp_date is date type by input post date_begin
-		// 	$temp_date = date("Y-m-d", strtotime($this->input->post('date_begin')));
-		// 	// set create_date and change date's form 
-		// 	$create_date = splitDateForm6($temp_date);
-		// }
-
-		
-		// // if condition when create_date is not null
-		// if ($modify_date != "") {
-		// 	// set temp_date is date type by input post date_end
-		// 	$temp_date = date("Y-m-d", strtotime($this->input->post('date_end')));
-		// 	// set modify_date and change date's form 
-		// 	$modify_date = splitDateForm6($temp_date);
-		// }
-
-		// if condition when case_position_id is not null
-
-	
-
-		// if ($case_position_id == "") {
-		// 	$begin_position = 0; //เจ้าหน้าที่ contact center
-		// 	$end_position = 3; //เจ้าหน้าที่ภาคสนาม
-		// } else {
-		// 	$begin_position = $case_position_id;
-		// 	$end_position = $case_position_id;
-		// }
-
-
 		$rs_case = $this->mis->search_case()->result();
 		//$rs_create_fullname = $this->mcs->search_create_use($keyword, $create_date, $modify_date, $type_sorting_date, $position_id, $department_id)->result();
 		// set case_count is count of all case's search data
 		$data['case_count'] = $this->mis->count_search_case()->result();
 		// set array_case is array 
 		//print_r($rs_case);
-
 		$array_case = array();
 		// start loop set array_case from query of M_case
 		$i = 0; //กำหนดค่าเริ่มต้นลูปของการใส่ชื่อผู้สร้าง
 		foreach ($rs_case as $row) {
-
 			// start if condition change value of case_status
 			if ($row->list_type == 1) {
 				$income_status = "รายรับ";
@@ -120,19 +87,18 @@ class Income_manage_controller extends IMS_controller
 			// set temp_date is date type by case_create_date of query M_case
 			$temp_date = date("Y-m-d", strtotime($row->list_create_date));
 			// set create_date_array and change date's form  
-			$create_date_array = abbreDate2($temp_date);
+			//$create_date_array = abbreDate2($temp_date);
 
 			// start set array_case with html and css for view
 			array_push(
 				$array_case,
-				array(	
+				array(
 					'name' => '<p title="' . $row->category_name . '">' . $row->list_detail . '</p>',
-					'create_date' => $create_date_array,
+					'create_date' => $temp_date,
 					'status' => $income_status,
 					'cost' => '<p>' . $row->list_cost . '</p>',
 					'btn_edit' => '<a href="' . site_url() . '/Case_report_controller_ajax/load_v_edit_report/' . '" type="button" class="btn btn-warning btn-circle" title="แก้ไข"><i class="fa fa-pencil "></i></a >',
-					'btn_delete' => '<a id="btn-delete" onclick="delete_list( '. $row->list_id .')"  type="button" class="btn btn-danger btn-circle" title="ลบ"><i class="fa fa-minus-circle "></i></a >',
-					'btn_detail' => '<a href="' . site_url() . '/Case_report_controller_ajax/report_get_detail/' . '" type="button" class="btn btn-info btn-circle" title="รายละเอียด"><i class="fa fa-info "></i></a >',
+					'btn_delete' => '<a id="btn-delete" onclick="delete_list( '. $row->list_id .')"  type="button" class="btn btn-danger btn-circle" title="ลบ"><i class="fa fa-minus-circle "></i></a >'
 				)
 			);
 			// end set array_case with html and css for view
@@ -140,15 +106,14 @@ class Income_manage_controller extends IMS_controller
 		};
 		// end loop set array_case from query of M_case
 
-		// load model M_user
-		// $this->load->model('Master_data/M_user', 'mus');
-		// $this->mus->user_name = $this->session->user_id;
-		// $data['rs_department'] = ($this->mus->get_position_by_username()->result())[0]->department_id;
-
 		// // Json's data sent back to Ajax form
 		$data['rs_income'] = $array_case;
-		// // set start_limit is 0 for query all count when search
-		// $this->mcs->start_limit = 0;
+
+		$this->load->model('M_summary', 'msl');
+		$this->msl->sl_user_id = $this->session->user_id;
+		$this->msl->sl_month = 4;
+		$this->msl->sl_year = 2021;
+		$data['sum_income'] = $this->msl->get_summary()->result();
 		// echo json back to ajax form
 		echo json_encode($data);
 	}

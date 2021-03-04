@@ -1,27 +1,30 @@
 <script>
     $(document).ready(() => {
         report_get_table_by_page_number_search(1);
-        console.log("sa")
+
     })
     report_get_table_by_page_number_search(1);
 
     function report_get_table_by_page_number_search(page_number) {
+
         let table = $("#report_table tbody")
-		let page = $("#page_option")
-		table.empty()
-		page.empty()
-		let count_of_master_data = $("#count_of_master_data")
-		count_of_master_data.empty()
-		$('#current_page').val(page_number)
-        
+        let page = $("#page_option")
+        table.empty()
+        page.empty()
+        let count_of_master_data = $("#count_of_master_data")
+        count_of_master_data.empty()
+        $('#current_page').val(page_number)
         $.ajax({
             type: "POST",
             url: "<?php echo site_url() . "/Income_manage_controller/income_search/" ?>",
-            data: {'page_number': page_number},
+            data: {
+                'page_number': page_number
+            },
             dataType: 'JSON',
             async: false,
             success: function(json_data) {
                 let count_data = 0
+                console.log("sa")
                 console.log(json_data)
                 if (json_data.rs_income.length > 0) {
                     json_data.rs_income.forEach(function(element) {
@@ -31,7 +34,7 @@
                         var del;
                         if (element.status == "รายรับ") {
                             add = element.cost;
-                            del= blank;
+                            del = blank;
                         } else {
                             add = blank;
                             del = element.cost;
@@ -45,50 +48,48 @@
                         )
                         count_data++
                     })
-                
+                    $("#income_all").text(json_data.sum_income[0].sl_income+" บาท")
+                    $("#expend_all").text(json_data.sum_income[0].sl_expend+" บาท")
+                    $("#balance_all").text(json_data.sum_income[0].sl_balance+" บาท")
+                    //--------------------------------  start declare count number pagination -------------------------------------------------
+                    let count_section_page = $("#section_page").val()
+                    let current_page = $("#current_page").val()
+                    let max_page = json_data.case_count[0].count_case / 10
+                    if (json_data.case_count[0].count_case % 10 != 0) {
+                        max_page++
+                    }
+                    if ((count_section_page * 10) % 10 != 0) {
+                        count_section_page = Math.floor(count_section_page)
+                        count_section_page++
+                        $("#section_page").val(count_section_page)
+                    }
+                    max_page = Math.floor(max_page)
+                    let count_loop = null
+                    if (max_page >= 10) {
+                        count_loop = (10 * count_section_page) - 9
+                    } else if (max_page < 10) {
+                        count_loop = 1
+                    }
+                    //---------------------------------  end declare count number pagination --------------------------------------------------
 
-
-                	//--------------------------------  start declare count number pagination -------------------------------------------------
-                	let count_section_page = $("#section_page").val()
-                	let current_page = $("#current_page").val()
-                	let max_page = json_data.case_count[0].count_case / 10
-                	if (json_data.case_count[0].count_case % 10 != 0) {
-                		max_page++
-                	}
-                	if ((count_section_page * 10) % 10 != 0) {
-                		count_section_page = Math.floor(count_section_page)
-                		count_section_page++
-                		$("#section_page").val(count_section_page)
-                	}
-                	max_page = Math.floor(max_page)
-                	let count_loop = null
-                	if (max_page >= 10) {
-                		count_loop = (10 * count_section_page) - 9
-                	} else if (max_page < 10) {
-                		count_loop = 1
-                	}
-                	//---------------------------------  end declare count number pagination --------------------------------------------------
-
-                	page.append('<a style="color:black; " href="javascript:report_search_first_page()">&emsp;< |&emsp;</a>')
-                	page.append('<a style="color:black; " href="javascript:report_search_page_previous()">&emsp;<&emsp;</a>')
-                	$("#count_of_master_data").text("แสดง " + count_data + " ข้อมูล จาก " + json_data.case_count[0].count_case + " ข้อมูล")
-                	for (count = count_loop; count <= max_page; count++) {
-                		if (count <= count_section_page * 10) {
-                			if (current_page == count) {
-                				page.append('<a style="color:#0000FF; font-weight:bold" href="javascript:report_get_table_by_page_number_search(' + count + ')">&emsp;' + count + '&emsp;</a>')
-                			} else {
-                				page.append('<a style="color:black; " href="javascript:report_get_table_by_page_number_search(' + count + ')">&emsp;' + count + '&emsp;</a>')
-                			}
-
-                		}
-                	}
-                	page.append('<a style="color:black; " href="javascript:report_search_page_next(' + max_page + ')">&emsp;>&emsp;</a>')
-                	page.append('<a style="color:black; " href="javascript:report_search_last_page(' + max_page + ')">&emsp;| >&emsp;</a>')
+                    page.append('<a style="color:black; " href="javascript:report_search_first_page()">&emsp;< |&emsp;</a>')
+                    page.append('<a style="color:black; " href="javascript:report_search_page_previous()">&emsp;<&emsp;</a>')
+                    $("#count_of_master_data").text("แสดง " + count_data + " ข้อมูล จาก " + json_data.case_count[0].count_case + " ข้อมูล")
+                    for (count = count_loop; count <= max_page; count++) {
+                        if (count <= count_section_page * 10) {
+                            if (current_page == count) {
+                                page.append('<a style="color:#0000FF; font-weight:bold" href="javascript:report_get_table_by_page_number_search(' + count + ')">&emsp;' + count + '&emsp;</a>')
+                            } else {
+                                page.append('<a style="color:black; " href="javascript:report_get_table_by_page_number_search(' + count + ')">&emsp;' + count + '&emsp;</a>')
+                            }
+                        }
+                    }
+                    page.append('<a style="color:black; " href="javascript:report_search_page_next(' + max_page + ')">&emsp;>&emsp;</a>')
+                    page.append('<a style="color:black; " href="javascript:report_search_last_page(' + max_page + ')">&emsp;| >&emsp;</a>')
                 } else {
-                	let text_no_data = '<center><b><p>ไม่มีรายการเรื่องร้องเรียน</p></b></center>'
-                	table.append($('<tr>').append('<td colspan="8">' + text_no_data + '</td>'))
+                    let text_no_data = '<center><b><p>ไม่มีรายการเรื่องร้องเรียน</p></b></center>'
+                    table.append($('<tr>').append('<td colspan="8">' + text_no_data + '</td>'))
                 }
-
                 // end if condition when have case's data equal or more than 1 data
             }
         })
@@ -131,7 +132,6 @@
         $('#section_page').val(change_section_page_value)
         report_get_table_by_page_number_search(max_count)
     }
-
 </script>
 
 <div id="page-wrapper">
@@ -142,10 +142,40 @@
                 <div class="panel panel-default">
                     <div class="panel-wrapper collapse in">
                         <div class="panel-body">
-                            <div class="col-md-6">
-                                <h2><i class="fa fa-list-alt" style="font-size:40px;"></i>&emsp;จัดการรายรับ-รายจ่าย</h2>
+                            <div class="col-md-10">
+                                <div class="col-md-6">
+                                    <h2><i class="fa fa-list-alt" style="font-size:40px;"></i>&emsp;จัดการรายรับ-รายจ่าย</h2>
+                                </div>
+                                <div class="col-md-2">
+                                    <center><b>รายรับทั้งหมด</b></center>
+
+                                    <center>
+                                        <h1 id="income_all" style="color: blue; margin-top: 10px;">25</h1>
+                                    </center>
+                                    
+                                    
+                                </div>
+                                <div class="col-md-2">
+                                    <center><b>รายจ่ายทั้งหมด</b></center>
+
+                                    <center>
+                                        <h1 id="expend_all" style="color: red; margin-top: 10px;">25</h1>
+                                    </center>
+                                    
+                                    
+                                </div>
+                                <div class="col-md-2">
+                                    <center><b>คงเหลือ</b></center>
+
+                                    <center>
+                                        <h1 id="balance_all" style="color: green; margin-top: 10px;">25</h1>
+                                    </center>
+                      
+                                    
+                                </div>
                             </div>
-                            <div class="col-md-6" align="right">
+
+                            <div class="col-md-2" align="right">
                                 <br>
                                 <!-- --------------------------------------------- start report insert button ------------------------------------------------------ -->
                                 <a class="btn btn-info" type="button" data-toggle="modal" data-target="#modal_insert" class="model_img img-responsive">
@@ -174,7 +204,7 @@
                                 </thead>
                                 <tbody>
                                 <tr>
-                                        <td style="text-align:center; width: 10%"">วันที่</th>
+                                        <td style=" text-align:center; width: 10%"">วันที่</th>
                                         <td style=" text-align:center; width: 30%">รายการ</th>
                                         <td style="text-align:center; width: 20%"">รายรับ</th>
                                         <td style=" text-align:center; width: 20%"">รายจ่าย</th>
@@ -410,8 +440,6 @@
             }
         })
 
-        // call report_get_table function
-        report_get_table_by_page_number_search(1)
 
         // start when click at row on table for display v_detail_report
         $('#report_table tbody').on('click', 'td', function() {
@@ -438,14 +466,10 @@
             }
         })
         // end when click at row on table for display v_detail_report
-
-        $("#btn_search").on("click", () => {
-            report_get_table_by_page_number_search(1)
-        })
     })
 
 
-   
+
     jQuery('#create_report').datepicker({
         todayHighlight: true,
         format: 'dd/mm/yyyy',
@@ -480,7 +504,7 @@
 
         if ($("#type1").is(":checked") == false && $("#type2").is(":checked") == false) {
             $('#validate_type_id').text('กรุณาเลือกประเภทรายรับ - รายจ่าย')
-        }else if (money != '' && money > 0 && list != ''){
+        } else if (money != '' && money > 0 && list != '') {
             $.ajax({
                 type: "POST",
                 url: "<?php echo site_url() . "/Income_manage_controller/insert_data/" ?>",
@@ -527,7 +551,7 @@
                 closeOnConfirm: false,
                 cancelButtonText: 'ยกเลิก'
             },
-           
+
             function(result) {
 
                 if (result) {
@@ -557,7 +581,7 @@
                             }
                             // delete_list();
                             // window.location.reload();
-                        }   
+                        }
                     })
                 }
             })
