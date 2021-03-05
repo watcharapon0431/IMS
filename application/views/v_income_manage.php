@@ -49,9 +49,16 @@
                         )
                         count_data++
                     })
+<<<<<<< Updated upstream
                     $("#income_all").text(json_data.sum_income[0].sl_income + " บาท")
                     $("#expend_all").text(json_data.sum_income[0].sl_expend + " บาท")
                     $("#balance_all").text(json_data.sum_income[0].sl_balance + " บาท")
+=======
+                    
+                    $("#income_all").text(json_data.sum_income[0].sl_income+" บาท")
+                    $("#expend_all").text(json_data.sum_income[0].sl_expend+" บาท")
+                    $("#balance_all").text(json_data.sum_income[0].sl_balance+" บาท")
+>>>>>>> Stashed changes
                     //--------------------------------  start declare count number pagination -------------------------------------------------
                     let count_section_page = $("#section_page").val()
                     let current_page = $("#current_page").val()
