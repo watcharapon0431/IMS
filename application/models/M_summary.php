@@ -23,7 +23,22 @@ class M_summary extends Da_summary
 
 	}
 	
+	function get_year(){
+		$sql = " SELECT sl_year
+		FROM `summary_list`
+		WHERE sl_user_id = ?
+		ORDER BY sl_year DESC";
+		$query = $this->db->query($sql,array($this->sl_user_id));
+		return $query;
+	}
 
+	function get_search_summary(){
+		$sql = "SELECT *
+		FROM summary_list
+		WHERE sl_user_id = ? AND sl_year = ? ";
+		$query = $this->db->query($sql,array($this->sl_user_id,$this->sl_year));
+		return $query;
+	}
 
 
 

@@ -182,7 +182,19 @@ class Income_manage_controller extends IMS_controller
 
 	function load_v_summary_income()
 	{
-		$this->output('v_summary_income');
+		$this->load->model('M_summary', 'msl');
+		$this->msl->sl_user_id = $this->session->user_id;
+		$data["years"] = $this->msl->get_year()->result();
+		$this->output('v_summary_income',$data);
+	}
+
+	function get_summary_list(){
+		$year = $this->input->post("year");
+		$this->load->model('M_summary', 'msl');
+		$this->msl->sl_user_id = $this->session->user_id;
+		$this->msl->sl_year = $year;
+		$data["summary_list"] = $this->msl->get_search_summary()->result();
+		echo json_encode($data);
 	}
 
 }
