@@ -819,9 +819,7 @@ if (list_detail != '' && const_list_edit != '' && list_category_edit != '') {
                 closeOnConfirm: false,
                 cancelButtonText: 'ยกเลิก'
             },
-
             function(result) {
-
                 if (result) {
                     $.ajax({
                         type: "POST",
@@ -833,7 +831,6 @@ if (list_detail != '' && const_list_edit != '' && list_category_edit != '') {
                         },
                         dataType: 'JSON',
                         async: false,
-
                         success: function(json_data) {
                             swal({
                                 title: "ลบข้อมูลสำเร็จ",
@@ -846,7 +843,10 @@ if (list_detail != '' && const_list_edit != '' && list_category_edit != '') {
                         }
                     })
                 }
-            })
+                window.location.reload();
+            }
+        )
+
     }
 
     function btn_clear2() {
