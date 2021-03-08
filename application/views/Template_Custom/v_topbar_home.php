@@ -121,8 +121,8 @@
                     </a>
                 </li>
                 <!-- End สรุปรายรับ-รายจ่าย -->
-                 <!-- Strat ประเภทรายรับ-รายจ่าย -->
-                 <li>
+                <!-- Strat ประเภทรายรับ-รายจ่าย -->
+                <li>
                     <a href="<?php echo site_url(); ?>/category_manage_controller/load_v_category_manage" class="waves-effect">
                         <span class="hide-menu">
                             <i class="mdi mdi-clipboard-text"></i>&emsp;ประเภทรายรับ-รายจ่าย
@@ -132,7 +132,17 @@
                     </a>
                 </li>
                 <!-- End ประเภทรายรับ-รายจ่าย -->
-
+                <!-- Strat จดการบันทึกช่วยจำ-->
+                <li>
+                    <a href="<?php echo site_url(); ?>/Note_manage_controller/load_v_note_manage" class="waves-effect">
+                        <span class="hide-menu">
+                            <i class="mdi mdi-clipboard-text"></i>&emsp;จดการบันทึกช่วยจำ
+                            <span class="fa arrow"></span>
+                            <span class="label label-rouded label-inverse pull-right"></span>
+                        </span>
+                    </a>
+                </li>
+                <!-- End จดการบันทึกช่วยจำ -->
 
             </ul>
         </div>
