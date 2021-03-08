@@ -4,12 +4,6 @@ require_once(dirname(__FILE__) . "/IMS_controller.php");
 
 class Income_manage_controller extends IMS_controller
 {
-	function index()
-	{
-		$this->load_v_income_manage();
-	}
-
-
 	function load_v_income_manage()
 	{
 
@@ -32,7 +26,6 @@ class Income_manage_controller extends IMS_controller
 	{	
 		$this->load->model('M_income', 'mic');
 		$this->mic->list_id = $this->input->post("list_id");
-		// echo $this->mic->list_id;
 		$this->mic->delete_list();
 		$this->load->model('M_summary', 'ms');
 		$this->ms->sl_user_id = $this->session->user_id;
@@ -42,9 +35,6 @@ class Income_manage_controller extends IMS_controller
 		$cost_income = intval($sum_income[0]->sl_income);
 		$cost_expend = intval($sum_income[0]->sl_expend);
 		$cost_balance = intval($sum_income[0]->sl_balance);
-		// var_dump($cost_income);
-		// die;
-		// var_dump()
 		$type =  $this->input->post("list_type");
 		$cost =  $this->input->post("list_cost");
 		if($type == 1){
@@ -54,8 +44,6 @@ class Income_manage_controller extends IMS_controller
 			$cost_expend -= $cost;
 			$cost_balance += $cost;
 		}
-		// var_dump($cost_income);
-		// die;
 		$this->ms->sl_income = $cost_income;
 		$this->ms->sl_expend = $cost_expend;
 		$this->ms->sl_balance = $cost_balance;
@@ -192,5 +180,9 @@ class Income_manage_controller extends IMS_controller
 		echo json_encode($data);
 	}
 
+	function load_v_summary_income()
+	{
+		$this->output('v_summary_income');
+	}
 
 }

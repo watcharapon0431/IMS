@@ -85,7 +85,7 @@
 
 <div class="login-box login-sidebar" align="middle">
     <div class="white-box border">
-        <form class="form-horizontal form-material" id="loginform" action="<?php echo site_url() . '/Income_manage_controller/'; ?> ">
+        <form class="form-horizontal form-material" id="loginform" action="<?php echo site_url() . '/Income_manage_controller/load_v_income_manage'; ?> ">
             <img src="<?php echo base_url() . "assets/img/documents.png"; ?>" width="50%">
             <h3 style="font-weight: bold;">Income Management System</h3>
             <br>

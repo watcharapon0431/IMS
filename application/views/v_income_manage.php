@@ -6,6 +6,7 @@
             format: 'dd/mm/yyyy',
         }).datepicker("setDate", 'now');
     })
+    
     report_get_table_by_page_number_search(1);
 
     function report_get_table_by_page_number_search(page_number) {

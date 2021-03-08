@@ -27,7 +27,7 @@ class IMS_controller extends CI_Controller
 
 			$this->load->view($body, $data);
 		} else {
-			redirect(site_url() . "/IMS_controller/", "refresh");
+			redirect(site_url() . "/IMS_controller", "refresh");
 		}
 	}
 
