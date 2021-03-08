@@ -200,65 +200,76 @@
 
     function list_data_update() {
 
-        let list_id_edit = $('#list_id_edit').val()
-        let list_category_edit = $('#list_category_edit').val()
-        let const_list_edit = $('#money_list_edit').val()
-        let hour_edit = $('#hour_edit').val()
-        let minute_edit = $('#minute_edit').val()
+let list_id_edit = $('#list_id_edit').val()
+let list_category_edit = $('#list_category_edit').val()
+let const_list_edit = $('#money_list_edit').val()
 
-        if (hour_edit < 10) {
-            hour_edit = '0' + hour_edit
-        }
-        if (minute_edit < 10) {
-            minute_edit = '0' + minute_edit
-        }
+let hour_edit = $('#hour_edit').val()
+let minute_edit = $('#minute_edit').val()
 
-        let list_create_date = parseInt($("#create_date_list").data('datepicker').getFormattedDate('yyyy') - 543) + $("#create_date_list").data('datepicker').getFormattedDate('-mm-dd') + ' ' + hour_edit + ':' + minute_edit + ':' + '00'
-        // let list_create_date = parseInt($("#create_date_list").data('datepicker').getFormattedDate('yyyy') - 543) + $("#create_date_list").data('datepicker').getFormattedDate('-mm-dd') + ' ' + $("#hour").val() + ':' + $("#minute").val() + ':' + '00'
-        let date = parseInt($("#create_date_list").data('datepicker').getFormattedDate('yyyy') - 543)
-        let mount = $("#create_date_list").data('datepicker').getFormattedDate('m')
-        let list_detail = $('#list_edit').val()
-        let list_type = $('input[name=type]:checked', '#type_list').val()
+if (hour_edit < 10) {
+    hour_edit = '0' + hour_edit
+}
+if (minute_edit < 10) {
+    minute_edit = '0' + minute_edit
+}
 
-        $.ajax({
-            type: "POST",
-            url: "<?php echo site_url() . "/Income_manage_controller/list_update/" ?>",
-            data: {
-                'list_id_edit': list_id_edit,
-                'list_category_edit': list_category_edit,
-                'const_list_edit': const_list_edit,
-                'list_create_date': list_create_date,
-                'list_detail': list_detail,
-                'list_type': list_type,
-                // 'date': date,
-                // 'mount': mount
-            },
-            dataType: "json",
-            async: false,
-            success: function(data) {
-                if (data == true) {
-                    $('#modal_edit').modal('toggle')
-                    // notify alert when update success
-                    swal({
-                        title: "แก้ไขข้อมูลสำเร็จ",
-                        text: "ข้อมูลของคุณถูกแก้ไขเรียบร้อย",
-                        type: "success",
-                        confirmButtonText: "ตกลง"
-                    })
-                    window.location.reload();
+let list_create_date = parseInt($("#create_date_list").data('datepicker').getFormattedDate('yyyy') - 543) + $("#create_date_list").data('datepicker').getFormattedDate('-mm-dd') + ' ' + hour_edit + ':' + minute_edit + ':' + '00'
+// let list_create_date = parseInt($("#create_date_list").data('datepicker').getFormattedDate('yyyy') - 543) + $("#create_date_list").data('datepicker').getFormattedDate('-mm-dd') + ' ' + $("#hour").val() + ':' + $("#minute").val() + ':' + '00'
+let date = parseInt($("#create_date_list").data('datepicker').getFormattedDate('yyyy') - 543)
+let mount = $("#create_date_list").data('datepicker').getFormattedDate('m')
+let list_detail = $('#list_edit').val()
+let list_type = $('input[name=type]:checked', '#type_list').val()
 
-                } else {
-                    // notify alert when update unsuccess
-                    swal({
-                        title: "แก้ไขข้อมูลไม่สำเร็จ",
-                        type: "error",
-                        confirmButtonText: "ตกลง"
-                    })
+if (list_detail != '' && const_list_edit != '' && list_category_edit != '') {
+    $.ajax({
+        type: "POST",
+        url: "<?php echo site_url() . "/Income_manage_controller/list_update/" ?>",
+        data: {
+            'list_id_edit': list_id_edit,
+            'list_category_edit': list_category_edit,
+            'const_list_edit': const_list_edit,
+            'list_create_date': list_create_date,
+            'list_detail': list_detail,
+            'list_type': list_type,
+            'date': date,
+            'mount': mount
+        },
+        dataType: "json",
+        async: false,
+        success: function(data) {
 
-                }
+            if (data == true) {
+                $('#modal_edit').modal('toggle')
+                // notify alert when update success
+                swal({
+                    title: "แก้ไขข้อมูลสำเร็จ",
+                    text: "ข้อมูลของคุณถูกแก้ไขเรียบร้อย",
+                    type: "success",
+                    confirmButtonText: "ตกลง"
+                })
+                window.location.reload();
+
+            } else {
+                // notify alert when update unsuccess
+                swal({
+                    title: "แก้ไขข้อมูลไม่สำเร็จ",
+                    type: "error",
+                    confirmButtonText: "ตกลง"
+                })
+
             }
-        });
-    }
+        }
+    });
+} else {
+    swal({
+        title: "แก้ไขข้อมูลไม่สำเร็จ",
+        text: "กรุณากรอกข้อมูลที่สำคัญให้ครบ",
+        type: "error",
+        confirmButtonText: "ตกลง"
+    })
+}
+}
 </script>
 
 <div id="page-wrapper">
@@ -808,9 +819,7 @@
                 closeOnConfirm: false,
                 cancelButtonText: 'ยกเลิก'
             },
-
             function(result) {
-
                 if (result) {
                     $.ajax({
                         type: "POST",
@@ -822,7 +831,6 @@
                         },
                         dataType: 'JSON',
                         async: false,
-
                         success: function(json_data) {
                             swal({
                                 title: "ลบข้อมูลสำเร็จ",
@@ -835,7 +843,10 @@
                         }
                     })
                 }
-            })
+                window.location.reload();
+            }
+        )
+
     }
 
     function btn_clear2() {

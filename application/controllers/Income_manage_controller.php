@@ -29,8 +29,9 @@ class Income_manage_controller extends IMS_controller
 		$this->mic->delete_list();
 		$this->load->model('M_summary', 'ms');
 		$this->ms->sl_user_id = $this->session->user_id;
-		$this->ms->sl_month = 3;
-		$this->ms->sl_year = 2021;
+		// $sum_income = $this->ms->get_summary()->result();
+		$this->ms->sl_month =  3; //substr($this->mic->list_create_date,6,1);
+		$this->ms->sl_year = 2021;//substr($this->mic->list_create_date,0,4);
 		$sum_income = $this->ms->get_summary()->result();
 		$cost_income = intval($sum_income[0]->sl_income);
 		$cost_expend = intval($sum_income[0]->sl_expend);
@@ -54,18 +55,18 @@ class Income_manage_controller extends IMS_controller
 		echo json_encode($data);
 
 	}
-	public function update_summary()
-	{	
-		$this->load->model('M_summary', 'ms');
-		$this->ms->sl_income = $this->input->post("sl_income");
-		$this->ms->sl_expend = $this->input->post("sl_expend");
-		$this->ms->sl_balance = $this->input->post("sl_balance");
-		// $this->ms->sl_month = $this->input->post("sl_month");
-		// $this->ms->update_sum_list();
-		// $this->mc->update_delete();
-		$data =  true;
-		echo json_encode($data);
-	}
+	// public function update_summary()
+	// {	
+	// 	$this->load->model('M_summary', 'ms');
+	// 	$this->ms->sl_income = $this->input->post("sl_income");
+	// 	$this->ms->sl_expend = $this->input->post("sl_expend");
+	// 	$this->ms->sl_balance = $this->input->post("sl_balance");
+	// 	// $this->ms->sl_month = $this->input->post("sl_month");
+	// 	// $this->ms->update_sum_list();
+	// 	// $this->mc->update_delete();
+	// 	$data =  true;
+	// 	echo json_encode($data);
+	// }
 
 	public function list_edit()
 	{
@@ -79,17 +80,85 @@ class Income_manage_controller extends IMS_controller
 	public function list_update()
 	{
 		$this->load->model('M_income', 'mc');
-		$this->mc->list_id = $this->input->post("list_id_edit");
-		$this->mc->list_cost = $this->input->post("const_list_edit");
+		$this->load->model('M_summary', 'ms');
+		$list_id = $this->input->post("list_id_edit");
+		$this->mc->list_id = $list_id;
+		$list_data = $this->mc->get_by_key()->result();
+		$cost = $this->input->post("const_list_edit");
+		$this->mc->list_cost = $cost;
 		$this->mc->list_category_id = $this->input->post("list_category_edit");
 		$this->mc->list_detail = $this->input->post("list_detail");
 		$this->mc->list_create_date = $this->input->post("list_create_date");
-		$this->mc->list_type = $this->input->post("list_type");
-	
-		$this->mc->update();
-		$check = true;
+		$list_type = $this->input->post("list_type");
+		$this->mc->list_type = $list_type;
+
+
 		$date = $this->input->post("date");
 		$mount = $this->input->post("mount");
+
+		$this->ms->sl_user_id = $this->session->user_id;
+		$this->ms->sl_month = 3;
+		$this->ms->sl_year = 2021;
+
+		$sum_income = $this->ms->get_summary()->result();
+		$cost_income = intval($sum_income[0]->sl_income);
+		$cost_expend = intval($sum_income[0]->sl_expend);
+		$cost_balance = intval($sum_income[0]->sl_balance);
+
+		$list_type_edit = $list_data[0]->list_type;
+
+		if ($list_type == 2 && $list_type_edit == 1) {
+			$cost_edit = $list_data[0]->list_cost;
+			$cost_income = $cost_income - $cost_edit;
+			$cost_expend = $cost_expend + $cost;
+			$cost_balance = $cost_income - $cost_expend;
+		
+		}
+
+		if($list_type == 1 && $list_type_edit == 2){
+			$cost_edit = $list_data[0]->list_cost;
+			$cost_expend = $cost_expend - $cost_edit;
+			$cost_income = $cost_income + $cost;
+			$cost_balance = $cost_income - $cost_expend;
+		
+		}
+
+
+		if ($list_type == 1 && $list_type_edit == 1) {
+			$cost_edit = $list_data[0]->list_cost;
+			if ($cost_edit > $cost) {
+				$cost_edit_income = $cost_edit - $cost;
+				$cost_income = $cost_income - $cost_edit_income;
+				$cost_balance = $cost_balance - $cost_edit_income;
+			}
+
+			if ($cost_edit < $cost) {
+				$cost_outcome = $cost - $cost_edit;
+				$cost_income = $cost_income + $cost_outcome;
+				$cost_balance = $cost_balance + $cost_outcome;
+			}
+		} else if ($list_type == 2 && $list_type_edit == 2) {
+			$cost_edit = $list_data[0]->list_cost;
+			if ($cost_edit > $cost) {
+				$cost_edit_income = $cost_edit - $cost;
+				$cost_expend = $cost_expend - $cost_edit_income;
+				$cost_balance = $cost_balance + $cost_edit_income;
+			}
+			if ($cost_edit < $cost) {
+				$cost_outcome = $cost - $cost_edit;
+				$cost_expend = $cost_expend + $cost_outcome;
+				$cost_balance = $cost_balance - $cost_outcome;
+			}
+		}
+		// var_dump($cost_income);
+		// die;
+		$this->ms->sl_income = $cost_income;
+		$this->ms->sl_expend = $cost_expend;
+		$this->ms->sl_balance = $cost_balance;
+
+		$this->ms->update_sum_list();
+		$this->mc->update();
+		$check = true;
 		echo json_encode($check);
 	}
 		/*
