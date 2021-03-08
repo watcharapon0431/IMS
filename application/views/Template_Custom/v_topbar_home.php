@@ -121,6 +121,18 @@
                     </a>
                 </li>
                 <!-- End สรุปรายรับ-รายจ่าย -->
+                 <!-- Strat ประเภทรายรับ-รายจ่าย -->
+                 <li>
+                    <a href="<?php echo site_url(); ?>/category_manage_controller/load_v_category_manage" class="waves-effect">
+                        <span class="hide-menu">
+                            <i class="mdi mdi-clipboard-text"></i>&emsp;ประเภทรายรับ-รายจ่าย
+                            <span class="fa arrow"></span>
+                            <span class="label label-rouded label-inverse pull-right"></span>
+                        </span>
+                    </a>
+                </li>
+                <!-- End ประเภทรายรับ-รายจ่าย -->
+
 
             </ul>
         </div>
