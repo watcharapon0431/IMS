@@ -1,7 +1,34 @@
 <script>
     // สรุปรายงานตามรายปี
     $(document).ready(() => {
-        search_summary();
+
+        search_summary()
+
+        // start when click at row on table 
+        $('#report_table tbody').on('click', 'td', function() {
+            // declare when click element on row table
+            let check_col = $(this).index()
+            let check_row = $(this).parent().index()
+            let $row = $(this).closest("tr")
+            let $tds = $row.find("td:nth-child(1)")
+            let txt = ''
+
+            // start loop set txt value
+            $.each($tds, function() {
+                txt = $(this).text()
+            })
+            txt = txt.trim()
+            // end loop set txt value
+
+            // url is string website
+            if (txt != 'ไม่มีรายการสถิติรายรับ - รายจ่าย') {
+                let url = "<?php echo site_url() . " " ?>"
+                // link to url and sent parameter
+                // window.location.href = url + txt
+                console.log(txt, $('#select_year').val());
+            }
+        })
+        // end when click at row on table 
     });
 
     function search_summary() {
@@ -24,6 +51,7 @@
                     count = 1;
                     json_data.summary_list.forEach(function(element) {
                         table.append($('<tr>')
+                            .append($('<td hidden>').append("<center>" + element.sl_month + "</center>"))
                             .append($('<td>').append("<center>" + count++ + "</center>"))
                             .append($('<td>').append(month[element.sl_month - 1]))
                             .append($('<td>').append("<center>" + element.sl_income + "</center>"))
@@ -32,7 +60,7 @@
                         )
                     })
                 } else {
-                    let text_no_data = '<center><b><p>ไม่มีรายการรายรับ - รายจ่าย</p></b></center>'
+                    let text_no_data = '<center><b><p>ไม่มีรายการสถิติรายรับ - รายจ่าย</p></b></center>'
                     table.append($('<tr>').append('<td colspan="8">' + text_no_data + '</td>'))
                 }
             }

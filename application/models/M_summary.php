@@ -8,7 +8,6 @@ class M_summary extends Da_summary
 	{
 		$sql = " SELECT *
 		FROM summary_list
-	
 	    WHERE sl_user_id = ? AND sl_month = ? AND sl_year = ? ";
 		$query = $this->db->query($sql, array($this->sl_user_id,$this->sl_month,$this->sl_year));
 		return $query;
@@ -35,7 +34,8 @@ class M_summary extends Da_summary
 	function get_search_summary(){
 		$sql = "SELECT *
 		FROM summary_list
-		WHERE sl_user_id = ? AND sl_year = ? ";
+		WHERE sl_user_id = ? AND sl_year = ? 
+		ORDER BY sl_month";
 		$query = $this->db->query($sql,array($this->sl_user_id,$this->sl_year));
 		return $query;
 	}
