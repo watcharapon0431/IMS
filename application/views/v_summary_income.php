@@ -106,10 +106,8 @@
                     </div>
                 </div>
             </div>
-
             <div class="col-md-12">
                 <div class="white-box">
-                    <br>
                     <div class="table-responsive">
 
                         <!-- ---------------------------------------- start master data table --------------------------------- -->
@@ -128,19 +126,6 @@
                             </tbody>
                         </table>
                         <!-- ----------------------------------------- end master data table ---------------------------------- -->
-
-                        <!-- ------------------------------------------ start pagination -------------------------------------- -->
-                        <div class="col-md-12">
-                            <div class="col-md-4" align="left">
-                                <p id="count_of_master_data"></p>
-                            </div>
-                            <input type="hidden" id="current_page" value="1">
-                            <input type="hidden" id="section_page" value="1">
-                            <div id="page_option" class="col-md-8" align="right">
-
-                            </div>
-                        </div>
-                        <!-- ------------------------------------------- end pagination --------------------------------------- -->
 
                     </div>
                 </div>
