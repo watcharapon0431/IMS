@@ -23,7 +23,7 @@ class Income_manage_controller extends IMS_controller
 	}
 	// 
 	public function delete_list()
-	{	
+	{
 		$this->load->model('M_income', 'mic');
 		$this->mic->list_id = $this->input->post("list_id");
 		$this->mic->delete_list();
@@ -31,17 +31,17 @@ class Income_manage_controller extends IMS_controller
 		$this->ms->sl_user_id = $this->session->user_id;
 		// $sum_income = $this->ms->get_summary()->result();
 		$this->ms->sl_month =  3; //substr($this->mic->list_create_date,6,1);
-		$this->ms->sl_year = 2021;//substr($this->mic->list_create_date,0,4);
+		$this->ms->sl_year = 2021; //substr($this->mic->list_create_date,0,4);
 		$sum_income = $this->ms->get_summary()->result();
 		$cost_income = intval($sum_income[0]->sl_income);
 		$cost_expend = intval($sum_income[0]->sl_expend);
 		$cost_balance = intval($sum_income[0]->sl_balance);
 		$type =  $this->input->post("list_type");
 		$cost =  $this->input->post("list_cost");
-		if($type == 1){
+		if ($type == 1) {
 			$cost_income -= $cost;
 			$cost_balance -= $cost;
-		}else {
+		} else {
 			$cost_expend -= $cost;
 			$cost_balance += $cost;
 		}
@@ -49,11 +49,10 @@ class Income_manage_controller extends IMS_controller
 		$this->ms->sl_expend = $cost_expend;
 		$this->ms->sl_balance = $cost_balance;
 		$this->ms->update_sum_list();
-		
+
 		// $this->mc->update_delete();
 		$data =  true;
 		echo json_encode($data);
-
 	}
 	// public function update_summary()
 	// {	
@@ -112,15 +111,13 @@ class Income_manage_controller extends IMS_controller
 			$cost_income = $cost_income - $cost_edit;
 			$cost_expend = $cost_expend + $cost;
 			$cost_balance = $cost_income - $cost_expend;
-		
 		}
 
-		if($list_type == 1 && $list_type_edit == 2){
+		if ($list_type == 1 && $list_type_edit == 2) {
 			$cost_edit = $list_data[0]->list_cost;
 			$cost_expend = $cost_expend - $cost_edit;
 			$cost_income = $cost_income + $cost;
 			$cost_balance = $cost_income - $cost_expend;
-		
 		}
 
 
@@ -161,7 +158,7 @@ class Income_manage_controller extends IMS_controller
 		$check = true;
 		echo json_encode($check);
 	}
-		/*
+	/*
 	* report_search
 	* Search data from v_report and query search's data 
 	* @input channel_id, category_id, case_status_id, create_date, modify_date, modify_user_id
@@ -184,7 +181,7 @@ class Income_manage_controller extends IMS_controller
 		// set start_limit is with page_number
 		$this->mis->start_limit = ($this->input->post('page_number') - 1) * 10;
 		// set user_name at M_user by session user_id	
-		
+
 		$this->mis->list_user_id = $this->session->user_id;
 		//echo $this->mis->list_user_id;
 		$this->mis->start_limit = ($this->input->post('page_number') - 1) * 10;
@@ -221,7 +218,7 @@ class Income_manage_controller extends IMS_controller
 					'status' => $income_status,
 					'cost' => '<p>' . $row->list_cost . '</p>',
 					'btn_edit' => '<a data-toggle="modal" data-target="#modal_edit"  onclick="master_data_edit(' . $row->list_id . ')" type="button" class="btn btn-warning btn-circle" title="แก้ไข"><i class="fa fa-pencil "></i></a >',
-					'btn_delete' => '<a id="btn-delete" onclick="delete_list( '. $row->list_id.','.$row->list_cost.','.$row->list_type.')"  type="button" class="btn btn-danger btn-circle" title="ลบ"><i class="fa fa-minus-circle "></i></a >'
+					'btn_delete' => '<a id="btn-delete" onclick="delete_list( ' . $row->list_id . ',' . $row->list_cost . ',' . $row->list_type . ')"  type="button" class="btn btn-danger btn-circle" title="ลบ"><i class="fa fa-minus-circle "></i></a >'
 				)
 			);
 			// end set array_case with html and css for view
@@ -254,16 +251,16 @@ class Income_manage_controller extends IMS_controller
 		$this->load->model('M_summary', 'msl');
 		$this->msl->sl_user_id = $this->session->user_id;
 		$data["years"] = $this->msl->get_year()->result();
-		$this->output('v_summary_income',$data);
+		$this->output('v_summary_income', $data);
 	}
 
-	function get_summary_list(){
+	function get_summary_list()
+	{
 		$year = $this->input->post("year");
 		$this->load->model('M_summary', 'msl');
 		$this->msl->sl_user_id = $this->session->user_id;
 		$this->msl->sl_year = $year;
-		$data["summary_list"] = $this->msl->get_search_summary()->result();
+		$data["summary_list"] = ($this->msl->get_search_summary()->result() != null) ? $this->msl->get_search_summary()->result() : null;
 		echo json_encode($data);
 	}
-
 }

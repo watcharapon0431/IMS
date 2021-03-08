@@ -1,44 +1,43 @@
 <script>
-        // สรุปรายงานตามรายปี
-$(document).ready(() => {
-    search_summary();
-});
+    // สรุปรายงานตามรายปี
+    $(document).ready(() => {
+        search_summary();
+    });
 
-function search_summary() {
-    var table = $('#report_table tbody');
-    let year = $('#select_year').val()
+    function search_summary() {
+        var table = $('#report_table tbody');
+        let year = $('#select_year').val()
+        $.ajax({
+            type: "POST",
+            url: "<?php echo site_url() . "/Income_manage_controller/get_summary_list/"; ?>",
+            data: {
+                'year': year,
+            },
+            dataType: 'JSON',
+            async: false,
+            success: function(json_data) {
+                console.log(json_data);
+                var month = ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฏาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"]
+                if (json_data.summary_list != null) {
+                    $('#report_table').find('td').remove();
 
-    $.ajax({
-        type: "POST",
-        url: "<?php echo site_url() . "/Income_manage_controller/get_summary_list/"; ?>",
-        data: {
-            'year': year,
-        },
-        dataType: 'JSON',
-        async: false,
-        success: function(json_data) {
-            console.log(json_data);
-            var month = ["มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน","กรกฏาคม","สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม"]
-            if(json_data.summary_list != null){
-                let count = 1;
-                json_data.summary_list.forEach(function(element) {
+                    count = 1;
+                    json_data.summary_list.forEach(function(element) {
                         table.append($('<tr>')
-                            .append($('<td>').append("<center>" + count + "</center>"))
-                            .append($('<td>').append(month[element.sl_month-1]))
+                            .append($('<td>').append("<center>" + count++ + "</center>"))
+                            .append($('<td>').append(month[element.sl_month - 1]))
                             .append($('<td>').append("<center>" + element.sl_income + "</center>"))
                             .append($('<td>').append("<center>" + element.sl_expend + "</center>"))
                             .append($('<td>').append("<center>" + element.sl_balance + "</center>"))
                         )
-                        count++;
                     })
-            }else{
-                let text_no_data = '<center><b><p>ไม่มีรายการรายรับ - รายจ่าย</p></b></center>'
-                table.append($('<tr>').append('<td colspan="8">' + text_no_data + '</td>'))
+                } else {
+                    let text_no_data = '<center><b><p>ไม่มีรายการรายรับ - รายจ่าย</p></b></center>'
+                    table.append($('<tr>').append('<td colspan="8">' + text_no_data + '</td>'))
+                }
             }
-        }
-    })
-}
-
+        })
+    }
 </script>
 
 <div id="page-wrapper">

@@ -24,7 +24,7 @@ class M_summary extends Da_summary
 	}
 	
 	function get_year(){
-		$sql = " SELECT sl_year
+		$sql = " SELECT DISTINCT sl_year
 		FROM `summary_list`
 		WHERE sl_user_id = ?
 		ORDER BY sl_year DESC";
