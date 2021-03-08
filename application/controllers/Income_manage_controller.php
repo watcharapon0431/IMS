@@ -36,8 +36,9 @@ class Income_manage_controller extends IMS_controller
 		$this->mic->delete_list();
 		$this->load->model('M_summary', 'ms');
 		$this->ms->sl_user_id = $this->session->user_id;
-		$this->ms->sl_month = 3;
-		$this->ms->sl_year = 2021;
+		// $sum_income = $this->ms->get_summary()->result();
+		$this->ms->sl_month =  3; //substr($this->mic->list_create_date,6,1);
+		$this->ms->sl_year = 2021;//substr($this->mic->list_create_date,0,4);
 		$sum_income = $this->ms->get_summary()->result();
 		$cost_income = intval($sum_income[0]->sl_income);
 		$cost_expend = intval($sum_income[0]->sl_expend);
@@ -66,18 +67,18 @@ class Income_manage_controller extends IMS_controller
 		echo json_encode($data);
 
 	}
-	public function update_summary()
-	{	
-		$this->load->model('M_summary', 'ms');
-		$this->ms->sl_income = $this->input->post("sl_income");
-		$this->ms->sl_expend = $this->input->post("sl_expend");
-		$this->ms->sl_balance = $this->input->post("sl_balance");
-		// $this->ms->sl_month = $this->input->post("sl_month");
-		// $this->ms->update_sum_list();
-		// $this->mc->update_delete();
-		$data =  true;
-		echo json_encode($data);
-	}
+	// public function update_summary()
+	// {	
+	// 	$this->load->model('M_summary', 'ms');
+	// 	$this->ms->sl_income = $this->input->post("sl_income");
+	// 	$this->ms->sl_expend = $this->input->post("sl_expend");
+	// 	$this->ms->sl_balance = $this->input->post("sl_balance");
+	// 	// $this->ms->sl_month = $this->input->post("sl_month");
+	// 	// $this->ms->update_sum_list();
+	// 	// $this->mc->update_delete();
+	// 	$data =  true;
+	// 	echo json_encode($data);
+	// }
 
 	public function list_edit()
 	{

@@ -807,9 +807,7 @@
                 closeOnConfirm: false,
                 cancelButtonText: 'ยกเลิก'
             },
-
             function(result) {
-
                 if (result) {
                     $.ajax({
                         type: "POST",
@@ -821,7 +819,6 @@
                         },
                         dataType: 'JSON',
                         async: false,
-
                         success: function(json_data) {
                             swal({
                                 title: "ลบข้อมูลสำเร็จ",
@@ -834,7 +831,10 @@
                         }
                     })
                 }
-            })
+                window.location.reload();
+            }
+        )
+
     }
 
     function btn_clear2() {
