@@ -389,11 +389,11 @@ function master_data_insert() {
         var create_date = parseInt($("#create_report").data('datepicker').getFormattedDate('yyyy') - 543) + $("#create_report").data('datepicker').getFormattedDate('-mm-dd') + ' ' + $("#hour").val() + ':' + $("#minute").val() + ':' + '00'
         //  let user_id = $('#user').val()
 
-        if (note == ' ') {
+        if (note == '') {
             $('#note').css("border", "1px solid red");
             $('#note').focus();
         }
-         if (note != ' ') {
+         if (note != '') {
             $.ajax({
                 type: "POST",
                 url: "<?php echo site_url() . "/Note_manage_controller/insert_data/" ?>",
