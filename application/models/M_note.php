@@ -25,4 +25,12 @@ class M_note extends Da_note
 		$query = $this->db->query($sql);
 		return $query;
 	}
+
+	function get_count_data()
+	{
+		$sql = " SELECT count(note_id) as 'count'
+		FROM   note";
+		$query = $this->db->query($sql);
+		return $query;
+	}
 }

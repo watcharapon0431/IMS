@@ -71,6 +71,7 @@
 			async: false,
 			success: function(json_data) {
                 console.log(json_data)
+                let count = json_data.rs_count[0].count
                 let count_data = 0
                 let num=1
                 let date_modify;
@@ -89,11 +90,13 @@
                         count_data++
                         num++
                     })
+                     // end loop foreach display case's data on table
+                    // console.log(table);
                     //--------------------------------  start declare count number pagination -------------------------------------------------
                     let count_section_page = $("#section_page").val()
                     let current_page = $("#current_page").val()
-                    let max_page = json_data.case_count[0].count_case / 10
-                    if (json_data.case_count[0].count_case % 10 != 0) {
+                    let max_page = count / 10
+                    if (count % 10 != 0) {
                         max_page++
                     }
                     if ((count_section_page * 10) % 10 != 0) {
@@ -112,7 +115,7 @@
 
                     page.append('<a style="color:black; " href="javascript:report_search_first_page()">&emsp;< |&emsp;</a>')
                     page.append('<a style="color:black; " href="javascript:report_search_page_previous()">&emsp;<&emsp;</a>')
-                    $("#count_of_master_data").text("แสดง " + count_data + " ข้อมูล จาก " + json_data.case_count[0].count_case + " ข้อมูล")
+                    $("#count_of_master_data").text("แสดง " + count_data + " ข้อมูล จาก " + count + " ข้อมูล")
                     for (count = count_loop; count <= max_page; count++) {
                         if (count <= count_section_page * 10) {
                             if (current_page == count) {
@@ -120,12 +123,13 @@
                             } else {
                                 page.append('<a style="color:black; " href="javascript:report_get_table_by_page_number_search(' + count + ')">&emsp;' + count + '&emsp;</a>')
                             }
+
                         }
                     }
                     page.append('<a style="color:black; " href="javascript:report_search_page_next(' + max_page + ')">&emsp;>&emsp;</a>')
                     page.append('<a style="color:black; " href="javascript:report_search_last_page(' + max_page + ')">&emsp;| >&emsp;</a>')
                 } else {
-                    let text_no_data = '<center><b><p>ไม่มีรายการบันทึก</p></b></center>'
+                    let text_no_data = '<center><b><p>ไม่มีรายการแบบทดสอบ</p></b></center>'
                     table.append($('<tr>').append('<td colspan="8">' + text_no_data + '</td>'))
                 }
                 // end if condition when have case's data equal or more than 1 data
