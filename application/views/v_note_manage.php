@@ -302,7 +302,7 @@
                                     <input type="radio" id="type1" name="type"checked >
                                     <label for="female"> ครั้งเดียว</label>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-5">
                                     <input type="radio" id="type2" name="type" >
                                     <label for="female"> ประจำทุกเดือน</label>
                                 </div>
