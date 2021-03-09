@@ -21,9 +21,9 @@ class Da_category extends CI_Model {
 	
 	function update() {
 		$sql = "UPDATE `category`
-				SET	category_name=?, category_status=?, category_sequence =?, category_create_date =?, category_modify_date =?
+				SET	category_name=?, category_type=?, category_status=?, category_sequence =?, category_create_date =?, category_modify_date =?
 				WHERE `category_id`=?";	
-		$this->db->query($sql, array($this->category_id, $this->category_name, $this->category_status, $this->category_sequence, $this->category_create_date, $this->category_modify_date ));
+		$this->db->query($sql, array($this->category_name, $this->category_type,$this->category_status, $this->category_sequence, $this->category_create_date, $this->category_modify_date, $this->category_id));
 	}
 	
 	function delete() {
@@ -31,6 +31,13 @@ class Da_category extends CI_Model {
 		$sql = "DELETE FROM `category`
 				WHERE `category_id`=?";
 		$this->db->query($sql, array($this->category_id));
+	}
+	function get_by_key()
+	{
+		$sql = "SELECT *
+    			FROM `category`
+   				WHERE `category_id`=?";
+		return $this->db->query($sql, array($this->category_id));
 	}
 	
 }
