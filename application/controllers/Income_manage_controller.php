@@ -263,4 +263,15 @@ class Income_manage_controller extends IMS_controller
 		$data["summary_list"] = ($this->msl->get_search_summary()->result() != null) ? $this->msl->get_search_summary()->result() : null;
 		echo json_encode($data);
 	}
+
+	function get_detail_list(){
+		$year = $this->input->post("year");
+		$month = $this->input->post("month");
+		$this->load->model('M_summary', 'msl');
+		$this->msl->list_user_id = $this->session->user_id;
+		$this->msl->list_create_date_year = $year;
+		$this->msl->list_create_date_month = $month;
+		$data["list"] = ($this->msl->get_list_detail()->result() != null) ? $this->msl->get_list_detail()->result() : null;
+		echo json_encode($data);
+	}
 }
