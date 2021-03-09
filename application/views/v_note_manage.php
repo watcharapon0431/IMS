@@ -212,62 +212,6 @@
         )
 
     }
-
-    jQuery('#create_report').datepicker({
-        todayHighlight: true,
-        format: 'dd/mm/yyyy',
-    }).datepicker("setDate", 'now');
-
-function master_data_insert() {
-        let note = $('#note').val()
-        // let is_active_search = $('#category_id').val()
-        let date = $('#create_report').val()
-        var create_date = parseInt($("#create_report").data('datepicker').getFormattedDate('yyyy') - 543) + $("#create_report").data('datepicker').getFormattedDate('-mm-dd') + ' ' + $("#hour").val() + ':' + $("#minute").val() + ':' + '00'
-        //  let user_id = $('#user').val()
-
-        if (note == '') {
-            $('#note').css("border", "1px solid red");
-            $('#note').focus();
-        }
-         if (note != '') {
-            $.ajax({
-                type: "POST",
-                url: "<?php echo site_url() . "/Note_manage_controller/insert_data/" ?>",
-                data: {
-
-                    'note_to_do_list': note,
-                    'note_create_date': create_date,
-                    // 'note_user_id':user_id
-
-                },
-                dataType: "text",
-                async: false,
-                success: function(data) {
-
-
-                    swal({
-                        title: "บันทึกข้อมูลสำเร็จ",
-                        text: "ข้อมูลของคุณถูกบันทึกเรียบร้อย",
-                        type: "success",
-                        confirmButtonText: "ตกลง",
-                    })
-
-                    window.location.reload();
-                    // btn_clear_modal();
-
-
-
-                }
-            })
-        }
-
-
-    }
- function btn_clear2() {
-        document.getElementById('master_data_insert_form').reset()
-        window.location.reload();
-    }
-   
 </script>
 
 <div id="page-wrapper">
@@ -343,7 +287,24 @@ function master_data_insert() {
             </div>
             <div class="modal-body">
                 <form class="form-horizontal" id="master_data_insert_form" onsubmit='return false'>
-                   
+                <div class="form-group">
+                        <div class="col-md-12">
+                            <label class="col-md-12">ประเภทการแจ้งเตือน : <span style="color:red;"> * </span></label>
+                            <span style="color:red;">
+                                <p for="" id="validate_type_id"></p>
+                            </span>
+                            <div class="col-md-8">
+                                <div class="col-md-4">
+                                    <input type="radio" id="type1" name="type"checked >
+                                    <label for="female"> ครั้งเดียว</label>
+                                </div>
+                                <div class="col-md-4">
+                                    <input type="radio" id="type2" name="type" >
+                                    <label for="female"> ประจำเดือน</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
 
                     <div class="form-group">
@@ -441,18 +402,25 @@ function master_data_insert() {
         let date = $('#create_report').val()
         var create_date = parseInt($("#create_report").data('datepicker').getFormattedDate('yyyy') - 543) + $("#create_report").data('datepicker').getFormattedDate('-mm-dd') + ' ' + $("#hour").val() + ':' + $("#minute").val() + ':' + '00'
         //  let user_id = $('#user').val()
-
+        if ($("#type1").is(":checked") == true) {
+            note_status = 1
+        } else if ($("#type2").is(":checked") == true) {
+            note_status = 2
+        }
         if (note == '') {
             $('#note').css("border", "1px solid red");
             $('#note').focus();
         }
-         if (note != '') {
+        if ($("#type1").is(":checked") == false && $("#type2").is(":checked") == false) {
+            $('#validate_type_id').text('กรุณาเลือกประเภทการแจ้งเตือน')
+        }else if (note != '') {
             $.ajax({
                 type: "POST",
                 url: "<?php echo site_url() . "/Note_manage_controller/insert_data/" ?>",
                 data: {
-
+                       
                     'note_to_do_list': note,
+                    'note_type': note_status,
                     'note_create_date': create_date,
                     // 'note_user_id':user_id
 
