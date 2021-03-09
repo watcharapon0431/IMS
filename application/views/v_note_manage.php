@@ -213,7 +213,60 @@
 
     }
 
+    jQuery('#create_report').datepicker({
+        todayHighlight: true,
+        format: 'dd/mm/yyyy',
+    }).datepicker("setDate", 'now');
 
+function master_data_insert() {
+        let note = $('#note').val()
+        // let is_active_search = $('#category_id').val()
+        let date = $('#create_report').val()
+        var create_date = parseInt($("#create_report").data('datepicker').getFormattedDate('yyyy') - 543) + $("#create_report").data('datepicker').getFormattedDate('-mm-dd') + ' ' + $("#hour").val() + ':' + $("#minute").val() + ':' + '00'
+        //  let user_id = $('#user').val()
+
+        if (note == '') {
+            $('#note').css("border", "1px solid red");
+            $('#note').focus();
+        }
+         if (note != '') {
+            $.ajax({
+                type: "POST",
+                url: "<?php echo site_url() . "/Note_manage_controller/insert_data/" ?>",
+                data: {
+
+                    'note_to_do_list': note,
+                    'note_create_date': create_date,
+                    // 'note_user_id':user_id
+
+                },
+                dataType: "text",
+                async: false,
+                success: function(data) {
+
+
+                    swal({
+                        title: "บันทึกข้อมูลสำเร็จ",
+                        text: "ข้อมูลของคุณถูกบันทึกเรียบร้อย",
+                        type: "success",
+                        confirmButtonText: "ตกลง",
+                    })
+
+                    window.location.reload();
+                    // btn_clear_modal();
+
+
+
+                }
+            })
+        }
+
+
+    }
+ function btn_clear2() {
+        document.getElementById('master_data_insert_form').reset()
+        window.location.reload();
+    }
    
 </script>
 
@@ -376,61 +429,6 @@
         </div>
     </div>
 </div>
-<script>
- jQuery('#create_report').datepicker({
-        todayHighlight: true,
-        format: 'dd/mm/yyyy',
-    }).datepicker("setDate", 'now');
 
-function master_data_insert() {
-        let note = $('#note').val()
-        // let is_active_search = $('#category_id').val()
-        let date = $('#create_report').val()
-        var create_date = parseInt($("#create_report").data('datepicker').getFormattedDate('yyyy') - 543) + $("#create_report").data('datepicker').getFormattedDate('-mm-dd') + ' ' + $("#hour").val() + ':' + $("#minute").val() + ':' + '00'
-        //  let user_id = $('#user').val()
-
-        if (note == '') {
-            $('#note').css("border", "1px solid red");
-            $('#note').focus();
-        }
-         if (note != '') {
-            $.ajax({
-                type: "POST",
-                url: "<?php echo site_url() . "/Note_manage_controller/insert_data/" ?>",
-                data: {
-
-                    'note_to_do_list': note,
-                    'note_create_date': create_date,
-                    // 'note_user_id':user_id
-
-                },
-                dataType: "text",
-                async: false,
-                success: function(data) {
-
-
-                    swal({
-                        title: "บันทึกข้อมูลสำเร็จ",
-                        text: "ข้อมูลของคุณถูกบันทึกเรียบร้อย",
-                        type: "success",
-                        confirmButtonText: "ตกลง",
-                    })
-
-                    window.location.reload();
-                    // btn_clear_modal();
-
-
-
-                }
-            })
-        }
-
-
-    }
- function btn_clear2() {
-        document.getElementById('master_data_insert_form').reset()
-        window.location.reload();
-    }
-</script>
 </div>
 
