@@ -304,7 +304,7 @@
                                 </div>
                                 <div class="col-md-4">
                                     <input type="radio" id="type2" name="type" >
-                                    <label for="female"> ประจำเดือน</label>
+                                    <label for="female"> ประจำทุกเดือน</label>
                                 </div>
                             </div>
                         </div>
