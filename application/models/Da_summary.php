@@ -10,6 +10,10 @@ class Da_summary extends CI_Model
 	public $sl_month;
 	public $sl_year;
 	public $sl_user_id;
+	public $list_create_date;
+	public $list_create_date_year;
+	public $list_create_date_month;
+	public $list_user_id;
 
 	function __construct()
 	{

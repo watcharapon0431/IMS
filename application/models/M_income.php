@@ -45,4 +45,5 @@ class M_income extends Da_income
 		return $query;
 	}
 	
+	
 }
