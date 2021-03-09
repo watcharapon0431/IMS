@@ -138,7 +138,7 @@
                     <div class="panel-wrapper collapse in">
                         <div class="panel-body">
                             <div class="col-md-10">
-                                <h2><i class="fa fa-list-alt" style="font-size:30px;"></i>&emsp;สถิติรายรับ-รายจ่าย</h2>
+                                <h2><i class="fa fa-list-alt" style="font-size:40px;"></i>&emsp;สถิติรายรับ-รายจ่าย</h2>
                             </div>
                             <div class="col-md-2">
                                 <!-- ----------------------------------------------- start year select -------------------------------------------- -->
