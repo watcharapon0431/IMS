@@ -47,7 +47,7 @@
                             var expend = 0;
                             count = 1;
                             json_data.list.forEach(function(element) {
-                                if(element.category_type == 1){
+                                if (element.category_type == 1) {
                                     total = total + parseFloat(element.list_cost); // คงเหลือ
                                     income = income + parseFloat(element.list_cost); // ผลรวมรายรับ
                                     table.append($('<tr>')
@@ -57,7 +57,7 @@
                                         .append($('<td>').append("<center>-</center>"))
                                         .append($('<td>').append("<center>" + total + "</center>"))
                                     )
-                                } else if(element.category_type == 2){
+                                } else if (element.category_type == 2) {
                                     total = total - parseFloat(element.list_cost); // คงเหลือ
                                     expend = expend + parseFloat(element.list_cost); // ผลรวมรายจ่าย
                                     table.append($('<tr>')
@@ -70,16 +70,17 @@
                                 }
                             })
                             table.append($('<tr>')
-                                        .append($('<td>').append("<center>สรุป</center>"))
-                                        .append($('<td>').append(""))
-                                        .append($('<td>').append("<center>"+ income +"</center>"))
-                                        .append($('<td>').append("<center>" + expend + "</center>"))
-                                        .append($('<td>').append("<center>" + total + "</center>"))
+                                .append($('<td>').append("<center>สรุป</center>"))
+                                .append($('<td>').append(""))
+                                .append($('<td>').append("<center>" + income + "</center>"))
+                                .append($('<td>').append("<center>" + expend + "</center>"))
+                                .append($('<td>').append("<center>" + total + "</center>"))
                             )
                         } else {
-                            let text_no_data = '<center><b><p>ไม่มีรายการสถิติรายรับ - รายจ่าย</p></b></center>'
+                            $('#detail_table').find('td').remove();
+                            let text_no_data = '<center><b><p>ไม่มีรายการรายรับ - รายจ่าย</p></b></center>'
                             table.append($('<tr>').append('<td colspan="8">' + text_no_data + '</td>'))
-                        }                        
+                        }
                     }
                 })
             }
@@ -87,7 +88,7 @@
         // end when click at row on table 
     });
 
-    function toggle_modal(){
+    function toggle_modal() {
         $("#modal_summary").modal("toggle");
     }
 
@@ -119,6 +120,7 @@
                         )
                     })
                 } else {
+                    $('#report_table').find('td').remove();
                     let text_no_data = '<center><b><p>ไม่มีรายการสถิติรายรับ - รายจ่าย</p></b></center>'
                     table.append($('<tr>').append('<td colspan="8">' + text_no_data + '</td>'))
                 }
@@ -203,24 +205,24 @@
             <div class="modal-body">
                 <div class="table-responsive">
 
-                        <!-- ---------------------------------------- start master data table --------------------------------- -->
-                        <table id="detail_table" class="table table-striped dataTable no-footer display" role="grid" aria-describedby="myTable_info">
-                            <thead>
-                                <tr>
-                                    <th style="text-align: center; width:15%">ลำดับ</th>
-                                    <th style="text-align: center; width:25%">ชื้อรายการ</th>
-                                    <th style="text-align: center; width:20%">รายรับ (บาท)</th>
-                                    <th style="text-align: center; width:20%">รายจ่าย (บาท)</th>
-                                    <th style="text-align: center; width:20%">คงเหลือ (บาท)</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                        
-                            </tbody>
-                        </table>
-                        <!-- ----------------------------------------- end master data table ---------------------------------- -->
+                    <!-- ---------------------------------------- start master data table --------------------------------- -->
+                    <table id="detail_table" class="table table-striped dataTable no-footer display" role="grid" aria-describedby="myTable_info">
+                        <thead>
+                            <tr>
+                                <th style="text-align: center; width:15%">ลำดับ</th>
+                                <th style="text-align: center; width:25%">ชื้อรายการ</th>
+                                <th style="text-align: center; width:20%">รายรับ (บาท)</th>
+                                <th style="text-align: center; width:20%">รายจ่าย (บาท)</th>
+                                <th style="text-align: center; width:20%">คงเหลือ (บาท)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
 
-                    </div>
+                        </tbody>
+                    </table>
+                    <!-- ----------------------------------------- end master data table ---------------------------------- -->
+
+                </div>
             </div>
         </div>
     </div>
