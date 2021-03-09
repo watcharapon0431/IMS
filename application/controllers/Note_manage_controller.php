@@ -21,6 +21,8 @@ class Note_manage_controller extends IMS_controller
         $this->load->model('M_note', 'mn');
 		$this->mn->get_all_note();
 		$data['rs_all'] = $this->mn->get_all_note()->result();
+		$this->mn->get_count_data();
+		$data['rs_count'] = $this->mn->get_count_data()->result();
 		echo json_encode($data);
 	}
 
