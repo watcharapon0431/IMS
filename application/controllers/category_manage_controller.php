@@ -11,9 +11,11 @@ class category_manage_controller extends IMS_controller
 
 
 	function load_v_category_manage()
-	{
-		$this->output('v_category_manage');
-	}
+ {
+  $this->load->model('M_category', 'mcg');
+  $data['count'] = ($this->mcg->get_count_category("")->result())[0]->count_cata + 1;
+  $this->output('v_category_manage', $data);
+ }
 
 	
 	function show_category_data()
@@ -47,5 +49,15 @@ class category_manage_controller extends IMS_controller
 		$this->mc->update_edit();
 		$check = true;
 		echo json_encode($check);
+	}
+	function category_insert()
+	{
+	$this->load->model('M_category', 'mcg');
+	$this->mcg->category_name = $this->input->post("category_name");
+	$this->mcg->category_type = $this->input->post("category_tpye");
+	$this->mcg->category_sequence = $this->input->post("category_seq");
+	$this->mcg->insert();
+	$data = true;
+	echo json_encode($data);
 	}
 }
