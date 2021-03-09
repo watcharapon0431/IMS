@@ -36,4 +36,9 @@ class Note_manage_controller extends IMS_controller
 		$this->mn->insert();
 	}
 
+	function show_notification(){
+		$this->load->model("M_note",'mn');
+		
+		echo json_encode($data);
+	}
 }

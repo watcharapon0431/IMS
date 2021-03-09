@@ -21,10 +21,14 @@ class IMS_controller extends CI_Controller
 			// Load header
 			$this->load->view('Template_Custom/v_header');
 			// Load Topbar
-			$this->load->view('Template_Custom/v_topbar_home');
+			$this->load->model("M_note","mn");
+			$this->mn->note_user_id = $this->session->user_id;
+			$this->mn->note_create_date = date("Y-m-d");
+			$data_alert["rs_notification"] = $this->mn->get_note_by_date()->result();
+			$this->load->view('Template_Custom/v_topbar_home',$data_alert);
 			// Load Footer
 			$this->load->view('Template_Custom/v_footer');
-
+			
 			$this->load->view($body, $data);
 		} else {
 			redirect(site_url() . "/IMS_controller", "refresh");

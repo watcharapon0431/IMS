@@ -3,7 +3,31 @@
         margin-top: 13px;
     }
 </style>
+<script>
+//     $(document).ready(() => {
+//         check_note();
+//     });
 
+// function check_note(){
+//     var currentdate = new Date(); 
+//     var datetime = currentdate.getDate() + "-"
+//                 + (currentdate.getMonth()+1)  + "-" 
+//                 + currentdate.getFullYear()
+//     console.log(datetime);
+//     $.ajax({
+//             type: "POST",
+//             url: "<?php //echo site_url() . "/Note_manage_controller/show_notification/"; ?>",
+//             data: {
+//                 'datetime': datetime,
+//             },
+//             dataType: 'JSON',
+//             async: false,
+//             success: function(json_data) {
+//                console.log(json_data);
+//             }
+//         })
+// }
+</script>
 <body class="fix-header">
     <div class="preloader">
         <svg class="circular" viewBox="25 25 50 50">
@@ -30,14 +54,18 @@
                     <li><a href="javascript:void(0)" class="open-close waves-effect waves-light visible-xs"><i class="ti-close ti-menu"></i></a></li>
                     <li class="dropdown">
 
-                        <a class="dropdown-toggle waves-effect waves-light notification_report" data-toggle="dropdown" href="javascript:void(0)">
+                        <a class="dropdown-toggle waves-effect waves-light notification_report" data-toggle="dropdown" href="javascript:void(0)" id="btn_noti">
                             <i class="mdi mdi-bell-ring"></i>
+                            <?php
+                                if($rs_notification != null){
+                            ?>
                             <div class="notify">
                                 <!-- แจ้งเตือนกระพิบ Start -->
                                 <span class="heartbit"></span>
                                 <span class="point"></span>
                                 <!-- แจ้งเตือนกระพิบ End -->
                             </div>
+                            <?php }?>
                         </a>
 
                         <ul class="dropdown-menu dropdown-user animated bounceInDown ">
@@ -46,19 +74,33 @@
                             </li>
                             <li>
                                 <div class="message-center">
-                                    <a onclick="" class="noti" style="background: #E9E6E6;">
-                                        <div class="user-img">
-                                            <img src="<?php echo base_url() . "assets/"; ?>img/bill.png" style="width:30px">
-                                        </div>
-                                        <div class="mail-contnet">
-                                            <span class="mail-desc">จ่ายค่าไฟ</span>
-                                            <span class="time">08/03/2021</span>
-                                        </div>
-                                    </a>
+                                    <?php
+                                        if($rs_notification != null){
+                                        $count_notification = 1;
+                                            foreach($rs_notification as $value){
+                                                if($count_notification <= 4){
+                                    ?>
+                                                    <a onclick="" class="noti" style="background: #E9E6E6;">
+                                                        <div class="user-img">
+                                                            <img src="<?php echo base_url() . "assets/"; ?>img/bill.png" style="width:30px">
+                                                        </div>
+                                                        <div class="mail-contnet">
+                                                            <span class="mail-desc"><?php echo $value->note_to_do_list; ?></span>
+                                                            <span class="time"><?php echo $value->Day." ".$value->Month." ".$value->year; ?></span>
+                                                        </div>
+                                                    </a>
+                                    <?php
+                                            }
+                                            $count_notification++;
+                                            }
+                                        } else {
+                                            echo "<center><p>ไม่มีการแจ้งเตือน</p><center>";
+                                        }
+                                    ?>
                                 </div>
                             </li>
                             <li>
-                                <a class="text-center" href="<?php echo site_url() . ' '; ?>">
+                                <a class="text-center" href="<?php echo site_url() . '/Note_manage_controller/load_v_note_manage'; ?>">
                                     <strong>รายการแจ้งเตือนทั้งหมด</strong>
                                     <i class="fa fa-angle-right"></i>
                                 </a>
