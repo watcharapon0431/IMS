@@ -281,4 +281,156 @@
         </div>
     </div>
 </div>
+<div id="modal_insert" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button onclick="btn_clear2();" type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
+                <h4 class="modal-title" id="myModalLabel">เพิ่มบันทึกช่วยจำ</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" id="master_data_insert_form" onsubmit='return false'>
+                   
+
+
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <label class="col-md-12">ชื่อบันทึกช่วยจำ : <span style="color:red;"> * </span></label>
+                            <div class="col-md-12">
+                                <input type="text" class="form-control" id="note" maxlength="100">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <label class="col-md-5">วันที่ต้องการดำเนินการ : <span class="help"> *</span></label>
+                            <label class="col-md-5">เวลา : <span class="help"> *</span></label>
+                            <div class="col-md-5">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="create_report" value="" placeholder="วัน/เดือน/ปี"> <span class="input-group-addon"><i class="icon-calender"></i></span>
+                                    <!-- ----------------------- Start date validate ----------------------- -->
+                                    <span style="color:red;">
+                                        <p for="" id="validate_create_report"></p>
+                                    </span>
+                                    <!-- ----------------------- End date validate ----------------------- -->
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <select id="hour" class="form-control">
+                                    <?php
+                                    for ($i = 0; $i < 24; $i++) {
+                                    ?>
+                                        <?php
+                                        if ($i < 10) {
+                                        ?>
+                                            <option value="<?php echo $i; ?>"><?php echo "0" . $i; ?></option>
+                                        <?php
+                                        } else {
+                                        ?>
+                                            <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+                                        <?php
+                                        }
+                                        ?>
+                                    <?php
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <select id="minute" class="form-control">
+                                    <?php
+                                    for ($i = 0; $i < 60; $i++) {
+                                    ?>
+                                        <?php
+                                        if ($i < 10) {
+                                        ?>
+                                            <option value="<?php echo $i; ?>"><?php echo "0" . $i; ?></option>
+                                        <?php
+                                        } else {
+                                        ?>
+                                            <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+                                        <?php
+                                        }
+                                        ?>
+                                    <?php
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <div class="col-md-12" align="center">
+                            <!-- ----------------------- start ยกเลิก submit ----------------------- -->
+                            <button onclick="btn_clear2();" class="btn btn-default" data-dismiss="modal" aria-hidden="true"><span class="btn-label"><i class="fa fa-times"></i></span>ยกเลิก</button>
+                            <!-- ----------------------- End ยกเลิก submit ----------------------- -->
+                            &nbsp;&nbsp;&nbsp;
+                            <!-- ----------------------- start ส่งข้อมูล input ----------------------- -->
+                            <button onclick="master_data_insert(); btn_clear();" class="btn btn-success" type="button"><span class="btn-label"><i class="fa fa-save"></i></span>บันทึก</button>
+                            <!-- ----------------------- End ส่งข้อมูล input ----------------------- -->
+                        </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
+<script>
+ jQuery('#create_report').datepicker({
+        todayHighlight: true,
+        format: 'dd/mm/yyyy',
+    }).datepicker("setDate", 'now');
+
+function master_data_insert() {
+        let note = $('#note').val()
+        // let is_active_search = $('#category_id').val()
+        let date = $('#create_report').val()
+        var create_date = parseInt($("#create_report").data('datepicker').getFormattedDate('yyyy') - 543) + $("#create_report").data('datepicker').getFormattedDate('-mm-dd') + ' ' + $("#hour").val() + ':' + $("#minute").val() + ':' + '00'
+        //  let user_id = $('#user').val()
+
+        if (note == ' ') {
+            $('#note').css("border", "1px solid red");
+            $('#note').focus();
+        }
+         if (note != ' ') {
+            $.ajax({
+                type: "POST",
+                url: "<?php echo site_url() . "/Note_manage_controller/insert_data/" ?>",
+                data: {
+
+                    'note_to_do_list': note,
+                    'note_create_date': create_date,
+                    // 'note_user_id':user_id
+
+                },
+                dataType: "text",
+                async: false,
+                success: function(data) {
+
+
+                    swal({
+                        title: "บันทึกข้อมูลสำเร็จ",
+                        text: "ข้อมูลของคุณถูกบันทึกเรียบร้อย",
+                        type: "success",
+                        confirmButtonText: "ตกลง",
+                    })
+
+                    window.location.reload();
+                    // btn_clear_modal();
+
+
+
+                }
+            })
+        }
+
+
+    }
+ function btn_clear2() {
+        document.getElementById('master_data_insert_form').reset()
+        window.location.reload();
+    }
+</script>
+</div>
+
