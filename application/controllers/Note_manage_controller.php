@@ -15,10 +15,10 @@ class Note_manage_controller extends IMS_controller
 		$this->output('v_note_manage');
 	}
 
-	
+
 	function show_note_data()
 	{
-        $this->load->model('M_note', 'mn');
+		$this->load->model('M_note', 'mn');
 		$this->mn->get_all_note();
 		$data['rs_all'] = $this->mn->get_all_note()->result();
 		$this->mn->get_count_data();
@@ -36,4 +36,40 @@ class Note_manage_controller extends IMS_controller
 		$this->mn->insert();
 	}
 
+	function readed_notification()
+	{
+		$this->load->model('M_note', 'mn');
+		$this->mn->note_id = $this->input->post("note_id");
+		$this->mn->note_read_date = date("Y-m-d");
+		$this->mn->update_readed();
+		echo json_encode(true);
+	}
+
+	function repeate_notification()
+	{
+		$this->load->model('M_note', 'mn');
+		var_dump(11);
+		$this->mn->update_repet();
+	}
+	function note_edit()
+	{
+		$this->load->model('M_note', 'mn');
+		$this->mn->note_id = $this->input->post("note_id");
+		$rs_note = $this->mn->get_by_key()->result();
+		$data = true;
+		echo json_encode($rs_note);
+	}
+
+	function note_update()
+	{
+		$this->load->model('M_note', 'mn');
+		$this->mn->note_id = $this->input->post("note_id_edit");
+		$this->mn->note_to_do_list = $this->input->post("note_edit");
+		$this->mn->note_create_date = $this->input->post("create_note_edit");
+		$this->mn->note_type = $this->input->post("note_type");
+		$this->mn->update();
+
+		$data = true;
+		echo json_encode($data);
+	}
 }

@@ -17,5 +17,12 @@ class M_category extends Da_category
 				WHERE `category_id`=?";	
 		$this->db->query($sql, array($this->category_name, $this->category_type, $this->category_id));
 	}
+	function get_count_category()
+	{
+	 $sql = " SELECT count(category_id) as count_cata
+		  	  FROM   category";
+			  $query = $this->db->query($sql);
+	 return $query;
+	}
 
 }

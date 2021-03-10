@@ -14,11 +14,11 @@ class Da_category extends CI_Model {
 	}
 
 	function insert() {
-		$sql = "INSERT INTO `category` (category_name, category_status, category_sequence, category_create_date, category_modify_date )
-				VALUES (?, ?, ?, ?, ?)";
-		$this->db->query($sql, array($this->category_name, $this->category_status, $this->category_sequence, $this->category_create_date, $this->category_modify_date ));
-	}
-	
+		$sql = "INSERT INTO category (category_create_date,category_name, category_type,category_sequence)
+		  VALUES (NOW(),?, ?,?)";
+		$this->db->query($sql, array($this->category_name, $this->category_type,$this->category_sequence));
+	   }
+	   
 	function update() {
 		$sql = "UPDATE `category`
 				SET	category_name=?, category_type=?, category_status=?, category_sequence =?, category_create_date =?, category_modify_date =?

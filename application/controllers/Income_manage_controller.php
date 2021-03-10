@@ -92,12 +92,12 @@ class Income_manage_controller extends IMS_controller
 		$this->mc->list_type = $list_type;
 
 
-		$date = $this->input->post("date");
+		$year = $this->input->post("year");
 		$mount = $this->input->post("mount");
 
 		$this->ms->sl_user_id = $this->session->user_id;
-		$this->ms->sl_month = 3;
-		$this->ms->sl_year = 2021;
+		$this->ms->sl_month = $mount;
+		$this->ms->sl_year = $year;
 
 		$sum_income = $this->ms->get_summary()->result();
 		$cost_income = intval($sum_income[0]->sl_income);
@@ -147,8 +147,7 @@ class Income_manage_controller extends IMS_controller
 				$cost_balance = $cost_balance - $cost_outcome;
 			}
 		}
-		// var_dump($cost_income);
-		// die;
+	
 		$this->ms->sl_income = $cost_income;
 		$this->ms->sl_expend = $cost_expend;
 		$this->ms->sl_balance = $cost_balance;

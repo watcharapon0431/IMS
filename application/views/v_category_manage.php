@@ -64,6 +64,70 @@
     </div>
 </div>
 </div>
+<div id="modal_insert" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button onclick="btn_clear2();" type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
+                <h4 class="modal-title" id="myModalLabel">เพิ่มประเภทรายรับ-รายจ่าย</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" id="master_data_insert_form" onsubmit='return false'>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <label class="col-md-12">ลำดับ : </label>
+                            <div class="col-md-2">
+                                <input type="number" class="form-control" id="order_no" minlength="1" maxlength="<?php echo $count; ?>" value="<?php echo $count; ?>" disabled>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <label class="col-md-12">ประเภทรายการ : <span style="color:red;"> * </span></label>
+                            <span style="color:red;">
+                                <p for="" id="validate_type_id"></p>
+                            </span>
+                            <div class="col-md-9">
+                                <div class="col-md-3">
+                                    <input type="radio" id="type1" name="type">
+                                    <label for="female"> รายรับ</label>
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="radio" id="type2" name="type">
+                                    <label for="female"> รายจ่าย</label>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <label class="col-md-12">ชื่อรายการ : <span style="color:red;"> * </span></label>
+                            <div class="col-md-12">
+                                <input type="text" class="form-control" id="list" maxlength="100">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <div class="col-md-12" align="center">
+                            <!-- ----------------------- start ยกเลิก submit ----------------------- -->
+                            <button onclick="btn_clear2();" class="btn btn-default" data-dismiss="modal" aria-hidden="true"><span class="btn-label"><i class="fa fa-times"></i></span>ยกเลิก</button>
+                            <!-- ----------------------- End ยกเลิก submit ----------------------- -->
+                            &nbsp;&nbsp;&nbsp;
+                            <!-- ----------------------- start ส่งข้อมูล input ----------------------- -->
+                            <button onclick="master_data_insert(); btn_clear();" class="btn btn-success" type="button"><span class="btn-label"><i class="fa fa-save"></i></span>บันทึก</button>
+                            <!-- ----------------------- End ส่งข้อมูล input ----------------------- -->
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 <div id="modal_edit" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -251,6 +315,7 @@
             report_get_table_by_page_number_search(1)
         })
     })
+
 
     function report_get_table_by_page_number_search(page_number) {
         let table = $("#report_table tbody")
@@ -610,5 +675,52 @@ if (category_detail != '') {
     function btn_clear2() {
         document.getElementById('master_data_insert_form').reset()
         window.location.reload();
+    }
+
+    
+    function master_data_insert() {
+
+    if ($("#type1").is(":checked") == true) {
+        category_tpye = 1
+    } else if ($("#type2").is(":checked") == true) {
+        category_tpye = 2
+    }
+
+    let category_name = $('#list').val()
+    let category_seq = $('#order_no').val()
+
+
+    if (category_name == '') {
+        $('#list').css("border", "1px solid red");
+        $('#list').focus();
+    }
+
+    if ($("#type1").is(":checked") == false && $("#type2").is(":checked") == false) {
+        $('#validate_type_id').text('กรุณาเลือกประเภทรายรับ - รายจ่าย')
+    } else if (category_name != '') {
+        $.ajax({
+            type: "POST",
+            url: "<?php echo site_url() . "/category_manage_controller/category_insert/" ?>",
+            data: {
+
+                'category_name': category_name,
+                'category_tpye': category_tpye,
+                'category_seq': category_seq
+
+            },
+            dataType: 'JSON',
+            async: false,
+            success: function(data) {
+                swal({
+                    title: "บันทึกข้อมูลสำเร็จ",
+                    text: "ข้อมูลของคุณถูกบันทึกเรียบร้อย",
+                    type: "success",
+                    confirmButtonText: "ตกลง",
+                })
+
+                window.location.reload();
+            }
+        })
+    }
     }
 </script>
