@@ -297,16 +297,16 @@
                             <span style="color:red;">
                                 <p for="" id="validate_type_id"></p>
                             </span>
-                            <div class="col-md-8">
-                                <div class="col-md-4">
+                            <!-- <div class="col-md-8"> -->
+                                <div class="col-md-3">
                                     <input type="radio" id="type1" name="type"checked >
                                     <label for="female"> ครั้งเดียว</label>
                                 </div>
-                                <div class="col-md-5">
+                                <div class="col-md-4">
                                     <input type="radio" id="type2" name="type" >
                                     <label for="female"> ประจำทุกเดือน</label>
                                 </div>
-                            </div>
+                            <!-- </div> -->
                         </div>
                     </div>
 
@@ -322,9 +322,9 @@
 
                     <div class="form-group">
                         <div class="col-md-12">
-                            <label class="col-md-5">วันที่ต้องการดำเนินการ : <span class="help"> *</span></label>
-                            <label class="col-md-5">เวลา : <span class="help"> *</span></label>
-                            <div class="col-md-5">
+                            <label class="col-md-12">วันที่ต้องการดำเนินการ : <span class="help"> *</span></label>
+                            <!-- <label class="col-md-5">เวลา : <span class="help" type = "hidden"> * </span></label> -->
+                            <div class="col-md-6">
                                 <div class="input-group">
                                     <input type="text" class="form-control" id="create_report" value="" placeholder="วัน/เดือน/ปี"> <span class="input-group-addon"><i class="icon-calender"></i></span>
                                     <!-- ----------------------- Start date validate ----------------------- -->
@@ -334,48 +334,7 @@
                                     <!-- ----------------------- End date validate ----------------------- -->
                                 </div>
                             </div>
-                            <div class="col-md-2">
-                                <select id="hour" class="form-control">
-                                    <?php
-                                    for ($i = 0; $i < 24; $i++) {
-                                    ?>
-                                        <?php
-                                        if ($i < 10) {
-                                        ?>
-                                            <option value="<?php echo $i; ?>"><?php echo "0" . $i; ?></option>
-                                        <?php
-                                        } else {
-                                        ?>
-                                            <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
-                                        <?php
-                                        }
-                                        ?>
-                                    <?php
-                                    }
-                                    ?>
-                                </select>
-                            </div>
-                            <div class="col-md-2">
-                                <select id="minute" class="form-control">
-                                    <?php
-                                    for ($i = 0; $i < 60; $i++) {
-                                    ?>
-                                        <?php
-                                        if ($i < 10) {
-                                        ?>
-                                            <option value="<?php echo $i; ?>"><?php echo "0" . $i; ?></option>
-                                        <?php
-                                        } else {
-                                        ?>
-                                            <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
-                                        <?php
-                                        }
-                                        ?>
-                                    <?php
-                                    }
-                                    ?>
-                                </select>
-                            </div>
+                        
                         </div>
                     </div>
                     
