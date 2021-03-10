@@ -21,12 +21,11 @@ class Da_note extends CI_Model
 		$this->db->query($sql, array($this->note_to_do_list, $this->note_type, $this->note_create_date, $this->note_user_id));
 	}
 
-	function update()
-	{
+	function update() {
 		$sql = "UPDATE `note`
-				SET	note_to_do_list=?, note_create_date=?, note_read_date=?
-				WHERE note_id=?";
-		$this->db->query($sql, array($this->note_id, $this->note_to_do_list, $this->note_create_date, $this->note_read_date));
+				SET	note_to_do_list=?,note_type=?,note_create_date=?
+				WHERE `note_id`=?";	
+		$this->db->query($sql, array($this->note_to_do_list,$this->note_type, $this->note_create_date,$this->note_id));
 	}
 
 	function delete()

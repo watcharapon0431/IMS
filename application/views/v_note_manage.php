@@ -48,7 +48,7 @@
         })
         // end when click at row on table for display v_detail_report
     })
-    
+
 
 
     function report_get_table_by_page_number_search(page_number) {
@@ -62,35 +62,36 @@
         count_of_master_data.empty()
 
         $('#current_page').val(page_number)
-	// // start ajax form
-		$.ajax({
-			type: "POST",
-			url: "<?php echo site_url() . "/Note_manage_controller/show_note_data/" ?>",
-			data: {},
-			dataType: 'JSON',
-			async: false,
-			success: function(json_data) {
+        // // start ajax form
+        $.ajax({
+            type: "POST",
+            url: "<?php echo site_url() . "/Note_manage_controller/show_note_data/" ?>",
+            data: {},
+            dataType: 'JSON',
+            async: false,
+            success: function(json_data) {
                 console.log(json_data)
                 let count = json_data.rs_count[0].count
                 let count_data = 0
-                let num=1
+                let num = 1
                 let date_modify;
-                let btn_edit = '<a data-toggle="modal" data-target="#modal_edit" onclick=" " type="button" class="btn btn-warning btn-circle" title="แก้ไข"><i class="fa fa-pencil "></i></a >';
+
                 let btn_delete = '<a onclick=" "  type="button" class="btn btn-danger btn-circle"><i class="fa fa-minus-circle " title="ลบ"></i></a >';
-                console.log(json_data)
+
                 if (json_data.rs_all.length > 0) {
                     // start loop foreach display case's data on table
                     json_data.rs_all.forEach(function(element) {
+                        let btn_edit = '<a data-toggle="modal" data-target="#modal_edit" onclick="master_data_edit(' + element.note_id + ')" type="button" class="btn btn-warning btn-circle" title="แก้ไข"><i class="fa fa-pencil "></i></a >';
                         table.append($('<tr>')
                             .append($('<td>').append("<center>" + num + "</center>"))
                             .append($('<td>').append(element.note_to_do_list))
-                            .append($('<td>').append("<center>" + element.Day +' '+ element.Month +' '+ element.year +"</center>"))
+                            .append($('<td>').append("<center>" + element.Day + ' ' + element.Month + ' ' + element.year + "</center>"))
                             .append($('<td>').append("<center>" + btn_edit + ' ' + btn_delete + "</center>"))
                         )
                         count_data++
                         num++
                     })
-                     // end loop foreach display case's data on table
+                    // end loop foreach display case's data on table
                     // console.log(table);
                     //--------------------------------  start declare count number pagination -------------------------------------------------
                     let count_section_page = $("#section_page").val()
@@ -133,10 +134,10 @@
                     table.append($('<tr>').append('<td colspan="8">' + text_no_data + '</td>'))
                 }
                 // end if condition when have case's data equal or more than 1 data
-			}
-		})
-		// end ajax form
-	}
+            }
+        })
+        // end ajax form
+    }
 
     function report_search_page_previous() {
         let current_page = $('#current_page').val()
@@ -216,6 +217,114 @@
         )
 
     }
+
+    function master_data_edit(id) {
+        var note_id = id;
+
+        $.ajax({
+            type: "POST",
+            url: "<?php echo site_url() . "/Note_manage_controller/note_edit/" ?>",
+            data: {
+                'note_id': note_id
+            },
+            dataType: "json",
+            async: false,
+            success: function(json_data) {
+                if ((json_data[0].note_type) == "1") {
+                    $("#type1_edit").prop('checked', false).trigger("click")
+                } else {
+                    $("#type2_edit").prop('checked', true).trigger("click")
+                }
+                $('#note_edit').val(json_data[0].note_to_do_list)
+                $('#note_id_edit').val(json_data[0].note_id)
+                var hour = moment(json_data[0].note_create_date, 'YYYY-MM-DD h:m:s').format('HH');
+                var minute = moment(json_data[0].note_create_date, 'YYYY-MM-DD h:m:s').format('mm');
+
+                if (hour[0] == 0) {
+                    var hour_edit = (hour * 10) / 10
+
+                    $('#hour_edit option[value=' + hour_edit + ']').attr('selected', 'selected');
+                } else {
+                    $('#hour_edit option[value=' + hour + ']').attr('selected', 'selected');
+                }
+
+                if (minute[0] == 0) {
+                    var minute_edit = (minute * 10) / 10
+                    $('#minute_edit option[value=' + minute_edit + ']').attr('selected', 'selected');
+
+                } else {
+                    $('#minute_edit option[value=' + minute + ']').attr('selected', 'selected');
+                }
+
+                var today = new Date();
+                const dateTime = json_data[0].note_create_date;
+                const parts = dateTime.split(/[- :]/);
+                const wanted = `${parts[2]}/${parts[1]}/${parts[0]}`;
+                $('#create_note_edit').val(wanted)
+
+            }
+        })
+
+        // end try catch 
+    }
+    function note_data_update() {
+   
+        let note_id_edit = $('#note_id_edit').val()
+        let note_edit = $('#note_edit').val()
+        alert(note_id_edit)
+
+        let hour_edit = $('#hour_edit').val()
+        let minute_edit = $('#minute_edit').val()
+
+        let create_note_edit = parseInt($("#create_note_edit").data('datepicker').getFormattedDate('yyyy') - 543) + $("#create_note_edit").data('datepicker').getFormattedDate('-mm-dd') 
+        let note_type = $('input[name=type]:checked', '#type_note').val()
+
+        if (note_edit != '') {
+        $.ajax({
+            type: "POST",
+            url: "<?php echo site_url() . "/Note_manage_controller/note_update/" ?>",
+            data: {
+                'note_id_edit': note_id_edit,
+                'note_edit': note_edit,
+                'create_note_edit': create_note_edit,
+                'note_type': note_type,
+
+            },
+            dataType: "json",
+            async: false,
+            success: function(data) {
+
+                if (data == true) {
+                    $('#modal_edit').modal('toggle')
+                    // notify alert when update success
+                    swal({
+                        title: "แก้ไขข้อมูลสำเร็จ",
+                        text: "ข้อมูลของคุณถูกแก้ไขเรียบร้อย",
+                        type: "success",
+                        confirmButtonText: "ตกลง"
+                    })
+                    window.location.reload();
+
+                } else {
+                    // notify alert when update unsuccess
+                    swal({
+                        title: "แก้ไขข้อมูลไม่สำเร็จ",
+                        type: "error",
+                        confirmButtonText: "ตกลง"
+                    })
+
+                }
+            }
+        });
+        } else {
+            swal({
+                title: "แก้ไขข้อมูลไม่สำเร็จ",
+                text: "กรุณากรอกข้อมูลที่สำคัญให้ครบ",
+                type: "error",
+                confirmButtonText: "ตกลง"
+            })
+        }
+    }
 </script>
 
 <div id="page-wrapper">
@@ -254,7 +363,7 @@
                                         <th style="text-align:center; width: 10%"">ลำดับ</th>
                                         <th style=" text-align:center; width: 30%">รายการ</th>
                                         <th style="text-align:center; width: 20%"">วันที่</th>
-                                        <th style="text-align:center; width: 20%"">ดำเนินการ</th>
+                                        <th style=" text-align:center; width: 20%"">ดำเนินการ</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -265,17 +374,18 @@
 
                             <!-- --------------------------------------------- start pagination ------------------------------------------------------ -->
                             <div class=" col-md-12">
-                                            <div class="col-md-4" align="left">
-                                                <p id="count_of_master_data"></p>
-                                            </div>
-                                            <input type="hidden" id="current_page" value="1">
-                                            <input type="hidden" id="section_page" value="1">
-                                            <div id="page_option" class="col-md-8" align="right">
+                                <div class="col-md-4" align="left">
+                                    <p id="count_of_master_data"></p>
+                                </div>
+                                <input type="hidden" id="current_page" value="1">
+                                <input type="hidden" id="section_page" value="1">
+                                <div id="page_option" class="col-md-8" align="right">
 
-                                            </div>
+                                </div>
+                            </div>
+                            <!-- ---------------------------------------------- end pagination ------------------------------------------------------- -->
+
                         </div>
-                        <!-- ---------------------------------------------- end pagination ------------------------------------------------------- -->
-
                     </div>
                 </div>
             </div>
@@ -291,7 +401,7 @@
             </div>
             <div class="modal-body">
                 <form class="form-horizontal" id="master_data_insert_form" onsubmit='return false'>
-                <div class="form-group">
+                    <div class="form-group">
                         <div class="col-md-12">
                             <label class="col-md-12">ประเภทการแจ้งเตือน : <span style="color:red;"> * </span></label>
                             <span style="color:red;">
@@ -299,11 +409,11 @@
                             </span>
                             <div class="col-md-8">
                                 <div class="col-md-4">
-                                    <input type="radio" id="type1" name="type"checked >
+                                    <input type="radio" id="type1" name="type" checked>
                                     <label for="female"> ครั้งเดียว</label>
                                 </div>
                                 <div class="col-md-5">
-                                    <input type="radio" id="type2" name="type" >
+                                    <input type="radio" id="type2" name="type">
                                     <label for="female"> ประจำทุกเดือน</label>
                                 </div>
                             </div>
@@ -378,7 +488,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="modal-footer">
                         <div class="col-md-12" align="center">
                             <!-- ----------------------- start ยกเลิก submit ----------------------- -->
@@ -389,6 +499,7 @@
                             <button onclick="master_data_insert(); btn_clear();" class="btn btn-success" type="button"><span class="btn-label"><i class="fa fa-save"></i></span>บันทึก</button>
                             <!-- ----------------------- End ส่งข้อมูล input ----------------------- -->
                         </div>
+                    </div>
                 </form>
             </div>
         </div>
@@ -396,127 +507,90 @@
 </div>
 
 <div id="modal_edit" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button onclick="" type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
-                    <h4 class="modal-title" id="myModalLabel">เเก้ไขบันทึกช่วยจำ</h4>
-                </div>
-                <div class="modal-body">
-                    <form class="form-horizontal" id="master_data_edit_form" onsubmit='return false'>
-                        <input type="hidden" class="form-control" id="note_id_edit" maxlength="100">
-                        <div class="form-group">
-                            <div class="col-md-12">
-                                <label class="col-md-12">รายการประเภทการเเจ้งเตือน : <span style="color:red;"> * </span>
-                                </label>
-                                <span style="color:red;">
-                                    <p for="" id="validate_type_id_edit"></p>
-                                </span>
-                                <div id="type_note">
-                                    <div class="col-md-12">
-                                        <div class="col-md-3">
-                                            <input type="radio" id="type1_edit" name="type" value="1">
-                                            <label for="female">ครั้งเดียว</label>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <input type="radio" id="type2_edit" name="type" value="2">
-                                            <label for="female">ประจำทุกเดือน</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-md-12">
-                                <label class="col-md-12">ชื่อบันทึกช่วยจำ : <span style="color:red;"> * </span></label>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button onclick="" type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
+                <h4 class="modal-title" id="myModalLabel">เเก้ไขบันทึกช่วยจำ</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" id="master_data_edit_form" onsubmit='return false'>
+                    <input type="hidden" class="form-control" id="note_id_edit" maxlength="100">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <label class="col-md-12">รายการประเภทการเเจ้งเตือน : <span style="color:red;"> * </span>
+                            </label>
+                            <span style="color:red;">
+                                <p for="" id="validate_type_id_edit"></p>
+                            </span>
+                            <div id="type_note">
                                 <div class="col-md-12">
-                                    <input type="text" class="form-control" id="note_edit" maxlength="100">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-md-12">
-                                <label class="col-md-5">วันที่ต้องการดำเนินการ : <span class="help"> *</span></label>
-                                <label class="col-md-5">เวลา : <span class="help"> *</span></label>
-                                <div class="col-md-5">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" id="create_note_edit" value="" placeholder="วัน/เดือน/ปี"> <span class="input-group-addon"><i class="icon-calender"></i></span>
-                                        <!-- ----------------------- Start date validate ----------------------- -->
-
-                                        <!-- ----------------------- End date validate ----------------------- -->
+                                    <div class="col-md-3">
+                                        <input type="radio" id="type1_edit" name="type" value="1">
+                                        <label for="female">ครั้งเดียว</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <input type="radio" id="type2_edit" name="type" value="2">
+                                        <label for="female">ประจำทุกเดือน</label>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <label class="col-md-12">ชื่อบันทึกช่วยจำ : <span style="color:red;"> * </span></label>
+                            <div class="col-md-12">
+                                <input type="text" class="form-control" id="note_edit" maxlength="100">
+                            </div>
+                        </div>
+                    </div>
 
-                                <div class="col-md-2">
-                                    <select id="hour_edit" class="form-control">
-                                        <?php
-                                        for ($i = 0; $i < 24; $i++) {
-                                        ?>
-                                            <?php
-                                            if ($i < 10) {
-                                            ?>
-                                                <option value="<?php echo $i; ?>"><?php echo "0" . $i; ?></option>
-                                            <?php
-                                            } else {
-                                            ?>
-                                                <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
-                                            <?php
-                                            }
-                                            ?>
-                                        <?php
-                                        }
-                                        ?>
-                                    </select>
-                                </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <label class="col-md-12">วันที่ต้องการดำเนินการ : <span class="help"> *</span></label>
+                           
+                            <div class="col-md-5">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="create_note_edit" value="" placeholder="วัน/เดือน/ปี"> <span class="input-group-addon"><i class="icon-calender"></i></span>
+                                    <!-- ----------------------- Start date validate ----------------------- -->
 
-                                <div class="col-md-2">
-                                    <select id="minute_edit" class="form-control">
-                                        <?php
-                                        for ($i = 0; $i < 60; $i++) {
-                                        ?>
-                                            <?php
-                                            if ($i < 10) {
-                                            ?>
-                                                <option value="<?php echo $i; ?>"><?php echo "0" . $i; ?></option>
-                                            <?php
-                                            } else {
-                                            ?>
-                                                <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
-                                            <?php
-                                            }
-                                            ?>
-                                        <?php
-                                        }
-                                        ?>
-                                    </select>
+                                    <!-- ----------------------- End date validate ----------------------- -->
                                 </div>
                             </div>
                         </div>
 
-                        <div class="modal-footer">
-                            <div class="col-md-12" align="center">
-                                <!-- ----------------------- start ยกเลิก submit ----------------------- -->
-                                <button class="btn btn-default" data-dismiss="modal" aria-hidden="true"><span class="btn-label"><i class="fa fa-times"></i></span>ยกเลิก</button>
-                                <!-- ----------------------- End ยกเลิก submit ----------------------- -->
-                                &nbsp;&nbsp;&nbsp;
-                                <!-- ----------------------- start ส่งข้อมูล input ----------------------- -->
-                                <button onclick="note_data_update(); " class="btn btn-success" type="button"><span class="btn-label"><i class="fa fa-save"></i></span>บันทึก</button>
-                                <!-- ----------------------- End ส่งข้อมูล input ----------------------- -->
-                            </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <div class="col-md-12" align="center">
+                            <!-- ----------------------- start ยกเลิก submit ----------------------- -->
+                            <button class="btn btn-default" data-dismiss="modal" aria-hidden="true"><span class="btn-label"><i class="fa fa-times"></i></span>ยกเลิก</button>
+                            <!-- ----------------------- End ยกเลิก submit ----------------------- -->
+                            &nbsp;&nbsp;&nbsp;
+                            <!-- ----------------------- start ส่งข้อมูล input ----------------------- -->
+                            <button onclick="note_data_update(); " class="btn btn-success" type="button"><span class="btn-label"><i class="fa fa-save"></i></span>บันทึก</button>
+                            <!-- ----------------------- End ส่งข้อมูล input ----------------------- -->
                         </div>
-                    </form>
-                </div>
+
+                    </div>
+                </form>
             </div>
         </div>
     </div>
+</div>
 <script>
- jQuery('#create_report').datepicker({
+    jQuery('#create_report').datepicker({
         todayHighlight: true,
         format: 'dd/mm/yyyy',
     }).datepicker("setDate", 'now');
 
-function master_data_insert() {
+    jQuery('#create_note_edit').datepicker({
+        todayHighlight: true,
+        format: 'dd/mm/yyyy',
+    }).datepicker("setDate", 'now');
+
+    function master_data_insert() {
         let note = $('#note').val()
         // let is_active_search = $('#category_id').val()
         let date = $('#create_report').val()
@@ -533,12 +607,12 @@ function master_data_insert() {
         }
         if ($("#type1").is(":checked") == false && $("#type2").is(":checked") == false) {
             $('#validate_type_id').text('กรุณาเลือกประเภทการแจ้งเตือน')
-        }else if (note != '') {
+        } else if (note != '') {
             $.ajax({
                 type: "POST",
                 url: "<?php echo site_url() . "/Note_manage_controller/insert_data/" ?>",
                 data: {
-                       
+
                     'note_to_do_list': note,
                     'note_type': note_status,
                     'note_create_date': create_date,
@@ -568,10 +642,10 @@ function master_data_insert() {
 
 
     }
- function btn_clear2() {
+
+    function btn_clear2() {
         document.getElementById('master_data_insert_form').reset()
         window.location.reload();
     }
 </script>
 </div>
-

@@ -6,7 +6,7 @@ class M_note extends Da_note
 {
     function get_all_note()
 	{
-		$sql = "SELECT note_to_do_list,DATE_FORMAT(note_create_date,'%d') AS Day,
+		$sql = "SELECT note_id,note_to_do_list,DATE_FORMAT(note_create_date,'%d') AS Day,
 				case 
 					when DATE_FORMAT(note_create_date,'%m') = 01 then 'ม.ค.'
 					when DATE_FORMAT(note_create_date,'%m') = 02 then 'ก.พ.'
