@@ -854,9 +854,4 @@ if (list_detail != '' && const_list_edit != '' && list_category_edit != '') {
         window.location.reload();
     }
 
-    // function btn_clear_modal() {
-
-    //     $('#modal_insert').modal('toggle');
-    //     report_get_table_by_page_number_search(1)
-    // }
 </script>

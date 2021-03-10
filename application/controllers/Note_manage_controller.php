@@ -15,10 +15,10 @@ class Note_manage_controller extends IMS_controller
 		$this->output('v_note_manage');
 	}
 
-	
+
 	function show_note_data()
 	{
-        $this->load->model('M_note', 'mn');
+		$this->load->model('M_note', 'mn');
 		$this->mn->get_all_note();
 		$data['rs_all'] = $this->mn->get_all_note()->result();
 		$this->mn->get_count_data();
@@ -36,9 +36,18 @@ class Note_manage_controller extends IMS_controller
 		$this->mn->insert();
 	}
 
-	function show_notification(){
-		$this->load->model("M_note",'mn');
-		
-		echo json_encode($data);
+	function readed_notification()
+	{
+		$this->load->model('M_note', 'mn');
+		$this->mn->note_id = $this->input->post("note_id");
+		$this->mn->note_read_date = date("Y-m-d");
+		$this->mn->update_readed();
+		echo json_encode(true);
+	}
+
+	function repeate_notification(){
+		$this->load->model('M_note', 'mn');
+		var_dump(11);
+		$this->mn->update_repet();
 	}
 }

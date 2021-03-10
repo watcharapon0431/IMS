@@ -3,31 +3,35 @@
         margin-top: 13px;
     }
 </style>
-<script>
-//     $(document).ready(() => {
-//         check_note();
-//     });
 
-// function check_note(){
-//     var currentdate = new Date(); 
-//     var datetime = currentdate.getDate() + "-"
-//                 + (currentdate.getMonth()+1)  + "-" 
-//                 + currentdate.getFullYear()
-//     console.log(datetime);
-//     $.ajax({
-//             type: "POST",
-//             url: "<?php //echo site_url() . "/Note_manage_controller/show_notification/"; ?>",
-//             data: {
-//                 'datetime': datetime,
-//             },
-//             dataType: 'JSON',
-//             async: false,
-//             success: function(json_data) {
-//                console.log(json_data);
-//             }
-//         })
-// }
+<script>
+    // function repeate_notification() {
+    //     $.ajax({
+    //         type: "POST",
+    //         url: "<?php //echo site_url() . "/Note_manage_controller/repeate_notification"; ?>",
+    //         data: { },
+    //         dataType: 'JSON',
+    //         async: false,
+    //         success: function() { }
+    //     })
+    // }
+
+    function readed_notification(note_id) {
+        $.ajax({
+            type: "POST",
+            url: "<?php echo site_url() . "/Note_manage_controller/readed_notification"; ?>",
+            data: {
+                'note_id': note_id
+            },
+            dataType: 'JSON',
+            async: false,
+            success: function() { 
+                window.location.href = "<?php echo site_url() . "/Income_manage_controller/load_v_income_manage" ?>" 
+            }
+        })
+    }
 </script>
+
 <body class="fix-header">
     <div class="preloader">
         <svg class="circular" viewBox="25 25 50 50">
@@ -57,15 +61,15 @@
                         <a class="dropdown-toggle waves-effect waves-light notification_report" data-toggle="dropdown" href="javascript:void(0)" id="btn_noti">
                             <i class="mdi mdi-bell-ring"></i>
                             <?php
-                                if($rs_notification != null){
+                            if ($rs_notification != null) {
                             ?>
-                            <div class="notify">
-                                <!-- แจ้งเตือนกระพิบ Start -->
-                                <span class="heartbit"></span>
-                                <span class="point"></span>
-                                <!-- แจ้งเตือนกระพิบ End -->
-                            </div>
-                            <?php }?>
+                                <div class="notify">
+                                    <!-- แจ้งเตือนกระพิบ Start -->
+                                    <span class="heartbit"></span>
+                                    <span class="point"></span>
+                                    <!-- แจ้งเตือนกระพิบ End -->
+                                </div>
+                            <?php } ?>
                         </a>
 
                         <ul class="dropdown-menu dropdown-user animated bounceInDown ">
@@ -75,27 +79,27 @@
                             <li>
                                 <div class="message-center">
                                     <?php
-                                        if($rs_notification != null){
+                                    if ($rs_notification != null) {
                                         $count_notification = 1;
-                                            foreach($rs_notification as $value){
-                                                if($count_notification <= 4){
+                                        foreach ($rs_notification as $value) {
+                                            if ($count_notification <= 4) {
                                     ?>
-                                                    <a onclick="" class="noti" style="background: #E9E6E6;">
-                                                        <div class="user-img">
-                                                            <img src="<?php echo base_url() . "assets/"; ?>img/bill.png" style="width:30px">
-                                                        </div>
-                                                        <div class="mail-contnet">
-                                                            <span class="mail-desc"><?php echo $value->note_to_do_list; ?></span>
-                                                            <span class="time"><?php echo $value->Day." ".$value->Month." ".$value->year; ?></span>
-                                                        </div>
-                                                    </a>
+                                                <a onclick="readed_notification(<?php echo $value->note_id ?>)" class="noti" style="background: #E9E6E6">
+                                                    <div class="user-img">
+                                                        <img src="<?php echo base_url() . "assets/"; ?>img/bill.png" style="width:30px">
+                                                    </div>
+                                                    <div class="mail-contnet">
+                                                        <span class="mail-desc"><?php echo $value->note_to_do_list; ?></span>
+                                                        <span class="time"><?php echo $value->Day . " " . $value->Month . " " . $value->year; ?></span>
+                                                    </div>
+                                                </a>
                                     <?php
                                             }
                                             $count_notification++;
-                                            }
-                                        } else {
-                                            echo "<center><p>ไม่มีการแจ้งเตือน</p><center>";
                                         }
+                                    } else {
+                                        echo "<center><p>ไม่มีการแจ้งเตือน</p><center>";
+                                    }
                                     ?>
                                 </div>
                             </li>
@@ -178,7 +182,7 @@
                 <li>
                     <a href="<?php echo site_url(); ?>/Note_manage_controller/load_v_note_manage" class="waves-effect">
                         <span class="hide-menu">
-                            <i class="mdi mdi-clipboard-text"></i>&emsp;จดการบันทึกช่วยจำ
+                            <i class="mdi mdi-clipboard-text"></i>&emsp;จัดการบันทึกช่วยจำ
                             <span class="fa arrow"></span>
                             <span class="label label-rouded label-inverse pull-right"></span>
                         </span>
