@@ -20,8 +20,8 @@ class M_category extends Da_category
 	function get_count_category()
 	{
 	 $sql = " SELECT count(category_id) as count_cata
-		   FROM   category";
-	 $query = $this->db->query($sql);
+		  	  FROM   category";
+			  $query = $this->db->query($sql);
 	 return $query;
 	}
 
