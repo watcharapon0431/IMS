@@ -676,49 +676,51 @@ if (category_detail != '') {
         document.getElementById('master_data_insert_form').reset()
         window.location.reload();
     }
+
+    
     function master_data_insert() {
-alert("xxxx")
-if ($("#type1").is(":checked") == true) {
-    category_tpye = 1
-} else if ($("#type2").is(":checked") == true) {
-    category_tpye = 2
-}
 
-let category_name = $('#list').val()
-let category_seq = $('#order_no').val()
+    if ($("#type1").is(":checked") == true) {
+        category_tpye = 1
+    } else if ($("#type2").is(":checked") == true) {
+        category_tpye = 2
+    }
+
+    let category_name = $('#list').val()
+    let category_seq = $('#order_no').val()
 
 
-if (category_name == '') {
-    $('#list').css("border", "1px solid red");
-    $('#list').focus();
-}
+    if (category_name == '') {
+        $('#list').css("border", "1px solid red");
+        $('#list').focus();
+    }
 
-if ($("#type1").is(":checked") == false && $("#type2").is(":checked") == false) {
-    $('#validate_type_id').text('กรุณาเลือกประเภทรายรับ - รายจ่าย')
-} else if (category_name != '') {
-    $.ajax({
-        type: "POST",
-        url: "<?php echo site_url() . "/category_manage_controller/category_insert/" ?>",
-        data: {
+    if ($("#type1").is(":checked") == false && $("#type2").is(":checked") == false) {
+        $('#validate_type_id').text('กรุณาเลือกประเภทรายรับ - รายจ่าย')
+    } else if (category_name != '') {
+        $.ajax({
+            type: "POST",
+            url: "<?php echo site_url() . "/category_manage_controller/category_insert/" ?>",
+            data: {
 
-            'category_name': category_name,
-            'category_tpye': category_tpye,
-            'category_seq': category_seq
+                'category_name': category_name,
+                'category_tpye': category_tpye,
+                'category_seq': category_seq
 
-        },
-        dataType: 'JSON',
-        async: false,
-        success: function(data) {
-            swal({
-                title: "บันทึกข้อมูลสำเร็จ",
-                text: "ข้อมูลของคุณถูกบันทึกเรียบร้อย",
-                type: "success",
-                confirmButtonText: "ตกลง",
-            })
+            },
+            dataType: 'JSON',
+            async: false,
+            success: function(data) {
+                swal({
+                    title: "บันทึกข้อมูลสำเร็จ",
+                    text: "ข้อมูลของคุณถูกบันทึกเรียบร้อย",
+                    type: "success",
+                    confirmButtonText: "ตกลง",
+                })
 
-            window.location.reload();
-        }
-    })
-}
-}
+                window.location.reload();
+            }
+        })
+    }
+    }
 </script>

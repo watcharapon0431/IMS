@@ -394,6 +394,122 @@
         </div>
     </div>
 </div>
+
+<div id="modal_edit" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button onclick="" type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
+                    <h4 class="modal-title" id="myModalLabel">เเก้ไขบันทึกช่วยจำ</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" id="master_data_edit_form" onsubmit='return false'>
+                        <input type="hidden" class="form-control" id="note_id_edit" maxlength="100">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label class="col-md-12">รายการประเภทการเเจ้งเตือน : <span style="color:red;"> * </span>
+                                </label>
+                                <span style="color:red;">
+                                    <p for="" id="validate_type_id_edit"></p>
+                                </span>
+                                <div id="type_note">
+                                    <div class="col-md-12">
+                                        <div class="col-md-3">
+                                            <input type="radio" id="type1_edit" name="type" value="1">
+                                            <label for="female">ครั้งเดียว</label>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <input type="radio" id="type2_edit" name="type" value="2">
+                                            <label for="female">ประจำทุกเดือน</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label class="col-md-12">ชื่อบันทึกช่วยจำ : <span style="color:red;"> * </span></label>
+                                <div class="col-md-12">
+                                    <input type="text" class="form-control" id="note_edit" maxlength="100">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label class="col-md-5">วันที่ต้องการดำเนินการ : <span class="help"> *</span></label>
+                                <label class="col-md-5">เวลา : <span class="help"> *</span></label>
+                                <div class="col-md-5">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="create_note_edit" value="" placeholder="วัน/เดือน/ปี"> <span class="input-group-addon"><i class="icon-calender"></i></span>
+                                        <!-- ----------------------- Start date validate ----------------------- -->
+
+                                        <!-- ----------------------- End date validate ----------------------- -->
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <select id="hour_edit" class="form-control">
+                                        <?php
+                                        for ($i = 0; $i < 24; $i++) {
+                                        ?>
+                                            <?php
+                                            if ($i < 10) {
+                                            ?>
+                                                <option value="<?php echo $i; ?>"><?php echo "0" . $i; ?></option>
+                                            <?php
+                                            } else {
+                                            ?>
+                                                <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+                                            <?php
+                                            }
+                                            ?>
+                                        <?php
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <select id="minute_edit" class="form-control">
+                                        <?php
+                                        for ($i = 0; $i < 60; $i++) {
+                                        ?>
+                                            <?php
+                                            if ($i < 10) {
+                                            ?>
+                                                <option value="<?php echo $i; ?>"><?php echo "0" . $i; ?></option>
+                                            <?php
+                                            } else {
+                                            ?>
+                                                <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+                                            <?php
+                                            }
+                                            ?>
+                                        <?php
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <div class="col-md-12" align="center">
+                                <!-- ----------------------- start ยกเลิก submit ----------------------- -->
+                                <button class="btn btn-default" data-dismiss="modal" aria-hidden="true"><span class="btn-label"><i class="fa fa-times"></i></span>ยกเลิก</button>
+                                <!-- ----------------------- End ยกเลิก submit ----------------------- -->
+                                &nbsp;&nbsp;&nbsp;
+                                <!-- ----------------------- start ส่งข้อมูล input ----------------------- -->
+                                <button onclick="note_data_update(); " class="btn btn-success" type="button"><span class="btn-label"><i class="fa fa-save"></i></span>บันทึก</button>
+                                <!-- ----------------------- End ส่งข้อมูล input ----------------------- -->
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 <script>
  jQuery('#create_report').datepicker({
         todayHighlight: true,
