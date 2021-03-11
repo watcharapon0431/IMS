@@ -22,17 +22,17 @@ class Da_summary extends CI_Model
 
 	function insert()
 	{
-		
+		$sql = "INSERT INTO summary_list (sl_income,sl_expend,sl_balance,sl_user_id,sl_month,sl_year)
+		  VALUES (?,?,?,?,?,?)";
+		$this->db->query($sql, array($this->sl_income,$this->sl_expend,$this->sl_balance,$this->sl_user_id,$this->sl_month,$this->sl_year));
 	}
 
 	function update()
 	{
-		
 	}
 
 	function delete()
 	{
-		
 	}
 
 	function get_by_key()

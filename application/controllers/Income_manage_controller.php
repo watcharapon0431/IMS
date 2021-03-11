@@ -33,29 +33,45 @@ class Income_manage_controller extends IMS_controller
 		$cost_expend = intval($sum_income[0]->sl_expend);
 		$cost_balance = intval($sum_income[0]->sl_balance);
 
-		if ($sum_income == null) {
-			if ($list_type == 1) {
-				$cost_income = $cost_income - $cost_edit;
-				$cost_expend = $cost_expend + $cost;
-				$cost_balance = $cost_income - $cost_expend;
-			}else if ($list_type == 2) {
-
+		if ($month == null && $year == null) {
+			if ($this->list_type == 1) {
+				$cost_income = $this->list_cost;
+				$cost_expend = 0;
+				$cost_balance = $cost_income;
+				$this->ms->sl_income = $cost_income;
+				$this->ms->sl_expend = $cost_expend;
+				$this->ms->sl_balance = $cost_balance;
+				$this->ms->insert();
+			}else if ($this->list_type == 2) {
+				$cost_income = 0;
+				$cost_expend = $this->list_cost;
+				$cost_balance = $this->list_cost * -1;
+				$this->ms->sl_income = $cost_income;
+				$this->ms->sl_expend = $cost_expend;
+				$this->ms->sl_balance = $cost_balance;
+				$this->ms->insert();
 			} 
-		}
-		// if ($list_type == 2 && $list_type_edit == 1) {
-		// 	$cost_edit = $list_data[0]->list_cost;
-		// 	$cost_income = $cost_income - $cost_edit;
-		// 	$cost_expend = $cost_expend + $cost;
-		// 	$cost_balance = $cost_income - $cost_expend;
-		// }
-		// $this->ms->sl_income = $cost_income;
-		// $this->ms->sl_expend = $cost_expend;
-		// $this->ms->sl_balance = $cost_balance;
+		// }else{
+		// 	if ($list_type == 1) {
+		// 		$cost_income = $cost_income - $cost_edit;
+		// 		$cost_expend = $cost_expend + $cost;
+		// 		$cost_balance = $cost_income - $cost_expend;
+		// 		$this->ms->sl_income = $cost_income;
+		// 		$this->ms->sl_expend = $cost_expend;
+		// 		$this->ms->sl_balance = $cost_balance;
+		// 		$this->ms->update_sum_list();
+		// 	}else if ($list_type == 2) {
+		// 		$cost_income = $cost_income - $cost_edit;
+		// 		$cost_expend = $cost_expend + $cost;
+		// 		$cost_balance = $cost_income - $cost_expend;
+		// 		$this->ms->sl_income = $cost_income;
+		// 		$this->ms->sl_expend = $cost_expend;
+		// 		$this->ms->sl_balance = $cost_balance;
+		// 		$this->ms->update_sum_list();
+		 }
 
-		// $this->ms->update_sum_list();
-		// $this->mc->update();
-		// $check = true;
-		// echo json_encode($check);
+		$check = true;
+		echo json_encode($check);
 	}
 	// 
 	public function delete_list()

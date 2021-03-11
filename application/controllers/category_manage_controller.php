@@ -2,7 +2,7 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 require_once(dirname(__FILE__) . "/IMS_controller.php");
 
-class category_manage_controller extends IMS_controller
+class Category_manage_controller extends IMS_controller
 {
 	function index()
 	{
@@ -11,11 +11,11 @@ class category_manage_controller extends IMS_controller
 
 
 	function load_v_category_manage()
- {
-  $this->load->model('M_category', 'mcg');
-  $data['count'] = ($this->mcg->get_count_category("")->result())[0]->count_cata + 1;
-  $this->output('v_category_manage', $data);
- }
+ 	{
+  		$this->load->model('M_category', 'mcg');
+  		$data['count'] = ($this->mcg->get_count_category("")->result())[0]->count_cata + 1;
+  		$this->output('v_category_manage', $data);
+ 	}
 
 	
 	function show_category_data()

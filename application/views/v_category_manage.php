@@ -332,7 +332,7 @@
 
         $.ajax({
             type: "POST",
-            url: "<?php echo site_url() . "/category_manage_controller/show_category_data/" ?>",
+            url: "<?php echo site_url() . "/Category_manage_controller/show_category_data/" ?>",
             data: {},
             dataType: 'JSON',
             async: false,
@@ -542,7 +542,7 @@
         try {
             $.ajax({
                 type: "POST",
-                url: "<?php echo site_url() . "/category_manage_controller/category_edit/" ?>",
+                url: "<?php echo site_url() . "/Category_manage_controller/category_edit/" ?>",
                 data: {
                     'category_id': category_id
                 },
@@ -587,7 +587,7 @@
         if (category_detail != '') {
             $.ajax({
                 type: "POST",
-                url: "<?php echo site_url() . "/category_manage_controller/category_update/" ?>",
+                url: "<?php echo site_url() . "/Category_manage_controller/category_update/" ?>",
                 data: {
 
                     'category_id': category_id,
@@ -647,7 +647,7 @@
                 if (result) {
                     $.ajax({
                         type: "POST",
-                        url: "<?php echo site_url() . "/category_manage_controller/category_delete"; ?>",
+                        url: "<?php echo site_url() . "/Category_manage_controller/category_delete"; ?>",
                         data: {
                             'category_id': delete_category_id
                         },
@@ -700,7 +700,7 @@
         } else if (category_name != '') {
             $.ajax({
                 type: "POST",
-                url: "<?php echo site_url() . "/category_manage_controller/category_insert/" ?>",
+                url: "<?php echo site_url() . "/Category_manage_controller/category_insert/" ?>",
                 data: {
 
                     'category_name': category_name,
