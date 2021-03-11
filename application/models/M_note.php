@@ -20,7 +20,7 @@ class M_note extends Da_note
 					when DATE_FORMAT(note_create_date,'%m') = 10 then 'ต.ค.' 
 					when DATE_FORMAT(note_create_date,'%m') = 11 then 'พ.ย.' 
 					else 'ธ.ค.'
-				end as 'Month',DATE_FORMAT(date_add(note_create_date, INTERVAL 543 YEAR),'%Y') AS 'year'
+				end as 'Month',DATE_FORMAT(note_create_date,'%Y') AS 'year'
 				FROM   note";
 		$query = $this->db->query($sql);
 		return $query;
@@ -50,7 +50,7 @@ class M_note extends Da_note
 					when DATE_FORMAT(note_create_date,'%m') = 10 then 'ต.ค.' 
 					when DATE_FORMAT(note_create_date,'%m') = 11 then 'พ.ย.' 
 					else 'ธ.ค.'
-				end as 'Month',DATE_FORMAT(DATE_ADD(note_create_date, INTERVAL 543 YEAR),'%Y') AS 'year'  
+				end as 'Month',DATE_FORMAT(note_create_date,'%Y') AS 'year'  
 				FROM note
 				WHERE DATE_SUB(note_create_date, INTERVAL 5 DAY) <= ? AND note_create_date >= ? AND note_user_id = ? AND note_read_date = ?";
 		$query = $this->db->query($sql, array($this->note_create_date, $this->note_create_date, $this->note_user_id, $this->note_read_date));
@@ -73,7 +73,7 @@ class M_note extends Da_note
 					when DATE_FORMAT(note_create_date,'%m') = 10 then 'ต.ค.' 
 					when DATE_FORMAT(note_create_date,'%m') = 11 then 'พ.ย.' 
 					else 'ธ.ค.'
-				end as 'Month',DATE_FORMAT(DATE_ADD(note_create_date, INTERVAL 543 YEAR),'%Y') AS 'year'  
+				end as 'Month',DATE_FORMAT(note_create_date,'%Y') AS 'year'  
 				FROM note
 				WHERE DATE_SUB(note_create_date, INTERVAL 5 DAY) <= ? AND note_create_date >= ? AND note_user_id = ? AND note_read_date != ?";
 		$query = $this->db->query($sql, array($this->note_create_date, $this->note_create_date, $this->note_user_id, $this->note_read_date));
