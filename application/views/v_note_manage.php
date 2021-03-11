@@ -118,9 +118,15 @@
                     json_data.rs_all.forEach(function(element) {
                         let btn_delete = '<a onclick=" "  type="button" class="btn btn-danger btn-circle"><i class="fa fa-minus-circle " title="ลบ"  onclick="delete_note(' + element.note_id + ')" ></i></a >';
                         let btn_edit = '<a data-toggle="modal" data-target="#modal_edit" onclick="master_data_edit(' + element.note_id + ')" type="button" class="btn btn-warning btn-circle" title="แก้ไข"><i class="fa fa-pencil "></i></a >';
+                       if(element.note_type == 1){
+                           type = "แจ้งเตือนครั้งเดียว"
+                       }else{
+                           type = "แจ้งเตือนประจำทุกเดือน"
+                       }
                         table.append($('<tr>')
                             .append($('<td>').append("<center>" + num + "</center>"))
                             .append($('<td>').append(element.note_to_do_list))
+                            .append($('<td>').append("<center>" + type + "</center>"))
                             .append($('<td>').append("<center>" + element.Day + ' ' + element.Month + ' ' + element.year + "</center>"))
                             .append($('<td>').append("<center>" + btn_edit + ' ' + btn_delete + "</center>"))
                         )
@@ -399,6 +405,7 @@
                                     <tr>
                                         <th style="text-align:center; width: 10%"">ลำดับ</th>
                                         <th style=" text-align:center; width: 30%">รายการ</th>
+                                        <th style="text-align:center; width: 20%"">ประเภทการแจ้งเตือน</th>
                                         <th style="text-align:center; width: 20%"">วันที่</th>
                                         <th style=" text-align:center; width: 20%"">ดำเนินการ</th>
                                     </tr>
