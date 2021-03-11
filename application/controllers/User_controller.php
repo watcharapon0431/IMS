@@ -15,7 +15,7 @@ class User_controller extends IMS_controller
         $this->mu->user_password = $user_password;
 
         $user_info = $this->mu->get_by_username()->result();
-        // $user_position = $this->mu->get_position_by_username()->result();
+        $user_position = $this->mu->get_position_by_username()->result();
 
         if ($user_info != null) {
             $this->session->aurthentication = true;
@@ -26,7 +26,7 @@ class User_controller extends IMS_controller
             // case_lname is user_lname
             $this->session->user_lname = $user_info[0]->user_lname;
             // case_job is user_position
-            $this->session->user_position = $user_info[0]->user_position;
+            $this->session->position_name = $user_position[0]->position_name;
             $data['user'] = $user_info;
             $data['check'] = true;
         } else {

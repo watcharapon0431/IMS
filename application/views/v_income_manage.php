@@ -853,7 +853,7 @@ $cur_year = intval(date("Y"));
                     'month': month,
 
                 },
-                dataType: "JSON",
+                dataType: "text",
                 async: false,
                 success: function(data) {
 
