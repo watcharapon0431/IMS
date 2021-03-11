@@ -186,7 +186,7 @@
                     <li>
                         <a href="<?php echo site_url(); ?>/category_manage_controller/load_v_category_manage" class="waves-effect">
                             <span class="hide-menu">
-                                <i class="mdi mdi-clipboard-text"></i>&emsp;ประเภทรายรับ-รายจ่าย
+                                <i class="mdi mdi-clipboard-text"></i>&emsp;จัดการประเภทรายรับ-รายจ่าย
                                 <span class="fa arrow"></span>
                                 <span class="label label-rouded label-inverse pull-right"></span>
                             </span>
