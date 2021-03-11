@@ -57,7 +57,6 @@
                                             </div>
                         </div>
                         <!-- ---------------------------------------------- end pagination ------------------------------------------------------- -->
-
                     </div>
                 </div>
             </div>
@@ -85,11 +84,10 @@
 
                     <div class="form-group">
                         <div class="col-md-12">
+
                             <label class="col-md-12">ประเภทรายการ : <span style="color:red;"> * </span></label>
-                            <span style="color:red;">
-                                <p for="" id="validate_type_id"></p>
-                            </span>
-                            <div class="col-md-9">
+
+                            <div class="col-md-12">
                                 <div class="col-md-3">
                                     <input type="radio" id="type1" name="type">
                                     <label for="female"> รายรับ</label>
@@ -99,8 +97,15 @@
                                     <label for="female"> รายจ่าย</label>
                                 </div>
 
+
+                            </div>
+                            <div class="col-md-6">
+                                <span style="color:red;">
+                                    <p for="" id="validate_type_id"></p>
+                                </span>
                             </div>
                         </div>
+
                     </div>
 
 
@@ -109,6 +114,9 @@
                             <label class="col-md-12">ชื่อรายการ : <span style="color:red;"> * </span></label>
                             <div class="col-md-12">
                                 <input type="text" class="form-control" id="list" maxlength="100">
+                                <span style="color:red;">
+                                    <p for="" id="validate_list"></p>
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -166,6 +174,9 @@
                         <label class="col-md-12">ชื่อประเภท : <span style="color:red;"> * </span></label>
                         <div class="col-md-12">
                             <input type="text" class="form-control" id="category_name" maxlength="100">
+                            <span style="color:red;">
+                                <p for="" id="validate_list_edit"></p>
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -191,6 +202,28 @@
 <!-- ---------------------------------------------- end modal master data insert  ---------------------------------------------- -->
 <script>
     $(document).ready(() => {
+        report_get_table_by_page_number_search(1);
+        $("#list").change(function() {
+            if ($('#list').val().trim() == '') {
+                $('#list').css("border", "1px solid red");
+                $('#list').focus();
+                $('#validate_list').text('กรุณากรอกชื่อรายการ')
+            } else {
+                $('#list').css("border", "");
+                $('#validate_list').text('')
+            }
+        });
+
+        $("#category_name").change(function() {
+            if ($('#category_name').val().trim() == '') {
+                $('#category_name').css("border", "1px solid red");
+                $('#category_name').focus();
+                $('#validate_list_edit').text('กรุณากรอกชื่อรายการ')
+            } else {
+                $('#category_name').css("border", "");
+                $('#validate_list_edit').text('')
+            }
+        });
 
         $("#label_is_active").append('<p>ใช้งาน</p>')
         $("#is_active").on("change", () => {
@@ -222,7 +255,7 @@
         })
 
         // call report_get_table function
-        report_get_table_by_page_number_search(1);
+
 
         // start when click at row on table for display v_detail_report
         $('#report_table tbody').on('click', 'td', function() {
@@ -277,13 +310,13 @@
             dataType: 'JSON',
             async: false,
             success: function(json_data) {
-
+                console.log(json_data)
                 let count_data = 0
                 let num = 1
                 var date_modify;
                 let btn_edit = '<a data-toggle="modal" data-target="#modal_edit" onclick=" "  type="button" class="btn btn-warning btn-circle" title="แก้ไข" ><i class="fa fa-pencil "></i></a >';
                 let btn_delete = '<a onclick=" "  type="button" class="btn btn-danger btn-circle"><i class="fa fa-minus-circle " title="ลบ"></i></a >';
-                console.log(json_data)
+
                 if (json_data.rs_all.length > 0) {
                     // start loop foreach display case's data on table
                     json_data.rs_all.forEach(function(element) {
@@ -318,8 +351,9 @@
                     //--------------------------------  start declare count number pagination -------------------------------------------------
                     let count_section_page = $("#section_page").val()
                     let current_page = $("#current_page").val()
-                    let max_page = json_data.count_question / 10
-                    if (json_data.count_question % 10 != 0) {
+                    // alert(json_data.count_question)
+                    let max_page = json_data.rs_count[0].count_category / 10
+                    if (json_data.rs_count[0].count_category % 10 != 0) {
                         max_page++
                     }
                     if ((count_section_page * 10) % 10 != 0) {
@@ -335,14 +369,15 @@
                         count_loop = 1
                     }
                     //---------------------------------  end declare count number pagination --------------------------------------------------
-
+                   
                     page.append('<a style="color:black; " href="javascript:report_search_first_page()">&emsp;< |&emsp;</a>')
                     page.append('<a style="color:black; " href="javascript:report_search_page_previous()">&emsp;<&emsp;</a>')
                     $("#count_of_master_data").text("แสดง " + count_data + " ข้อมูล จาก " + json_data.rs_count[0].count_category + " ข้อมูล")
                     for (count = count_loop; count <= max_page; count++) {
+                     
                         if (count <= count_section_page * 10) {
                             if (current_page == count) {
-                                page.append('<a style="color:#0000FF; font-weight:bold" href="javascript:report_get_table_by_page_number_search(' + count + ')">&emsp;' + count + '&emsp;</a>')
+                                page.append('<a style="color:#0000FF; font-weight:bold" href="javascript:report_get_table_by_page_number_search(' + count + ')">&emsp;' + 1 + '&emsp;</a>')
                             } else {
                                 page.append('<a style="color:black; " href="javascript:report_get_table_by_page_number_search(' + count + ')">&emsp;' + count + '&emsp;</a>')
                             }
@@ -403,60 +438,7 @@
         format: 'dd/mm/yyyy',
     }).datepicker("setDate", 'now');
 
-    function master_data_insert() {
-        if ($("#type1").is(":checked") == true) {
-            case_status = 1
-        } else if ($("#type2").is(":checked") == true) {
-            case_status = 2
-        }
-        let list = $('#list').val()
-        let is_active_search = $('#is_active_search').val()
-        let date = $('#create_report').val()
-        var create_date = parseInt($("#create_report").data('datepicker').getFormattedDate('yyyy') - 543) + $("#create_report").data('datepicker').getFormattedDate('-mm-dd') + ' ' + $("#hour").val() + ':' + $("#minute").val() + ':' + '00'
-        let money = $('#money').val()
 
-        if (is_active_search == 0) {
-            $('#is_active_search').css("border", "1px solid red");
-            $('#is_active_search').focus();
-        }
-
-        if (money == '' || money < 1) {
-            $('#money').css("border", "1px solid red");
-            $('#money').focus();
-        }
-
-        if (list == '') {
-            $('#list').css("border", "1px solid red");
-            $('#list').focus();
-        }
-
-        if ($("#type1").is(":checked") == false && $("#type2").is(":checked") == false) {
-            $('#validate_type_id').text('กรุณาเลือกประเภทรายรับ - รายจ่าย')
-        } else if (money != '' && money > 0 && list != '') {
-            $.ajax({
-                type: "POST",
-                url: "<?php echo site_url() . "/Income_manage_controller/insert_data/" ?>",
-                data: {
-                    'list_type': case_status,
-                    'list_detail': list,
-                    'list_category_id': is_active_search,
-                    'list_create_date': create_date,
-                    'list_cost': money,
-                },
-                dataType: "text",
-                async: false,
-                success: function(data) {
-                    swal({
-                        title: "บันทึกข้อมูลสำเร็จ",
-                        text: "ข้อมูลของคุณถูกบันทึกเรียบร้อย",
-                        type: "success",
-                        confirmButtonText: "ตกลง",
-                    })
-                    window.location.reload();
-                }
-            })
-        }
-    }
 
     function master_data_edit(id) {
         var category_id = id;
@@ -500,56 +482,55 @@
         let category_types = $('input[name=type]:checked', '#type_category').val()
         // var_dump(category_type);
         // die();
-        if (category_detail == '') {
+
+
+        if ($('#category_name').val().trim() == '') {
             $('#category_name').css("border", "1px solid red");
             $('#category_name').focus();
+            $('#validate_list_edit').text('กรุณากรอกจำนวนเงิน')
+        } else {
+            $('#category_name').css("border", "");
+            $('#validate_list_edit').text('')
         }
         // alert(category_detail)
-        if (category_detail != '') {
-            $.ajax({
-                type: "POST",
-                url: "<?php echo site_url() . "/Category_manage_controller/category_update/" ?>",
-                data: {
 
-                    'category_id': category_id,
-                    'category_name': category_detail,
-                    'category_type': category_types
+        $.ajax({
+            type: "POST",
+            url: "<?php echo site_url() . "/Category_manage_controller/category_update/" ?>",
+            data: {
 
-                },
-                dataType: "json",
-                async: false,
-                success: function(data) {
+                'category_id': category_id,
+                'category_name': category_detail,
+                'category_type': category_types
 
-                    if (data == true) {
-                        $('#modal_edit').modal('toggle')
-                        // notify alert when update success
-                        swal({
-                            title: "แก้ไขข้อมูลสำเร็จ",
-                            text: "ข้อมูลของคุณถูกแก้ไขเรียบร้อย",
-                            type: "success",
-                            confirmButtonText: "ตกลง"
-                        })
-                        window.location.reload();
+            },
+            dataType: "json",
+            async: false,
+            success: function(data) {
 
-                    } else {
-                        // notify alert when update unsuccess
-                        swal({
-                            title: "แก้ไขข้อมูลไม่สำเร็จ",
-                            type: "error",
-                            confirmButtonText: "ตกลง"
-                        })
+                if (data == true) {
+                    $('#modal_edit').modal('toggle')
+                    // notify alert when update success
+                    swal({
+                        title: "แก้ไขข้อมูลสำเร็จ",
+                        text: "ข้อมูลของคุณถูกแก้ไขเรียบร้อย",
+                        type: "success",
+                        confirmButtonText: "ตกลง"
+                    })
+                    window.location.reload();
 
-                    }
+                } else {
+                    // notify alert when update unsuccess
+                    swal({
+                        title: "แก้ไขข้อมูลไม่สำเร็จ",
+                        type: "error",
+                        confirmButtonText: "ตกลง"
+                    })
+
                 }
-            });
-        } else {
-            swal({
-                title: "แก้ไขข้อมูลไม่สำเร็จ",
-                text: "กรุณากรอกข้อมูลที่สำคัญให้ครบ",
-                type: "error",
-                confirmButtonText: "ตกลง"
-            })
-        }
+            }
+        });
+
     }
 
     function delete_category(delete_category_id) {
@@ -611,9 +592,14 @@
         let category_seq = $('#order_no').val()
 
 
-        if (category_name == '') {
+
+        if ($('#list').val().trim() == '') {
             $('#list').css("border", "1px solid red");
             $('#list').focus();
+            $('#validate_list').text('กรุณากรอกจำนวนเงิน')
+        } else {
+            $('#list').css("border", "");
+            $('#validate_list').text('')
         }
 
         if ($("#type1").is(":checked") == false && $("#type2").is(":checked") == false) {

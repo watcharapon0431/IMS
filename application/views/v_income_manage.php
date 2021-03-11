@@ -36,6 +36,7 @@
             dataType: 'JSON',
             async: false,
             success: function(json_data) {
+                console.log(json_data)
                 let count_data = 0
                 if (json_data.rs_income.length > 0) {
                     json_data.rs_income.forEach(function(element) {
@@ -306,7 +307,7 @@ $cur_year = intval(date("Y"));
                         <div class="panel-body">
                             <div class="col-md-">
                                 <div class="col-md-6">
-                                    <h2><i class="fa fa-list-alt" style="font-size:40px;"></i>&emsp;จัดการรายรับ-รายจ่าย</h2>
+                                    <h2><i class="fa fa-list-alt" style="font-size:40px;"></i>&emsp;รายการรายรับ-รายจ่าย</h2>
                                 </div>
 
                             </div>
