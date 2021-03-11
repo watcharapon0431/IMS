@@ -72,4 +72,13 @@ class Note_manage_controller extends IMS_controller
 		$data = true;
 		echo json_encode($data);
 	}
+
+	public function note_delete()
+	{
+		$this->load->model('M_note', 'mn');
+		$this->mn->note_id = $this->input->post("note_id");
+		$this->mn->delete_note();
+		$data =  true;
+		echo json_encode($data);
+	}
 }
