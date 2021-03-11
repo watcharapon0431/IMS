@@ -119,7 +119,11 @@
                     </li>
                     <li class="dropdown">
                         <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="javascript:void(0)">
-                            <b class="hidden-xs"><?php if ($_SESSION['user_position'] == 1){echo "ผู้ดูแล" . " : ";}else if($_SESSION['user_position'] == 2){echo "ผู้ใช้งานทั่วไป" . " : ";} ?></b>
+                            <b class="hidden-xs"><?php if ($_SESSION['user_position'] == 1) {
+                                                        echo "ผู้ดูแล" . " : ";
+                                                    } else if ($_SESSION['user_position'] == 2) {
+                                                        echo "ผู้ใช้งานทั่วไป" . " : ";
+                                                    } ?></b>
                             <b class="hidden-xs" id="name_topbar"><?php echo $_SESSION['user_fname'] . ' ' . $_SESSION['user_lname']; ?></b>
                             <span class="caret"></span>
                         </a>
@@ -128,7 +132,11 @@
                                 <div class="dw-user-box">
                                     <div class="u-text">
                                         <h5 id="name_topbar_menu"><?php echo $_SESSION['user_fname'] . ' ' . $_SESSION['user_lname']; ?></h5>
-                                        <h6><?php if ($_SESSION['user_position'] == 1){echo "ผู้ดูแล" . " : ";}else if($_SESSION['user_position'] == 2){echo "ผู้ใช้งานทั่วไป" . " : ";} ?></h6>
+                                        <h6><?php if ($_SESSION['user_position'] == 1) {
+                                                echo "ผู้ดูแล" . " : ";
+                                            } else if ($_SESSION['user_position'] == 2) {
+                                                echo "ผู้ใช้งานทั่วไป" . " : ";
+                                            } ?></h6>
                                     </div>
                                 </div>
                             </li>
@@ -174,15 +182,17 @@
                 </li>
                 <!-- End สรุปรายรับ-รายจ่าย -->
                 <!-- Strat ประเภทรายรับ-รายจ่าย -->
-                <li>
-                    <a href="<?php echo site_url(); ?>/category_manage_controller/load_v_category_manage" class="waves-effect">
-                        <span class="hide-menu">
-                            <i class="mdi mdi-clipboard-text"></i>&emsp;ประเภทรายรับ-รายจ่าย
-                            <span class="fa arrow"></span>
-                            <span class="label label-rouded label-inverse pull-right"></span>
-                        </span>
-                    </a>
-                </li>
+                <?php if ($_SESSION['user_position'] == 1) { ?>
+                    <li>
+                        <a href="<?php echo site_url(); ?>/category_manage_controller/load_v_category_manage" class="waves-effect">
+                            <span class="hide-menu">
+                                <i class="mdi mdi-clipboard-text"></i>&emsp;ประเภทรายรับ-รายจ่าย
+                                <span class="fa arrow"></span>
+                                <span class="label label-rouded label-inverse pull-right"></span>
+                            </span>
+                        </a>
+                    </li>
+                <?php } ?>
                 <!-- End ประเภทรายรับ-รายจ่าย -->
                 <!-- Strat จดการบันทึกช่วยจำ-->
                 <li>
