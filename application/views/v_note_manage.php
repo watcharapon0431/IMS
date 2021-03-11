@@ -308,7 +308,7 @@
 
         let note_id_edit = $('#note_id_edit').val()
         let note_edit = $('#note_edit').val()
-        alert(note_id_edit)
+        
 
         let hour_edit = $('#hour_edit').val()
         let minute_edit = $('#minute_edit').val()
