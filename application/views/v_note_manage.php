@@ -1,28 +1,5 @@
 <script>
     $(document).ready(() => {
-
-        $("#note").change(function() {
-            if ($('#note').val().trim() == '') {
-                $('#note').css("border", "1px solid red");
-                $('#note').focus();
-                $('#validate_note').text('กรุณากรอกชื่อบันทึกช่วยจำ')
-            } else {
-                $('#note').css("border", "");
-                $('#validate_note').text('')
-            }
-        });
-
-        $("#note_edit").change(function() {
-            if ($('#note_edit').val().trim() == '') {
-                $('#note_edit').css("border", "1px solid red");
-                $('#note_edit').focus();
-                $('#validate_note_edit').text('กรุณากรอกชื่อบันทึกช่วยจำ')
-            } else {
-                $('#note_edit').css("border", "");
-                $('#validate_note_edit').text('')
-            }
-        });
-
         report_get_table_by_page_number_search(1);
 
         var today = new Date();
@@ -331,22 +308,13 @@
 
         let note_id_edit = $('#note_id_edit').val()
         let note_edit = $('#note_edit').val()
-
+        
 
         let hour_edit = $('#hour_edit').val()
         let minute_edit = $('#minute_edit').val()
 
         let create_note_edit = parseInt($("#create_note_edit").data('datepicker').getFormattedDate('yyyy') - 543) + $("#create_note_edit").data('datepicker').getFormattedDate('-mm-dd')
         let note_type = $('input[name=type]:checked', '#type_note').val()
-
-        if ($('#note_edit').val().trim() == '') {
-            $('#note_edit').css("border", "1px solid red");
-            $('#note_edit').focus();
-            $('#validate_note_edit').text('กรุณากรอกชื่อบันทึกช่วยจำ')
-        } else {
-            $('#note_edit').css("border", "");
-            $('#validate_note_edit').text('')
-        }
 
         if (note_edit != '') {
             $.ajax({
@@ -385,6 +353,13 @@
                     }
                 }
             });
+        } else {
+            swal({
+                title: "แก้ไขข้อมูลไม่สำเร็จ",
+                text: "กรุณากรอกข้อมูลที่สำคัญให้ครบ",
+                type: "error",
+                confirmButtonText: "ตกลง"
+            })
         }
     }
 </script>
@@ -488,9 +463,6 @@
                             <label class="col-md-12">ชื่อบันทึกช่วยจำ : <span style="color:red;"> * </span></label>
                             <div class="col-md-12">
                                 <input type="text" class="form-control" id="note" maxlength="100">
-                                <span style="color:red;">
-                                    <p for="" id="validate_note"></p>
-                                </span>
                             </div>
                         </div>
                     </div>
@@ -566,9 +538,6 @@
                             <label class="col-md-12">ชื่อบันทึกช่วยจำ : <span style="color:red;"> * </span></label>
                             <div class="col-md-12">
                                 <input type="text" class="form-control" id="note_edit" maxlength="100">
-                                <span style="color:red;">
-                                    <p for="" id="validate_note_edit"></p>
-                                </span>
                             </div>
                         </div>
                     </div>
@@ -628,17 +597,10 @@
         } else if ($("#type2").is(":checked") == true) {
             note_status = 2
         }
-
-        if ($('#note').val().trim() == '') {
+        if (note == '') {
             $('#note').css("border", "1px solid red");
             $('#note').focus();
-            $('#validate_note').text('กรุณากรอกชื่อบันทึกช่วยจำ')
-        } else {
-            $('#note').css("border", "");
-            $('#validate_note').text('')
         }
-
-
         if ($("#type1").is(":checked") == false && $("#type2").is(":checked") == false) {
             $('#validate_type_id').text('กรุณาเลือกประเภทการแจ้งเตือน')
         } else if (note != '') {
