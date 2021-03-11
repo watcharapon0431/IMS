@@ -119,7 +119,7 @@
                     </li>
                     <li class="dropdown">
                         <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="javascript:void(0)">
-                            <b class="hidden-xs"><?php echo $_SESSION['position_name'] . " : "; ?></b>
+                            <b class="hidden-xs"><?php if ($_SESSION['user_position'] == 1){echo "ผู้ดูแล" . " : ";}else if($_SESSION['user_position'] == 2){echo "ผู้ใช้งานทั่วไป" . " : ";} ?></b>
                             <b class="hidden-xs" id="name_topbar"><?php echo $_SESSION['user_fname'] . ' ' . $_SESSION['user_lname']; ?></b>
                             <span class="caret"></span>
                         </a>
@@ -128,7 +128,7 @@
                                 <div class="dw-user-box">
                                     <div class="u-text">
                                         <h5 id="name_topbar_menu"><?php echo $_SESSION['user_fname'] . ' ' . $_SESSION['user_lname']; ?></h5>
-                                        <h6><?php echo $_SESSION['position_name']; ?></h6>
+                                        <h6><?php echo if ($_SESSION['user_position'] == 1){echo "ผู้ดูแล" . " : ";}else if($_SESSION['user_position'] == 2){echo "ผู้ใช้งานทั่วไป" . " : ";} ?></h6>
                                     </div>
                                 </div>
                             </li>
