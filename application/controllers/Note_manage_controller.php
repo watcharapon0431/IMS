@@ -48,7 +48,6 @@ class Note_manage_controller extends IMS_controller
 	function repeate_notification()
 	{
 		$this->load->model('M_note', 'mn');
-		var_dump(11);
 		$this->mn->update_repet();
 	}
 	function note_edit()
@@ -56,7 +55,6 @@ class Note_manage_controller extends IMS_controller
 		$this->load->model('M_note', 'mn');
 		$this->mn->note_id = $this->input->post("note_id");
 		$rs_note = $this->mn->get_by_key()->result();
-		$data = true;
 		echo json_encode($rs_note);
 	}
 
