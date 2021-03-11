@@ -69,4 +69,11 @@ class M_note extends Da_note
 				WHERE note_create_date < NOW() AND note_type = 2";
 		$this->db->query($sql, array());
 	}
+
+	function delete_note()
+	{
+		$sql = "DELETE FROM note
+    	WHERE note_id = ?";
+		$this->db->query($sql, array($this->note_id));
+	}
 }

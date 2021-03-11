@@ -33,8 +33,9 @@
                                     <tr>
                                         <th style="text-align:center; width: 10%"">ลำดับ</th>
                                         <th style=" text-align:center; width: 30%">รายการ</th>
-                                        <th style="text-align:center; width: 20%"">วันที่บันทึก</th>
-                                        <th style=" text-align:center; width: 20%"">วันที่แก้ไขล่าสุด</th>
+                                        <th style=" text-align:center; width: 10%">ประเภท</th>
+                                        <th style="text-align:center; width: 15%"">วันที่บันทึก</th>
+                                        <th style=" text-align:center; width: 15%"">วันที่แก้ไขล่าสุด</th>
                                         <th style="text-align:center; width: 20%"">ดำเนินการ</th>
                                     </tr>
                                 </thead>
@@ -340,21 +341,32 @@
 
                 let count_data = 0
                 let num = 1
-                let date_modify;
+                var date_modify;
                 let btn_edit = '<a data-toggle="modal" data-target="#modal_edit" onclick=" "  type="button" class="btn btn-warning btn-circle" title="แก้ไข" ><i class="fa fa-pencil "></i></a >';
                 let btn_delete = '<a onclick=" "  type="button" class="btn btn-danger btn-circle"><i class="fa fa-minus-circle " title="ลบ"></i></a >';
                 console.log(json_data)
                 if (json_data.rs_all.length > 0) {
                     // start loop foreach display case's data on table
                     json_data.rs_all.forEach(function(element) {
+                        var status;
+                        
                         if (element.date_modify == "0000-00-00") {
                             date_modify = "-";
+                        }else{
+                            date_modify = element.date_modify;
                         }
+                        if(element.category_type == 1){
+                            status="รายรับ";
+                        }else{
+                            status="รายจ่าย";
+                        }
+
                         let btn_edit = '<a data-toggle="modal" data-target="#modal_edit" onclick="master_data_edit(' + element.category_id + ')"  type="button" class="btn btn-warning btn-circle" title="แก้ไข" ><i class="fa fa-pencil "></i></a >';
                         let btn_delete = '<a onclick="delete_category(' + element.category_id + ')"  type="button" class="btn btn-danger btn-circle"><i class="fa fa-minus-circle " title="ลบ"></i></a >';
                         table.append($('<tr>')
                             .append($('<td>').append("<center>" + num + "</center>"))
                             .append($('<td>').append(element.category_name))
+                            .append($('<td>').append("<center>" + status + "<center>"))
                             .append($('<td>').append("<center>" + element.date_create + "</center>"))
                             .append($('<td>').append("<center>" + date_modify + "</center>"))
                             .append($('<td>').append("<center>" + btn_edit + ' ' + btn_delete + "</center>"))
@@ -408,25 +420,6 @@
             }
         })
     }
-
-    // function report_get_table_by_page_number_search(page_number) {
-    //     let table = $("#report_table tbody")
-    //     let page = $("#page_option")
-
-    //     table.empty()
-    //     page.empty()
-
-    //     let count_of_master_data = $("#count_of_master_data")
-    //     count_of_master_data.empty()
-
-    //     $('#current_page').val(page_number)
-
-    //     // set type_sorting_date 
-    //     let type_sorting_date = $("#type_sorting_date").val()
-
-    //     let user_login = '<?php echo $this->session->case_code; ?>'
-    //     let user_login_position = null
-    // }
 
     function report_search_page_previous() {
         let current_page = $('#current_page').val()
@@ -505,40 +498,29 @@
                 type: "POST",
                 url: "<?php echo site_url() . "/Income_manage_controller/insert_data/" ?>",
                 data: {
-
                     'list_type': case_status,
                     'list_detail': list,
                     'list_category_id': is_active_search,
                     'list_create_date': create_date,
                     'list_cost': money,
-
                 },
                 dataType: "text",
                 async: false,
                 success: function(data) {
-
-
                     swal({
                         title: "บันทึกข้อมูลสำเร็จ",
                         text: "ข้อมูลของคุณถูกบันทึกเรียบร้อย",
                         type: "success",
                         confirmButtonText: "ตกลง",
                     })
-
                     window.location.reload();
-
-
-
                 }
             })
         }
-
-
     }
 
     function master_data_edit(id) {
         var category_id = id;
-
         try {
             $.ajax({
                 type: "POST",

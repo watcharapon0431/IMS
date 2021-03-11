@@ -49,7 +49,45 @@
         // end when click at row on table for display v_detail_report
     })
 
+    function delete_note(delete_note_id) {
+        swal({
+                title: "คุณต้องการลบรายการนี้ใช่หรือไม่",
+                text: "ข้อมูลของคุณจะสูญหาย!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: 'red',
+                confirmButtonText: "ยืนยัน",
+                closeOnConfirm: false,
+                cancelButtonText: 'ยกเลิก'
+            },
+            function(result) {
 
+                if (result) {
+                    $.ajax({
+                        type: "POST",
+                        url: "<?php echo site_url() . "/Note_manage_controller/note_delete"; ?>",
+                        data: {
+                            'note_id': delete_note_id
+                        },
+                        dataType: 'JSON',
+                        async: false,
+                        success: function(json_data) {
+
+                            swal({
+                                title: "ลบข้อมูลสำเร็จ",
+                                text: "ข้อมูลของคุณถูกลบเรียบร้อย",
+                                type: "success",
+                                confirmButtonText: "ตกลง"
+                            })
+
+
+                        }
+                    })
+                }
+                window.location.reload();
+            }
+        )
+    }
 
     function report_get_table_by_page_number_search(page_number) {
         let table = $("#report_table tbody")
@@ -75,8 +113,8 @@
                 let count_data = 0
                 let num = 1
                 let date_modify;
-
-                let btn_delete = '<a onclick=" "  type="button" class="btn btn-danger btn-circle"><i class="fa fa-minus-circle " title="ลบ"></i></a >';
+                
+                let btn_delete = '<a onclick=" "  type="button" class="btn btn-danger btn-circle"><i class="fa fa-minus-circle " title="ลบ"  onclick="delete_note(' + element.note_id + ')" ></i></a >';
 
                 if (json_data.rs_all.length > 0) {
                     // start loop foreach display case's data on table
