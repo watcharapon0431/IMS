@@ -72,8 +72,8 @@ class Income_manage_controller extends IMS_controller
 		$check = true;
 		echo json_encode($check);
 	}
-	// 
-	public function delete_list()
+
+	function delete_list()
 	{
 		$this->load->model('M_income', 'mic');
 		$this->mic->list_id = $this->input->post("list_id");
@@ -118,16 +118,15 @@ class Income_manage_controller extends IMS_controller
 	// 	echo json_encode($data);
 	// }
 
-	public function list_edit()
+	function list_edit()
 	{
 		$this->load->model('M_income', 'mc');
 		$this->mc->list_id = $this->input->post("list_id");
 		$rs_list = $this->mc->get_by_key()->result();
-		// load department model
 		echo json_encode($rs_list);
 	}
 
-	public function list_update()
+	function list_update()
 	{
 		$this->load->model('M_income', 'mc');
 		$this->load->model('M_summary', 'ms');
@@ -207,22 +206,7 @@ class Income_manage_controller extends IMS_controller
 		$check = true;
 		echo json_encode($check);
 	}
-	/*
-	* report_search
-	* Search data from v_report and query search's data 
-	* @input channel_id, category_id, case_status_id, create_date, modify_date, modify_user_id
-	* @output code, subject, name, user_name, is_active, btn-edit, btn-delete, btn-info
-	* @author Chutipong
-	* @Create Date 2563-02-25	
-	*/
-	/*
-	* report_search
-	* Search data from v_report and query search's data 
-	* @input channel_id, category_id, case_status_id, case_position_id,create_date, modify_date, modify_user_id
-	* @output code, subject, name, user_name, is_active, btn-edit, btn-delete, btn-info
-	* @author Alongkon
-	* @Update Date 2563-10-01	
-	*/
+	
 	function income_search()
 	{
 		// load M_case and define mcs
