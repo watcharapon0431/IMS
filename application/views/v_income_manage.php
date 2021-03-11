@@ -788,7 +788,7 @@
                     'month': month,
 
                 },
-                dataType: "text",
+                dataType: "JSON",
                 async: false,
                 success: function(data) {
 

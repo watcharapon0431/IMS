@@ -27,52 +27,49 @@ class Income_manage_controller extends IMS_controller
 		$year = $this->input->post("year");
 		$month = $this->input->post("month");
 
+		$this->ms->sl_user_id = $this->session->user_id;
 		$this->ms->sl_month = $month;
 		$this->ms->sl_year = $year;
 
-
 		$sum_income = $this->ms->get_summary()->result();
-		$cost_income = intval($sum_income[0]->sl_income);
-		$cost_expend = intval($sum_income[0]->sl_expend);
-		$cost_balance = intval($sum_income[0]->sl_balance);
 
-		if ($month == null && $year == null) {
+		if ($sum_income != null) {
+			$cost_income = intval($sum_income[0]->sl_income);
+			$cost_expend = intval($sum_income[0]->sl_expend);
+			$cost_balance = intval($sum_income[0]->sl_balance);
+
 			if ($list_type == 1) {
-				$cost_income = $list_cost;
-				$cost_expend = 0;
-				$cost_balance = $cost_income;
-				$this->ms->sl_income = $cost_income;
-				$this->ms->sl_expend = $cost_expend;
-				$this->ms->sl_balance = $cost_balance;
-				$this->ms->insert();
-			}else if ($list_type == 2) {
-				$cost_income = 0;
-				$cost_expend = $list_cost;
-				$cost_balance = $list_cost * (-1);
-				$this->ms->sl_income = $cost_income;
-				$this->ms->sl_expend = $cost_expend;
-				$this->ms->sl_balance = $cost_balance;
-				$this->ms->insert();
-			} 
-		}else{
-			if ($list_type == 1) {
-				$cost_income = 0;
-				$cost_expend = 0;
-				$cost_balance = 0;
+				$cost_income += $list_cost;
+				$cost_expend += 0;
+				$cost_balance += $list_cost;
 				$this->ms->sl_income = $cost_income;
 				$this->ms->sl_expend = $cost_expend;
 				$this->ms->sl_balance = $cost_balance;
 				$this->ms->update_sum_list();
-			}else if ($list_type == 2) {
-				$cost_income = 0;
-				$cost_expend = 0;
-				$cost_balance = 0;
+			} else {
+				$cost_income += 0;
+				$cost_expend += $list_cost;
+				$cost_balance -= $list_cost;
 				$this->ms->sl_income = $cost_income;
 				$this->ms->sl_expend = $cost_expend;
 				$this->ms->sl_balance = $cost_balance;
 				$this->ms->update_sum_list();
 			}
-		 }
+		} else if ($sum_income == null) {
+			if ($list_type == 1) {
+				$this->ms->sl_income = $list_cost;
+				$this->ms->sl_expend = 0;
+				$this->ms->sl_balance = $list_cost;
+				$this->ms->insert();
+			} else if ($list_type == 2) {
+				$this->ms->sl_income = 0;
+				$this->ms->sl_expend = $list_cost;
+				$this->ms->sl_balance -= $list_cost;
+				$this->ms->insert();
+			}
+		}
+
+
 
 		$check = true;
 		echo json_encode($check);
