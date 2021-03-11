@@ -42,11 +42,11 @@ class M_summary extends Da_summary
 	}
 
 	function get_list_detail(){
-		$sql = " SELECT * 
+		$sql = " SELECT SUM(list_cost) as list_cost, category_name, category_type
 		FROM `list`
 		LEFT JOIN category ON list.list_category_id = category.category_id
 		WHERE MONTH(list_create_date) = ? AND YEAR(list_create_date) = ? AND list_user_id = ?
-		GROUP BY category_name
+		GROUP BY list_category_id 
 		ORDER BY category_type";
 		$query = $this->db->query($sql,array($this->list_create_date_month,$this->list_create_date_year,$this->list_user_id));
 		return $query;
