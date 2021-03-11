@@ -34,7 +34,7 @@
                                         <th style="text-align:center; width: 10%"">ลำดับ</th>
                                         <th style=" text-align:center; width: 30%">รายการ</th>
                                         <th style="text-align:center; width: 20%"">วันที่บันทึก</th>
-                                        <th style="text-align:center; width: 20%"">วันที่แก้ไขล่าสุด</th>
+                                        <th style=" text-align:center; width: 20%"">วันที่แก้ไขล่าสุด</th>
                                         <th style="text-align:center; width: 20%"">ดำเนินการ</th>
                                     </tr>
                                 </thead>
@@ -81,7 +81,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="form-group">
                         <div class="col-md-12">
                             <label class="col-md-12">ประเภทรายการ : <span style="color:red;"> * </span></label>
@@ -137,49 +137,49 @@
                 <input type="radio" id="category_id_edit" name="type" hidden>
             </div>
             <!-- <div class="modal-body"> -->
-                <form class="form-horizontal" id="master_data_edit_form" onsubmit='return false'>
-                    <div class="form-group">
-                        <div class="col-md-12">
-                            <label class="col-md-12">ประเภทรายการ : <span style="color:red;"> * </span></label>
-                            <span style="color:red;">
-                                <p for="" id="validate_type_id_edit"></p>
-                            </span>
-                            <div id="type_category">
-                                <div class="col-md-9">
-                                    <div class="col-md-3">
-                                        <input type="radio" id="type1_edit" name="type" value="1">
-                                        <label for="female"> รายรับ</label>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <input type="radio" id="type2_edit" name="type" value="2">
-                                        <label for="female"> รายจ่าย</label>
-                                    </div>
+            <form class="form-horizontal" id="master_data_edit_form" onsubmit='return false'>
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <label class="col-md-12">ประเภทรายการ : <span style="color:red;"> * </span></label>
+                        <span style="color:red;">
+                            <p for="" id="validate_type_id_edit"></p>
+                        </span>
+                        <div id="type_category">
+                            <div class="col-md-9">
+                                <div class="col-md-3">
+                                    <input type="radio" id="type1_edit" name="type" value="1">
+                                    <label for="female"> รายรับ</label>
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="radio" id="type2_edit" name="type" value="2">
+                                    <label for="female"> รายจ่าย</label>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <div class="form-group">
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <label class="col-md-12">ชื่อประเภท : <span style="color:red;"> * </span></label>
                         <div class="col-md-12">
-                            <label class="col-md-12">ชื่อประเภท : <span style="color:red;"> * </span></label>
-                            <div class="col-md-12">
-                                <input type="text" class="form-control" id="category_name" maxlength="100">
-                            </div>
+                            <input type="text" class="form-control" id="category_name" maxlength="100">
                         </div>
                     </div>
+                </div>
 
-                    <div class="modal-footer">
-                        <div class="col-md-12" align="center">
-                            <!-- ----------------------- start ยกเลิก submit ----------------------- -->
-                            <button onclick="btn_clear2();" class="btn btn-default" data-dismiss="modal" aria-hidden="true"><span class="btn-label"><i class="fa fa-times"></i></span>ยกเลิก</button>
-                            <!-- ----------------------- End ยกเลิก submit ----------------------- -->
-                            &nbsp;&nbsp;&nbsp;
-                            <!-- ----------------------- start ส่งข้อมูล input ----------------------- -->
-                            <button onclick="category_data_update(); " class="btn btn-success" type="button"><span class="btn-label"><i class="fa fa-save"></i></span>บันทึก</button>
-                            <!-- ----------------------- End ส่งข้อมูล input ----------------------- -->
-                        </div>
+                <div class="modal-footer">
+                    <div class="col-md-12" align="center">
+                        <!-- ----------------------- start ยกเลิก submit ----------------------- -->
+                        <button onclick="btn_clear2();" class="btn btn-default" data-dismiss="modal" aria-hidden="true"><span class="btn-label"><i class="fa fa-times"></i></span>ยกเลิก</button>
+                        <!-- ----------------------- End ยกเลิก submit ----------------------- -->
+                        &nbsp;&nbsp;&nbsp;
+                        <!-- ----------------------- start ส่งข้อมูล input ----------------------- -->
+                        <button onclick="category_data_update(); " class="btn btn-success" type="button"><span class="btn-label"><i class="fa fa-save"></i></span>บันทึก</button>
+                        <!-- ----------------------- End ส่งข้อมูล input ----------------------- -->
                     </div>
-                </form>
+                </div>
+            </form>
             <!-- </div> -->
         </div>
     </div>
@@ -318,6 +318,7 @@
 
 
     function report_get_table_by_page_number_search(page_number) {
+        
         let table = $("#report_table tbody")
         let page = $("#page_option")
 
@@ -336,8 +337,9 @@
             dataType: 'JSON',
             async: false,
             success: function(json_data) {
+
                 let count_data = 0
-                let num=1
+                let num = 1
                 let date_modify;
                 let btn_edit = '<a data-toggle="modal" data-target="#modal_edit" onclick=" "  type="button" class="btn btn-warning btn-circle" title="แก้ไข" ><i class="fa fa-pencil "></i></a >';
                 let btn_delete = '<a onclick=" "  type="button" class="btn btn-danger btn-circle"><i class="fa fa-minus-circle " title="ลบ"></i></a >';
@@ -345,10 +347,11 @@
                 if (json_data.rs_all.length > 0) {
                     // start loop foreach display case's data on table
                     json_data.rs_all.forEach(function(element) {
-                        if(element.date_modify == "0000-00-00"){
-                             date_modify = "-";
+                        if (element.date_modify == "0000-00-00") {
+                            date_modify = "-";
                         }
-                        let btn_edit = '<a data-toggle="modal" data-target="#modal_edit" onclick="master_data_edit('+element.category_id+')"  type="button" class="btn btn-warning btn-circle" title="แก้ไข" ><i class="fa fa-pencil "></i></a >';
+                        let btn_edit = '<a data-toggle="modal" data-target="#modal_edit" onclick="master_data_edit(' + element.category_id + ')"  type="button" class="btn btn-warning btn-circle" title="แก้ไข" ><i class="fa fa-pencil "></i></a >';
+                        let btn_delete = '<a onclick="delete_category(' + element.category_id + ')"  type="button" class="btn btn-danger btn-circle"><i class="fa fa-minus-circle " title="ลบ"></i></a >';
                         table.append($('<tr>')
                             .append($('<td>').append("<center>" + num + "</center>"))
                             .append($('<td>').append(element.category_name))
@@ -497,7 +500,7 @@
 
         if ($("#type1").is(":checked") == false && $("#type2").is(":checked") == false) {
             $('#validate_type_id').text('กรุณาเลือกประเภทรายรับ - รายจ่าย')
-        }else if (money != '' && money > 0 && list != ''){
+        } else if (money != '' && money > 0 && list != '') {
             $.ajax({
                 type: "POST",
                 url: "<?php echo site_url() . "/Income_manage_controller/insert_data/" ?>",
@@ -532,6 +535,7 @@
 
 
     }
+
     function master_data_edit(id) {
         var category_id = id;
 
@@ -566,67 +570,68 @@
         }
         // end try catch 
     }
-function category_data_update() {
 
-// let category_id_edit = $('#category_id_edit').val()
-let category_id = $('#category_id_edit').val()
-let category_detail = $('#category_name').val()
-let category_types = $('input[name=type]:checked', '#type_category').val()
-// var_dump(category_type);
-// die();
-if (category_detail == '') {
-                $('#category_name').css("border", "1px solid red");
-                $('#category_name').focus();
-            }  
-            // alert(category_detail)
-if (category_detail != '') {
-    $.ajax({
-        type: "POST",
-        url: "<?php echo site_url() . "/category_manage_controller/category_update/" ?>",
-        data: {
-            
-            'category_id': category_id, 
-            'category_name': category_detail,
-            'category_type': category_types
-           
-        },
-        dataType: "json",
-        async: false,
-        success: function(data) {
+    function category_data_update() {
 
-            if (data == true) {
-                $('#modal_edit').modal('toggle')
-                // notify alert when update success
-                swal({
-                    title: "แก้ไขข้อมูลสำเร็จ",
-                    text: "ข้อมูลของคุณถูกแก้ไขเรียบร้อย",
-                    type: "success",
-                    confirmButtonText: "ตกลง"
-                })
-                window.location.reload();
-
-            } else {
-                // notify alert when update unsuccess
-                swal({
-                    title: "แก้ไขข้อมูลไม่สำเร็จ",
-                    type: "error",
-                    confirmButtonText: "ตกลง"
-                })
-
-            }
+        // let category_id_edit = $('#category_id_edit').val()
+        let category_id = $('#category_id_edit').val()
+        let category_detail = $('#category_name').val()
+        let category_types = $('input[name=type]:checked', '#type_category').val()
+        // var_dump(category_type);
+        // die();
+        if (category_detail == '') {
+            $('#category_name').css("border", "1px solid red");
+            $('#category_name').focus();
         }
-    });
-} else {
-    swal({
-        title: "แก้ไขข้อมูลไม่สำเร็จ",
-        text: "กรุณากรอกข้อมูลที่สำคัญให้ครบ",
-        type: "error",
-        confirmButtonText: "ตกลง"
-    })
-}
-}
+        // alert(category_detail)
+        if (category_detail != '') {
+            $.ajax({
+                type: "POST",
+                url: "<?php echo site_url() . "/category_manage_controller/category_update/" ?>",
+                data: {
 
-    function delete_list(delete_id) {
+                    'category_id': category_id,
+                    'category_name': category_detail,
+                    'category_type': category_types
+
+                },
+                dataType: "json",
+                async: false,
+                success: function(data) {
+
+                    if (data == true) {
+                        $('#modal_edit').modal('toggle')
+                        // notify alert when update success
+                        swal({
+                            title: "แก้ไขข้อมูลสำเร็จ",
+                            text: "ข้อมูลของคุณถูกแก้ไขเรียบร้อย",
+                            type: "success",
+                            confirmButtonText: "ตกลง"
+                        })
+                        window.location.reload();
+
+                    } else {
+                        // notify alert when update unsuccess
+                        swal({
+                            title: "แก้ไขข้อมูลไม่สำเร็จ",
+                            type: "error",
+                            confirmButtonText: "ตกลง"
+                        })
+
+                    }
+                }
+            });
+        } else {
+            swal({
+                title: "แก้ไขข้อมูลไม่สำเร็จ",
+                text: "กรุณากรอกข้อมูลที่สำคัญให้ครบ",
+                type: "error",
+                confirmButtonText: "ตกลง"
+            })
+        }
+    }
+
+    function delete_category(delete_category_id) {
         swal({
                 title: "คุณต้องการลบรายการนี้ใช่หรือไม่",
                 text: "ข้อมูลของคุณจะสูญหาย!",
@@ -642,85 +647,80 @@ if (category_detail != '') {
                 if (result) {
                     $.ajax({
                         type: "POST",
-                        url: "<?php echo site_url() . "/Income_mange_controller/delete_list"; ?>",
+                        url: "<?php echo site_url() . "/category_manage_controller/category_delete"; ?>",
                         data: {
-                            'list_id': delete_id
+                            'category_id': delete_category_id
                         },
                         dataType: 'JSON',
                         async: false,
                         success: function(json_data) {
-                            if (json_data == true) {
-                                swal({
-                                    title: "ลบข้อมูลสำเร็จ",
-                                    text: "ข้อมูลของคุณถูกลบเรียบร้อย",
-                                    type: "success",
-                                    confirmButtonText: "ตกลง"
-                                })
-                            } else {
-                                swal({
-                                    title: "ไม่สามารถทำการลบข้อมูลนี้ได้",
-                                    text: "เนื่องจาก ข้อมูลนี้ถูกนำไปอ้างอิงในรายการเรื่องร้องเรียน",
-                                    type: "error",
-                                    confirmButtonText: "ตกลง"
-                                })
-                            }
-                            // show();
-                            // window.location.reload();
+
+                            swal({
+                                title: "ลบข้อมูลสำเร็จ",
+                                text: "ข้อมูลของคุณถูกลบเรียบร้อย",
+                                type: "success",
+                                confirmButtonText: "ตกลง"
+                            })
+
+
                         }
                     })
                 }
-            })
+                window.location.reload();
+            }
+        )
     }
+
 
     function btn_clear2() {
         document.getElementById('master_data_insert_form').reset()
         window.location.reload();
     }
 
-    
+
     function master_data_insert() {
 
-    if ($("#type1").is(":checked") == true) {
-        category_tpye = 1
-    } else if ($("#type2").is(":checked") == true) {
-        category_tpye = 2
-    }
+        if ($("#type1").is(":checked") == true) {
+            category_tpye = 1
+        } else if ($("#type2").is(":checked") == true) {
+            category_tpye = 2
+        }
 
-    let category_name = $('#list').val()
-    let category_seq = $('#order_no').val()
+        let category_name = $('#list').val()
+        let category_seq = $('#order_no').val()
 
 
-    if (category_name == '') {
-        $('#list').css("border", "1px solid red");
-        $('#list').focus();
-    }
+        if (category_name == '') {
+            $('#list').css("border", "1px solid red");
+            $('#list').focus();
+        }
 
-    if ($("#type1").is(":checked") == false && $("#type2").is(":checked") == false) {
-        $('#validate_type_id').text('กรุณาเลือกประเภทรายรับ - รายจ่าย')
-    } else if (category_name != '') {
-        $.ajax({
-            type: "POST",
-            url: "<?php echo site_url() . "/category_manage_controller/category_insert/" ?>",
-            data: {
+        if ($("#type1").is(":checked") == false && $("#type2").is(":checked") == false) {
+            $('#validate_type_id').text('กรุณาเลือกประเภทรายรับ - รายจ่าย')
+        } else if (category_name != '') {
+            $.ajax({
+                type: "POST",
+                url: "<?php echo site_url() . "/category_manage_controller/category_insert/" ?>",
+                data: {
 
-                'category_name': category_name,
-                'category_tpye': category_tpye,
-                'category_seq': category_seq
+                    'category_name': category_name,
+                    'category_tpye': category_tpye,
+                    'category_seq': category_seq
 
-            },
-            dataType: 'JSON',
-            async: false,
-            success: function(data) {
-                swal({
-                    title: "บันทึกข้อมูลสำเร็จ",
-                    text: "ข้อมูลของคุณถูกบันทึกเรียบร้อย",
-                    type: "success",
-                    confirmButtonText: "ตกลง",
-                })
+                },
+                dataType: 'JSON',
+                async: false,
+                success: function(data) {
+                    swal({
+                        title: "บันทึกข้อมูลสำเร็จ",
+                        text: "ข้อมูลของคุณถูกบันทึกเรียบร้อย",
+                        type: "success",
+                        confirmButtonText: "ตกลง",
+                    })
 
-                window.location.reload();
-            }
-        })
-    }
+                    window.location.reload();
+                }
+            })
+        }
     }
 </script>

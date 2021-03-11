@@ -13,6 +13,7 @@ class Income_manage_controller extends IMS_controller
 	function insert_data()
 	{
 		$this->load->model('M_income', 'mc');
+		$this->load->model('M_summary', 'ms');
 		$this->mc->list_user_id = $this->session->user_id;
 		$this->mc->list_type = $this->input->post("list_type");
 		$this->mc->list_detail = $this->input->post("list_detail");
@@ -20,6 +21,41 @@ class Income_manage_controller extends IMS_controller
 		$this->mc->list_create_date = $this->input->post("list_create_date");
 		$this->mc->list_cost = $this->input->post("list_cost");
 		$this->mc->insert();
+
+		$year = $this->input->post("year");
+		$month = $this->input->post("month");
+
+		$this->ms->sl_month = $month;
+		$this->ms->sl_year = $year;
+
+		$sum_income = $this->ms->get_summary()->result();
+		$cost_income = intval($sum_income[0]->sl_income);
+		$cost_expend = intval($sum_income[0]->sl_expend);
+		$cost_balance = intval($sum_income[0]->sl_balance);
+
+		if ($sum_income == null) {
+			if ($list_type == 1) {
+				$cost_income = $cost_income - $cost_edit;
+				$cost_expend = $cost_expend + $cost;
+				$cost_balance = $cost_income - $cost_expend;
+			}else if ($list_type == 2) {
+
+			} 
+		}
+		// if ($list_type == 2 && $list_type_edit == 1) {
+		// 	$cost_edit = $list_data[0]->list_cost;
+		// 	$cost_income = $cost_income - $cost_edit;
+		// 	$cost_expend = $cost_expend + $cost;
+		// 	$cost_balance = $cost_income - $cost_expend;
+		// }
+		// $this->ms->sl_income = $cost_income;
+		// $this->ms->sl_expend = $cost_expend;
+		// $this->ms->sl_balance = $cost_balance;
+
+		// $this->ms->update_sum_list();
+		// $this->mc->update();
+		// $check = true;
+		// echo json_encode($check);
 	}
 	// 
 	public function delete_list()
@@ -147,7 +183,7 @@ class Income_manage_controller extends IMS_controller
 				$cost_balance = $cost_balance - $cost_outcome;
 			}
 		}
-	
+
 		$this->ms->sl_income = $cost_income;
 		$this->ms->sl_expend = $cost_expend;
 		$this->ms->sl_balance = $cost_balance;
@@ -263,7 +299,8 @@ class Income_manage_controller extends IMS_controller
 		echo json_encode($data);
 	}
 
-	function get_detail_list(){
+	function get_detail_list()
+	{
 		$year = $this->input->post("year");
 		$month = $this->input->post("month");
 		$this->load->model('M_summary', 'msl');

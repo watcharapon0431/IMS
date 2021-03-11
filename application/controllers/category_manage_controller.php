@@ -60,4 +60,12 @@ class category_manage_controller extends IMS_controller
 	$data = true;
 	echo json_encode($data);
 	}
+	public function category_delete()
+	{
+		$this->load->model('M_category', 'mcg');
+		$this->mcg->category_id = $this->input->post("category_id");
+		$this->mcg->delete_category();
+		$data =  true;
+		echo json_encode($data);
+	}
 }

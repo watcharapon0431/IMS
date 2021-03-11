@@ -753,6 +753,8 @@
         let date = $('#create_report').val()
         var create_date = parseInt($("#create_report").data('datepicker').getFormattedDate('yyyy') - 543) + $("#create_report").data('datepicker').getFormattedDate('-mm-dd') + ' ' + $("#hour").val() + ':' + $("#minute").val() + ':' + '00'
         let money = $('#money').val()
+        let year = parseInt($("#create_report").data('datepicker').getFormattedDate('yyyy') - 543)
+        let month = $("#create_report").data('datepicker').getFormattedDate('m')
 
         if (is_active_search == 0) {
             $('#category_id').css("border", "1px solid red");
@@ -782,6 +784,8 @@
                     'list_category_id': is_active_search,
                     'list_create_date': create_date,
                     'list_cost': money,
+                    'year': year,
+                    'month': month,
 
                 },
                 dataType: "text",

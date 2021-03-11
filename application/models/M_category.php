@@ -24,5 +24,11 @@ class M_category extends Da_category
 			  $query = $this->db->query($sql);
 	 return $query;
 	}
+	function delete_category()
+	{
+		$sql = "DELETE FROM category
+    	WHERE category_id = ?";
+		$this->db->query($sql, array($this->category_id));
+	}
 
 }
