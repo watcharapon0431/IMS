@@ -52,7 +52,7 @@
                                     income = income + parseFloat(element.list_cost); // ผลรวมรายรับ
                                     table.append($('<tr>')
                                         .append($('<td>').append("<center>" + count++ + "</center>"))
-                                        .append($('<td>').append(element.list_detail))
+                                        .append($('<td>').append(element.category_name))
                                         .append($('<td>').append("<center>" + element.list_cost + "</center>"))
                                         .append($('<td>').append("<center>-</center>"))
                                         .append($('<td>').append("<center>" + total + "</center>"))
@@ -62,7 +62,7 @@
                                     expend = expend + parseFloat(element.list_cost); // ผลรวมรายจ่าย
                                     table.append($('<tr>')
                                         .append($('<td>').append("<center>" + count++ + "</center>"))
-                                        .append($('<td>').append(element.list_detail))
+                                        .append($('<td>').append(element.category_name))
                                         .append($('<td>').append("<center>-</center>"))
                                         .append($('<td>').append("<center>" + element.list_cost + "</center>"))
                                         .append($('<td>').append("<center>" + total + "</center>"))
@@ -148,7 +148,7 @@
                                         <select class="form-control" id="select_year" onchange="search_summary()">
                                             <?php
                                             if ($years == null) {
-                                                echo "<option value=" . date("Y") . ">" . (date("Y") + 543) . "</option>";
+                                                echo "<option value=" . date("Y") . ">" . (date("Y")) . "</option>";
                                             } else {
                                                 foreach ($years as $value) {
                                                     $years = $value->sl_year + 543;
@@ -177,9 +177,9 @@
                                 <tr>
                                     <th style="text-align: center; width:15%">ลำดับ</th>
                                     <th style="text-align: center; width:25%">เดือน</th>
-                                    <th style="text-align: center; width:20%">รายรับ (บาท)</th>
-                                    <th style="text-align: center; width:20%">รายจ่าย (บาท)</th>
-                                    <th style="text-align: center; width:20%">คงเหลือ (บาท)</th>
+                                    <th style="text-align: center; width:20%">รายรับ</th>
+                                    <th style="text-align: center; width:20%">รายจ่าย</th>
+                                    <th style="text-align: center; width:20%">คงเหลือ</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -210,10 +210,10 @@
                         <thead>
                             <tr>
                                 <th style="text-align: center; width:15%">ลำดับ</th>
-                                <th style="text-align: center; width:25%">ชื้อรายการ</th>
-                                <th style="text-align: center; width:20%">รายรับ (บาท)</th>
-                                <th style="text-align: center; width:20%">รายจ่าย (บาท)</th>
-                                <th style="text-align: center; width:20%">คงเหลือ (บาท)</th>
+                                <th style="text-align: center; width:25%">ประเภทรายการ</th>
+                                <th style="text-align: center; width:20%">รายรับ</th>
+                                <th style="text-align: center; width:20%">รายจ่าย</th>
+                                <th style="text-align: center; width:20%">คงเหลือ</th>
                             </tr>
                         </thead>
                         <tbody>
