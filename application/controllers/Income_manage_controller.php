@@ -156,7 +156,6 @@ class Income_manage_controller extends IMS_controller
 			$cost_balance = $cost_income - $cost_expend;
 		}
 
-
 		if ($list_type == 1 && $list_type_edit == 1) {
 			$cost_edit = $list_data[0]->list_cost;
 			if ($cost_edit > $cost) {
