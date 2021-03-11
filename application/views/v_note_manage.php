@@ -113,12 +113,10 @@
                 let count_data = 0
                 let num = 1
                 let date_modify;
-                
-                let btn_delete = '<a onclick=" "  type="button" class="btn btn-danger btn-circle"><i class="fa fa-minus-circle " title="ลบ"  onclick="delete_note(' + element.note_id + ')" ></i></a >';
-
                 if (json_data.rs_all.length > 0) {
                     // start loop foreach display case's data on table
                     json_data.rs_all.forEach(function(element) {
+                        let btn_delete = '<a onclick=" "  type="button" class="btn btn-danger btn-circle"><i class="fa fa-minus-circle " title="ลบ"  onclick="delete_note(' + element.note_id + ')" ></i></a >';
                         let btn_edit = '<a data-toggle="modal" data-target="#modal_edit" onclick="master_data_edit(' + element.note_id + ')" type="button" class="btn btn-warning btn-circle" title="แก้ไข"><i class="fa fa-pencil "></i></a >';
                         table.append($('<tr>')
                             .append($('<td>').append("<center>" + num + "</center>"))
@@ -305,8 +303,9 @@
 
         // end try catch 
     }
+
     function note_data_update() {
-   
+
         let note_id_edit = $('#note_id_edit').val()
         let note_edit = $('#note_edit').val()
         alert(note_id_edit)
@@ -314,46 +313,46 @@
         let hour_edit = $('#hour_edit').val()
         let minute_edit = $('#minute_edit').val()
 
-        let create_note_edit = parseInt($("#create_note_edit").data('datepicker').getFormattedDate('yyyy') - 543) + $("#create_note_edit").data('datepicker').getFormattedDate('-mm-dd') 
+        let create_note_edit = parseInt($("#create_note_edit").data('datepicker').getFormattedDate('yyyy') - 543) + $("#create_note_edit").data('datepicker').getFormattedDate('-mm-dd')
         let note_type = $('input[name=type]:checked', '#type_note').val()
 
         if (note_edit != '') {
-        $.ajax({
-            type: "POST",
-            url: "<?php echo site_url() . "/Note_manage_controller/note_update/" ?>",
-            data: {
-                'note_id_edit': note_id_edit,
-                'note_edit': note_edit,
-                'create_note_edit': create_note_edit,
-                'note_type': note_type,
+            $.ajax({
+                type: "POST",
+                url: "<?php echo site_url() . "/Note_manage_controller/note_update/" ?>",
+                data: {
+                    'note_id_edit': note_id_edit,
+                    'note_edit': note_edit,
+                    'create_note_edit': create_note_edit,
+                    'note_type': note_type,
 
-            },
-            dataType: "json",
-            async: false,
-            success: function(data) {
+                },
+                dataType: "json",
+                async: false,
+                success: function(data) {
 
-                if (data == true) {
-                    $('#modal_edit').modal('toggle')
-                    // notify alert when update success
-                    swal({
-                        title: "แก้ไขข้อมูลสำเร็จ",
-                        text: "ข้อมูลของคุณถูกแก้ไขเรียบร้อย",
-                        type: "success",
-                        confirmButtonText: "ตกลง"
-                    })
-                    window.location.reload();
+                    if (data == true) {
+                        $('#modal_edit').modal('toggle')
+                        // notify alert when update success
+                        swal({
+                            title: "แก้ไขข้อมูลสำเร็จ",
+                            text: "ข้อมูลของคุณถูกแก้ไขเรียบร้อย",
+                            type: "success",
+                            confirmButtonText: "ตกลง"
+                        })
+                        window.location.reload();
 
-                } else {
-                    // notify alert when update unsuccess
-                    swal({
-                        title: "แก้ไขข้อมูลไม่สำเร็จ",
-                        type: "error",
-                        confirmButtonText: "ตกลง"
-                    })
+                    } else {
+                        // notify alert when update unsuccess
+                        swal({
+                            title: "แก้ไขข้อมูลไม่สำเร็จ",
+                            type: "error",
+                            confirmButtonText: "ตกลง"
+                        })
 
+                    }
                 }
-            }
-        });
+            });
         } else {
             swal({
                 title: "แก้ไขข้อมูลไม่สำเร็จ",
@@ -446,14 +445,14 @@
                                 <p for="" id="validate_type_id"></p>
                             </span>
                             <!-- <div class="col-md-8"> -->
-                                <div class="col-md-3">
-                                    <input type="radio" id="type1" name="type"checked >
-                                    <label for="female"> ครั้งเดียว</label>
-                                </div>
-                                <div class="col-md-4">
-                                    <input type="radio" id="type2" name="type" >
-                                    <label for="female"> ประจำทุกเดือน</label>
-                                </div>
+                            <div class="col-md-3">
+                                <input type="radio" id="type1" name="type" checked>
+                                <label for="female"> ครั้งเดียว</label>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="radio" id="type2" name="type">
+                                <label for="female"> ประจำทุกเดือน</label>
+                            </div>
                             <!-- </div> -->
                         </div>
                     </div>
@@ -482,7 +481,7 @@
                                     <!-- ----------------------- End date validate ----------------------- -->
                                 </div>
                             </div>
-                        
+
                         </div>
                     </div>
 
@@ -546,7 +545,7 @@
                     <div class="form-group">
                         <div class="col-md-12">
                             <label class="col-md-12">วันที่ต้องการดำเนินการ : <span class="help"> *</span></label>
-                           
+
                             <div class="col-md-5">
                                 <div class="input-group">
                                     <input type="text" class="form-control" id="create_note_edit" value="" placeholder="วัน/เดือน/ปี"> <span class="input-group-addon"><i class="icon-calender"></i></span>
