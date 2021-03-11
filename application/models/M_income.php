@@ -12,24 +12,26 @@ class M_income extends Da_income
 		$this->db->query($sql, array($this->list_id));
 	}
 
-	function search_case(){
+	function search_case($year=0,$month=0){
 		$sql = " SELECT *
 		FROM list
 		LEFT JOIN category
 		ON category.category_id = list.list_category_id
-	    WHERE list.list_user_id = ? 
+	    WHERE list.list_user_id = ? AND $year=year(list.list_create_date) AND  $month=month(list.list_create_date) 
 		ORDER BY list.list_create_date DESC
 		LIMIT ? , 10";
+		
 		$query = $this->db->query($sql, array($this->list_user_id,$this->start_limit));
+		
 		return $query;
 	}
 
-	function count_search_case(){
+	function count_search_case($year=0,$month=0){
 		$sql = " SELECT COUNT(list.list_id) AS count_case
 		FROM list
 		LEFT JOIN category
 		ON category.category_id = list.list_category_id
-	    WHERE list.list_user_id = ? 
+		WHERE list.list_user_id = ? AND $year=year(list.list_create_date) AND  $month=month(list.list_create_date) 
 		ORDER BY list.list_create_date 
 		LIMIT ? , 10";
 		$query = $this->db->query($sql, array($this->list_user_id,$this->start_limit));

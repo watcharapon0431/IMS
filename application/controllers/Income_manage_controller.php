@@ -42,7 +42,7 @@ class Income_manage_controller extends IMS_controller
 				$this->ms->sl_expend = $cost_expend;
 				$this->ms->sl_balance = $cost_balance;
 				$this->ms->insert();
-			}else if ($this->list_type == 2) {
+			} else if ($this->list_type == 2) {
 				$cost_income = 0;
 				$cost_expend = $this->list_cost;
 				$cost_balance = $this->list_cost * -1;
@@ -50,25 +50,25 @@ class Income_manage_controller extends IMS_controller
 				$this->ms->sl_expend = $cost_expend;
 				$this->ms->sl_balance = $cost_balance;
 				$this->ms->insert();
-			} 
-		// }else{
-		// 	if ($list_type == 1) {
-		// 		$cost_income = $cost_income - $cost_edit;
-		// 		$cost_expend = $cost_expend + $cost;
-		// 		$cost_balance = $cost_income - $cost_expend;
-		// 		$this->ms->sl_income = $cost_income;
-		// 		$this->ms->sl_expend = $cost_expend;
-		// 		$this->ms->sl_balance = $cost_balance;
-		// 		$this->ms->update_sum_list();
-		// 	}else if ($list_type == 2) {
-		// 		$cost_income = $cost_income - $cost_edit;
-		// 		$cost_expend = $cost_expend + $cost;
-		// 		$cost_balance = $cost_income - $cost_expend;
-		// 		$this->ms->sl_income = $cost_income;
-		// 		$this->ms->sl_expend = $cost_expend;
-		// 		$this->ms->sl_balance = $cost_balance;
-		// 		$this->ms->update_sum_list();
-		 }
+			}
+			// }else{
+			// 	if ($list_type == 1) {
+			// 		$cost_income = $cost_income - $cost_edit;
+			// 		$cost_expend = $cost_expend + $cost;
+			// 		$cost_balance = $cost_income - $cost_expend;
+			// 		$this->ms->sl_income = $cost_income;
+			// 		$this->ms->sl_expend = $cost_expend;
+			// 		$this->ms->sl_balance = $cost_balance;
+			// 		$this->ms->update_sum_list();
+			// 	}else if ($list_type == 2) {
+			// 		$cost_income = $cost_income - $cost_edit;
+			// 		$cost_expend = $cost_expend + $cost;
+			// 		$cost_balance = $cost_income - $cost_expend;
+			// 		$this->ms->sl_income = $cost_income;
+			// 		$this->ms->sl_expend = $cost_expend;
+			// 		$this->ms->sl_balance = $cost_balance;
+			// 		$this->ms->update_sum_list();
+		}
 
 		$check = true;
 		echo json_encode($check);
@@ -231,15 +231,16 @@ class Income_manage_controller extends IMS_controller
 		// set start_limit is with page_number
 		$this->mis->start_limit = ($this->input->post('page_number') - 1) * 10;
 		// set user_name at M_user by session user_id	
-
+		$year = $this->input->post('year');
+		$month = $this->input->post('month');
 		$this->mis->list_user_id = $this->session->user_id;
 		//echo $this->mis->list_user_id;
 		$this->mis->start_limit = ($this->input->post('page_number') - 1) * 10;
 		// $type_sorting_date = $this->input->post("type_sorting_date");
-		$rs_case = $this->mis->search_case()->result();
+		$rs_case = $this->mis->search_case($year,$month)->result();
 		//$rs_create_fullname = $this->mcs->search_create_use($keyword, $create_date, $modify_date, $type_sorting_date, $position_id, $department_id)->result();
 		// set case_count is count of all case's search data
-		$data['case_count'] = $this->mis->count_search_case()->result();
+		$data['case_count'] = $this->mis->count_search_case($year,$month)->result();
 		// set array_case is array 
 		//print_r($rs_case);
 		$array_case = array();
@@ -281,8 +282,8 @@ class Income_manage_controller extends IMS_controller
 
 		$this->load->model('M_summary', 'msl');
 		$this->msl->sl_user_id = $this->session->user_id;
-		$this->msl->sl_month = 3;
-		$this->msl->sl_year = 2021;
+		$this->msl->sl_month = $month;
+		$this->msl->sl_year = $year;
 		$data['sum_income'] = $this->msl->get_summary()->result();
 		// echo json back to ajax form
 		echo json_encode($data);

@@ -5,14 +5,21 @@
             todayHighlight: true,
             format: 'dd/mm/yyyy',
         }).datepicker("setDate", 'now');
+        $('#year').change(() => {
+            report_get_table_by_page_number_search(1);
+        })
+        $('#month').change(() => {
+            report_get_table_by_page_number_search(1);
+        })
     })
 
-    report_get_table_by_page_number_search(1);
 
     function report_get_table_by_page_number_search(page_number) {
 
         let table = $("#report_table tbody")
         let page = $("#page_option")
+        let month = $("#month").val()
+        let year = $("#year").val()
         table.empty()
         page.empty()
         let count_of_master_data = $("#count_of_master_data")
@@ -22,7 +29,9 @@
             type: "POST",
             url: "<?php echo site_url() . "/Income_manage_controller/income_search/" ?>",
             data: {
-                'page_number': page_number
+                'page_number': page_number,
+                'month': month,
+                'year': year
             },
             dataType: 'JSON',
             async: false,
@@ -50,6 +59,7 @@
                         )
                         count_data++
                     })
+                   
                     $("#income_all").text(json_data.sum_income[0].sl_income + " บาท")
                     $("#expend_all").text(json_data.sum_income[0].sl_expend + " บาท")
                     $("#balance_all").text(json_data.sum_income[0].sl_balance + " บาท")
@@ -91,6 +101,9 @@
                 } else {
                     let text_no_data = '<center><b><p>ไม่มีรายการรายรับ - รายจ่าย</p></b></center>'
                     table.append($('<tr>').append('<td colspan="8">' + text_no_data + '</td>'))
+                    $("#income_all").text("0 บาท")
+                    $("#expend_all").text("0 บาท")
+                    $("#balance_all").text("0 บาท")
                 }
                 // end if condition when have case's data equal or more than 1 data
             }
@@ -271,7 +284,25 @@
         }
     }
 </script>
-
+<?php
+$thai_month = array(
+    "0" => "",
+    "1" => "มกราคม",
+    "2" => "กุมภาพันธ์",
+    "3" => "มีนาคม",
+    "4" => "เมษายน",
+    "5" => "พฤษภาคม",
+    "6" => "มิถุนายน",
+    "7" => "กรกฎาคม",
+    "8" => "สิงหาคม",
+    "9" => "กันยายน",
+    "10" => "ตุลาคม",
+    "11" => "พฤศจิกายน",
+    "12" => "ธันวาคม"
+);
+$cur_month = intval(date("m"));
+$cur_year = intval(date("Y"));
+?>
 <div id="page-wrapper">
     <div class="container-fluid">
         <br>
@@ -280,39 +311,36 @@
                 <div class="panel panel-default">
                     <div class="panel-wrapper collapse in">
                         <div class="panel-body">
-                            <div class="col-md-10">
+                            <div class="col-md-">
                                 <div class="col-md-6">
                                     <h2><i class="fa fa-list-alt" style="font-size:40px;"></i>&emsp;จัดการรายรับ-รายจ่าย</h2>
                                 </div>
-                                <div class="col-md-2">
-                                    <center><b>รายรับทั้งหมด</b></center>
 
-                                    <center>
-                                        <h1 id="income_all" style="color: blue; margin-top: 10px;"></h1>
-                                    </center>
-
-
-                                </div>
-                                <div class="col-md-2">
-                                    <center><b>รายจ่ายทั้งหมด</b></center>
-
-                                    <center>
-                                        <h1 id="expend_all" style="color: red; margin-top: 10px;"></h1>
-                                    </center>
-
-
-                                </div>
-                                <div class="col-md-2">
-                                    <center><b>คงเหลือ</b></center>
-
-                                    <center>
-                                        <h1 id="balance_all" style="color: green; margin-top: 10px;"></h1>
-                                    </center>
-
-
+                            </div>
+                            <div class="col-md-2">
+                                <label class="col-md-2">ปี </label>
+                                <div class="col-md-12">
+                                    <select class="form-control" id="year">
+                                        <?php for ($i = $cur_year; $i >= $cur_year - 4; $i--) { ?>
+                                            <option value='<?php echo $i; ?> ' <?php if ($i == $cur_year) {
+                                                                                    echo "selected";
+                                                                                } ?>> <?php echo $i; ?> </option>
+                                        <?php } ?>
+                                    </select>
                                 </div>
                             </div>
-
+                            <div class="col-md-2">
+                                <label class="col-md-2">เดือน </label>
+                                <div class="col-md-12">
+                                    <select class="form-control" id="month">
+                                        <?php for ($i = 1; $i <= 12; $i++) { ?>
+                                            <option value='<?php echo $i; ?> ' <?php if ($i == $cur_month) {
+                                                                                    echo "selected";
+                                                                                } ?>> <?php echo $thai_month[$i]; ?> </option>
+                                        <?php } ?>
+                                    </select>
+                                </div>
+                            </div>
                             <div class="col-md-2" align="right">
                                 <br>
                                 <!-- --------------------------------------------- start report insert button ------------------------------------------------------ -->
@@ -325,6 +353,43 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md-4">
+                <br>
+                <div class="white-box" style="height:150px;">
+                    <h4 class="box-title">&emsp;รายรับ</h4>
+                    <div>
+                        <center>
+                            <h1 id="income_all" style="color: #33ACFF;font-weight: bold; margin-top: 10px;"></h1>
+                        </center>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-md-4">
+                <br>
+                <div class="white-box" style="height:150px;">
+                    <h4 class="box-title">&emsp;รายจ่าย</h4>
+                    <div>
+                        <center>
+                            <h1 id="expend_all" style="color: #FF3333;font-weight: bold; margin-top: 10px;"></h1>
+                        </center>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-md-4">
+                <br>
+                <div class="white-box" style="height:150px;">
+                    <h4 class="box-title">&emsp;ยอดคงเหลือ</h4>
+                    <div>
+                        <center>
+                            <h1 id="balance_all" style="color: #33FF58;font-weight: bold; margin-top: 10px;"></h1>
+                        </center>
+                    </div>
+
+                </div>
+            </div>
+
             <div class="col-md-12">
                 <div class="white-box">
                     <div class="table-responsive">
