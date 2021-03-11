@@ -1,5 +1,27 @@
 <script>
     $(document).ready(() => {
+
+        $("#note").change(function() {
+            if ($('#note').val().trim() == '') {
+                $('#note').css("border", "1px solid red");
+                $('#note').focus();
+                $('#validate_note').text('กรุณากรอกชื่อบันทึกช่วยจำ')
+            } else {
+                $('#note').css("border", "");
+                $('#validate_note').text('')
+            }
+        });
+
+        $("#note_edit").change(function() {
+            if ($('#note_edit').val().trim() == '') {
+                $('#note_edit').css("border", "1px solid red");
+                $('#note_edit').focus();
+                $('#validate_note_edit').text('กรุณากรอกชื่อบันทึกช่วยจำ')
+            } else {
+                $('#note_edit').css("border", "");
+                $('#validate_note_edit').text('')
+            }
+        });
         report_get_table_by_page_number_search(1);
 
         var today = new Date();
@@ -118,11 +140,11 @@
                     json_data.rs_all.forEach(function(element) {
                         let btn_delete = '<a onclick=" "  type="button" class="btn btn-danger btn-circle"><i class="fa fa-minus-circle " title="ลบ"  onclick="delete_note(' + element.note_id + ')" ></i></a >';
                         let btn_edit = '<a data-toggle="modal" data-target="#modal_edit" onclick="master_data_edit(' + element.note_id + ')" type="button" class="btn btn-warning btn-circle" title="แก้ไข"><i class="fa fa-pencil "></i></a >';
-                       if(element.note_type == 1){
-                           type = "ครั้งเดียว"
-                       }else{
-                           type = "ประจำทุกเดือน"
-                       }
+                        if (element.note_type == 1) {
+                            type = "ครั้งเดียว"
+                        } else {
+                            type = "ประจำทุกเดือน"
+                        }
                         table.append($('<tr>')
                             .append($('<td>').append("<center>" + num + "</center>"))
                             .append($('<td>').append(element.note_to_do_list))
@@ -314,13 +336,22 @@
 
         let note_id_edit = $('#note_id_edit').val()
         let note_edit = $('#note_edit').val()
-        
+
 
         let hour_edit = $('#hour_edit').val()
         let minute_edit = $('#minute_edit').val()
 
         let create_note_edit = parseInt($("#create_note_edit").data('datepicker').getFormattedDate('yyyy') - 543) + $("#create_note_edit").data('datepicker').getFormattedDate('-mm-dd')
         let note_type = $('input[name=type]:checked', '#type_note').val()
+
+        if ($('#note_edit').val().trim() == '') {
+            $('#note_edit').css("border", "1px solid red");
+            $('#note_edit').focus();
+            $('#validate_note_edit').text('กรุณากรอกชื่อบันทึกช่วยจำ')
+        } else {
+            $('#note_edit').css("border", "");
+            $('#validate_note_edit').text('')
+        }
 
         if (note_edit != '') {
             $.ajax({
@@ -359,13 +390,6 @@
                     }
                 }
             });
-        } else {
-            swal({
-                title: "แก้ไขข้อมูลไม่สำเร็จ",
-                text: "กรุณากรอกข้อมูลที่สำคัญให้ครบ",
-                type: "error",
-                confirmButtonText: "ตกลง"
-            })
         }
     }
 </script>
@@ -406,7 +430,7 @@
                                         <th style="text-align:center; width: 10%"">ลำดับ</th>
                                         <th style=" text-align:center; width: 30%">รายการ</th>
                                         <th style="text-align:center; width: 20%"">ประเภทการแจ้งเตือน</th>
-                                        <th style="text-align:center; width: 20%"">วันที่</th>
+                                        <th style=" text-align:center; width: 20%"">วันที่</th>
                                         <th style=" text-align:center; width: 20%"">ดำเนินการ</th>
                                     </tr>
                                 </thead>
@@ -418,23 +442,23 @@
 
                             <!-- --------------------------------------------- start pagination ------------------------------------------------------ -->
                             <div class=" col-md-12">
-                                <div class="col-md-4" align="left">
-                                    <p id="count_of_master_data"></p>
-                                </div>
-                                <input type="hidden" id="current_page" value="1">
-                                <input type="hidden" id="section_page" value="1">
-                                <div id="page_option" class="col-md-8" align="right">
+                                            <div class="col-md-4" align="left">
+                                                <p id="count_of_master_data"></p>
+                                            </div>
+                                            <input type="hidden" id="current_page" value="1">
+                                            <input type="hidden" id="section_page" value="1">
+                                            <div id="page_option" class="col-md-8" align="right">
 
-                                </div>
-                            </div>
-                            <!-- ---------------------------------------------- end pagination ------------------------------------------------------- -->
-
+                                            </div>
                         </div>
+                        <!-- ---------------------------------------------- end pagination ------------------------------------------------------- -->
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 </div>
 <div id="modal_insert" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -470,6 +494,9 @@
                             <label class="col-md-12">ชื่อบันทึกช่วยจำ : <span style="color:red;"> * </span></label>
                             <div class="col-md-12">
                                 <input type="text" class="form-control" id="note" maxlength="100">
+                                <span style="color:red;">
+                                    <p for="" id="validate_note"></p>
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -545,6 +572,9 @@
                             <label class="col-md-12">ชื่อบันทึกช่วยจำ : <span style="color:red;"> * </span></label>
                             <div class="col-md-12">
                                 <input type="text" class="form-control" id="note_edit" maxlength="100">
+                                <span style="color:red;">
+                                    <p for="" id="validate_note_edit"></p>
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -604,12 +634,18 @@
         } else if ($("#type2").is(":checked") == true) {
             note_status = 2
         }
-        if (note == '') {
+        if ($('#note').val().trim() == '') {
             $('#note').css("border", "1px solid red");
             $('#note').focus();
+            $('#validate_note').text('กรุณากรอกชื่อบันทึกช่วยจำ')
+        } else {
+            $('#note').css("border", "");
+            $('#validate_note').text('')
         }
+
         if ($("#type1").is(":checked") == false && $("#type2").is(":checked") == false) {
             $('#validate_type_id').text('กรุณาเลือกประเภทการแจ้งเตือน')
+
         } else if (note != '') {
             $.ajax({
                 type: "POST",
