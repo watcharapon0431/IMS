@@ -23,9 +23,32 @@ class M_summary extends Da_summary
 
 	}
 	
+	function get_year(){
+		$sql = " SELECT DISTINCT sl_year
+		FROM `summary_list`
+		WHERE sl_user_id = ?
+		ORDER BY sl_year DESC";
+		$query = $this->db->query($sql,array($this->sl_user_id));
+		return $query;
+	}
 
+	function get_search_summary(){
+		$sql = "SELECT *
+		FROM summary_list
+		WHERE sl_user_id = ? AND sl_year = ? 
+		ORDER BY sl_month";
+		$query = $this->db->query($sql,array($this->sl_user_id,$this->sl_year));
+		return $query;
+	}
 
-
-
+	function get_list_detail(){
+		$sql = " SELECT * 
+		FROM `list`
+		LEFT JOIN category ON list.list_category_id = category.category_id
+		WHERE MONTH(list_create_date) = ? AND YEAR(list_create_date) = ? AND list_user_id=?
+		ORDER BY list_create_date";
+		$query = $this->db->query($sql,array($this->list_create_date_month,$this->list_create_date_year,$this->list_user_id));
+		return $query;
+	}
 	
 }
