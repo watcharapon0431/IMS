@@ -15,7 +15,7 @@ class User_controller extends IMS_controller
         $this->mu->user_password = $user_password;
 
         $user_info = $this->mu->get_by_username()->result();
-        $user_position = $this->mu->get_position_by_username()->result();
+        // $user_position = $this->mu->get_position_by_username()->result();
 
         if ($user_info != null) {
             $this->session->aurthentication = true;

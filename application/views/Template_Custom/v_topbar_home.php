@@ -128,7 +128,7 @@
                                 <div class="dw-user-box">
                                     <div class="u-text">
                                         <h5 id="name_topbar_menu"><?php echo $_SESSION['user_fname'] . ' ' . $_SESSION['user_lname']; ?></h5>
-                                        <h6><?php echo if ($_SESSION['user_position'] == 1){echo "ผู้ดูแล" . " : ";}else if($_SESSION['user_position'] == 2){echo "ผู้ใช้งานทั่วไป" . " : ";} ?></h6>
+                                        <h6><?php if ($_SESSION['user_position'] == 1){echo "ผู้ดูแล" . " : ";}else if($_SESSION['user_position'] == 2){echo "ผู้ใช้งานทั่วไป" . " : ";} ?></h6>
                                     </div>
                                 </div>
                             </li>
