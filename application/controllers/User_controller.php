@@ -26,7 +26,7 @@ class User_controller extends IMS_controller
             // case_lname is user_lname
             $this->session->user_lname = $user_info[0]->user_lname;
             // case_job is user_position
-            $this->session->user_position = $user_info[0]->user_position;
+            $this->session->user_position = $user_info[0]->user_position ;
             $data['user'] = $user_info;
             $data['check'] = true;
         } else {
