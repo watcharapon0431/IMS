@@ -57,6 +57,7 @@ class Category_manage_controller extends IMS_controller
 	$this->mcg->category_name = $this->input->post("category_name");
 	$this->mcg->category_type = $this->input->post("category_tpye");
 	$this->mcg->category_sequence = $this->input->post("category_seq");
+	$this->mcg->category_status = 1;
 	$this->mcg->insert();
 	$data = true;
 	echo json_encode($data);

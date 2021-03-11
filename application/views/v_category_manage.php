@@ -113,6 +113,7 @@
                         </div>
                     </div>
 
+
                     <div class="modal-footer">
                         <div class="col-md-12" align="center">
                             <!-- ----------------------- start ยกเลิก submit ----------------------- -->
@@ -186,84 +187,21 @@
     </div>
 </div>
 <!-- --------------------------------------------- start modal master data insert  --------------------------------------------- -->
-<div id="modal_insert" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button onclick="btn_clear2();" type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
-                <h4 class="modal-title" id="myModalLabel">เพิ่มรายรับ-รายจ่าย</h4>
-            </div>
-            <div class="modal-body">
-                <form class="form-horizontal" id="master_data_insert_form" onsubmit='return false'>
-                    <div class="form-group">
-                        <div class="col-md-12">
-                            <label class="col-md-12">ประเภทรายการ : <span style="color:red;"> * </span></label>
-                            <span style="color:red;">
-                                <p for="" id="validate_type_id"></p>
-                            </span>
-                            <div class="col-md-9">
-                                <div class="col-md-3">
-                                    <input type="radio" id="type1" name="type">
-                                    <label for="female"> รายรับ</label>
-                                </div>
-                                <div class="col-md-3">
-                                    <input type="radio" id="type2" name="type">
-                                    <label for="female"> รายจ่าย</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div class="form-group">
-                        <div class="col-md-12">
-                            <label class="col-md-12">ชื่อรายการ : <span style="color:red;"> * </span></label>
-                            <div class="col-md-12">
-                                <input type="text" class="form-control" id="list" maxlength="100">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <div class="col-md-12">
-                            <label class="col-md-12">ประเภทการใช้จ่าย : <span style="color:red;"> * </span></label>
-                            <div class="col-md-6">
-                                <select class="form-control" id="is_active_search">
-                                    <option value='' selected>- เลือกประเภทการใช้จ่ายที่ต้องการ -</option>
-                                    <option value=1>ใช้หนี้</option>
-                                    <option value=2>เงินเดือน</option>
-                                    <option value=3>อาหาร</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-md-12">
-                            <label class="col-md-12">จำนวนเงิน : <span style="color:red;"> * </span></label>
-                            <div class="col-md-4">
-                                <input type="number" class="form-control" id="money" maxlength="50" min="1">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <div class="col-md-12" align="center">
-                            <!-- ----------------------- start ยกเลิก submit ----------------------- -->
-                            <button onclick="btn_clear2();" class="btn btn-default" data-dismiss="modal" aria-hidden="true"><span class="btn-label"><i class="fa fa-times"></i></span>ยกเลิก</button>
-                            <!-- ----------------------- End ยกเลิก submit ----------------------- -->
-                            &nbsp;&nbsp;&nbsp;
-                            <!-- ----------------------- start ส่งข้อมูล input ----------------------- -->
-                            <button onclick="master_data_insert(); btn_clear();" class="btn btn-success" type="button"><span class="btn-label"><i class="fa fa-save"></i></span>บันทึก</button>
-                            <!-- ----------------------- End ส่งข้อมูล input ----------------------- -->
-                        </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
 
 <!-- ---------------------------------------------- end modal master data insert  ---------------------------------------------- -->
 <script>
     $(document).ready(() => {
+
+        $("#label_is_active").append('<p>ใช้งาน</p>')
+        $("#is_active").on("change", () => {
+            $("#label_is_active").empty()
+            if ($("#is_active").prop('checked')) {
+                $("#label_is_active").append('<p>ใช้งาน</p>')
+            } else {
+                $("#label_is_active").append('<p>ไม่ใช้งาน</p>')
+            }
+        })
+
         var today = new Date();
         // set input id hour = current hour
         $("#hour").val(today.getHours())
@@ -315,11 +253,12 @@
         $("#btn_search").on("click", () => {
             report_get_table_by_page_number_search(1)
         })
+
     })
 
 
     function report_get_table_by_page_number_search(page_number) {
-        
+
         let table = $("#report_table tbody")
         let page = $("#page_option")
 
@@ -349,16 +288,16 @@
                     // start loop foreach display case's data on table
                     json_data.rs_all.forEach(function(element) {
                         var status;
-                        
+
                         if (element.date_modify == "0000-00-00") {
                             date_modify = "-";
-                        }else{
+                        } else {
                             date_modify = element.date_modify;
                         }
-                        if(element.category_type == 1){
-                            status="รายรับ";
-                        }else{
-                            status="รายจ่าย";
+                        if (element.category_type == 1) {
+                            status = "รายรับ";
+                        } else {
+                            status = "รายจ่าย";
                         }
 
                         let btn_edit = '<a data-toggle="modal" data-target="#modal_edit" onclick="master_data_edit(' + element.category_id + ')"  type="button" class="btn btn-warning btn-circle" title="แก้ไข" ><i class="fa fa-pencil "></i></a >';
