@@ -25,7 +25,8 @@ class IMS_controller extends CI_Controller
 			$this->mn->note_user_id = $this->session->user_id;
 			$this->mn->note_create_date = date("Y-m-d");
 			$this->mn->note_read_date = date("Y-m-d");
-			$data_alert["rs_notification"] = $this->mn->get_note_by_date()->result();
+			$data_alert["rs_notification_unreaded"] = $this->mn->get_note_by_date_unreaded()->result();
+			$data_alert["rs_notification_readed"] = $this->mn->get_note_by_date_readed()->result();
 
 			// Load header
 			$this->load->view('Template_Custom/v_header');

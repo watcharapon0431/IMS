@@ -5,17 +5,6 @@
 </style>
 
 <script>
-    // function repeate_notification() {
-    //     $.ajax({
-    //         type: "POST",
-    //         url: "<?php //echo site_url() . "/Note_manage_controller/repeate_notification"; ?>",
-    //         data: { },
-    //         dataType: 'JSON',
-    //         async: false,
-    //         success: function() { }
-    //     })
-    // }
-
     function readed_notification(note_id) {
         $.ajax({
             type: "POST",
@@ -25,8 +14,8 @@
             },
             dataType: 'JSON',
             async: false,
-            success: function() { 
-                window.location.href = "<?php echo site_url() . "/Income_manage_controller/load_v_income_manage" ?>" 
+            success: function() {
+                window.location.href = "<?php echo site_url() . "/Income_manage_controller/load_v_income_manage" ?>"
             }
         })
     }
@@ -61,7 +50,7 @@
                         <a class="dropdown-toggle waves-effect waves-light notification_report" data-toggle="dropdown" href="javascript:void(0)" id="btn_noti">
                             <i class="mdi mdi-bell-ring"></i>
                             <?php
-                            if ($rs_notification != null) {
+                            if ($rs_notification_unreaded != null) {
                             ?>
                                 <div class="notify">
                                     <!-- แจ้งเตือนกระพิบ Start -->
@@ -79,12 +68,28 @@
                             <li>
                                 <div class="message-center">
                                     <?php
-                                    if ($rs_notification != null) {
+                                    if ($rs_notification_unreaded != null || $rs_notification_readed != null) {
                                         $count_notification = 1;
-                                        foreach ($rs_notification as $value) {
-                                            if ($count_notification <= 4) {
-                                    ?>
-                                                <a onclick="readed_notification(<?php echo $value->note_id ?>)" class="noti" style="background: #E9E6E6">
+                                        foreach ($rs_notification_unreaded as $value) {
+                                            if ($count_notification <= 5) { ?>
+
+                                                <a onclick="readed_notification(<?php echo $value->note_id ?>)" class="noti" style="background: #FBFBFB">
+                                                    <div class="user-img">
+                                                        <img src="<?php echo base_url() . "assets/"; ?>img/bill.png" style="width:30px">
+                                                    </div>
+                                                    <div class="mail-contnet">
+                                                        <span class="mail-desc"><?php echo $value->note_to_do_list; ?></span>
+                                                        <span class="time"><?php echo $value->Day . " " . $value->Month . " " . $value->year; ?></span>
+                                                    </div>
+                                                </a>
+                                            <?php
+                                                $count_notification++;
+                                            }
+                                        }
+                                        foreach ($rs_notification_readed as $value) {
+                                            if ($count_notification <= 5) { ?>
+
+                                                <a onclick="readed_notification(<?php echo $value->note_id ?>)" class="noti" style="background: #D1D1D1">
                                                     <div class="user-img">
                                                         <img src="<?php echo base_url() . "assets/"; ?>img/bill.png" style="width:30px">
                                                     </div>
@@ -94,8 +99,8 @@
                                                     </div>
                                                 </a>
                                     <?php
+                                                $count_notification++;
                                             }
-                                            $count_notification++;
                                         }
                                     } else {
                                         echo "<center><p>ไม่มีการแจ้งเตือน</p><center>";
@@ -103,6 +108,7 @@
                                     ?>
                                 </div>
                             </li>
+                            <!-- FBFBFB -->
                             <li>
                                 <a class="text-center" href="<?php echo site_url() . '/Note_manage_controller/load_v_note_manage'; ?>">
                                     <strong>รายการแจ้งเตือนทั้งหมด</strong>
