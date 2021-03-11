@@ -32,11 +32,12 @@
                                 <thead>
                                     <tr>
                                         <th style="text-align:center; width: 10%"">ลำดับ</th>
-                                        <th style=" text-align:center; width: 30%">รายการ</th>
-                                        <th style=" text-align:center; width: 10%">ประเภท</th>
-                                        <th style="text-align:center; width: 15%"">วันที่บันทึก</th>
-                                        <th style=" text-align:center; width: 15%"">วันที่แก้ไขล่าสุด</th>
-                                        <th style="text-align:center; width: 20%"">ดำเนินการ</th>
+                                        <th style=" text-align:center; width: 25%">รายการ</th>
+                                        <th style=" text-align:center; width: 15%">ประเภท</th>
+                                        <th style="text-align:center; width: 10%"">วันที่บันทึก</th>
+                                        <th style=" text-align:center; width: 10%"">วันที่แก้ไขล่าสุด</th>
+                                        <th style=" text-align:center; width: 10%"">สถานะ</th>
+                                        <th style=" text-align:center; width: 25%"">ดำเนินการ</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -47,22 +48,22 @@
 
                             <!-- --------------------------------------------- start pagination ------------------------------------------------------ -->
                             <div class=" col-md-12">
-                                            <div class="col-md-4" align="left">
-                                                <p id="count_of_master_data"></p>
-                                            </div>
-                                            <input type="hidden" id="current_page" value="1">
-                                            <input type="hidden" id="section_page" value="1">
-                                            <div id="page_option" class="col-md-8" align="right">
+                                <div class="col-md-4" align="left">
+                                    <p id="count_of_master_data"></p>
+                                </div>
+                                <input type="hidden" id="current_page" value="1">
+                                <input type="hidden" id="section_page" value="1">
+                                <div id="page_option" class="col-md-8" align="right">
 
-                                            </div>
+                                </div>
+                            </div>
+                            <!-- ---------------------------------------------- end pagination ------------------------------------------------------- -->
                         </div>
-                        <!-- ---------------------------------------------- end pagination ------------------------------------------------------- -->
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 </div>
 <div id="modal_insert" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -121,7 +122,16 @@
                         </div>
                     </div>
 
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <div class="col-md-2">
+                                <input type="checkbox" class="js-switch" data-color="#99d683" id="is_active" checked="true" data-switchery="true" style="display: none;">
+                            </div>
+                            <div class="col-md-10" style="margin-top: 5px" id="label_is_active" align="left">
 
+                            </div>
+                        </div>
+                    </div>
                     <div class="modal-footer">
                         <div class="col-md-12" align="center">
                             <!-- ----------------------- start ยกเลิก submit ----------------------- -->
@@ -169,6 +179,7 @@
                     </div>
                 </div>
 
+
                 <div class="form-group">
                     <div class="col-md-12">
                         <label class="col-md-12">ชื่อประเภท : <span style="color:red;"> * </span></label>
@@ -177,6 +188,16 @@
                             <span style="color:red;">
                                 <p for="" id="validate_list_edit"></p>
                             </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <div class="col-md-2">
+                            <input type="checkbox" class="js-switch" data-color="#99d683" id="is_active_edit" checked="true" data-switchery="true" style="display: none;">
+                        </div>
+                        <div class="col-md-10" style="margin-top: 5px" id="label_is_active_edit" align="left">
+
                         </div>
                     </div>
                 </div>
@@ -203,6 +224,9 @@
 <script>
     $(document).ready(() => {
         report_get_table_by_page_number_search(1);
+
+
+
         $("#list").change(function() {
             if ($('#list').val().trim() == '') {
                 $('#list').css("border", "1px solid red");
@@ -225,15 +249,7 @@
             }
         });
 
-        $("#label_is_active").append('<p>ใช้งาน</p>')
-        $("#is_active").on("change", () => {
-            $("#label_is_active").empty()
-            if ($("#is_active").prop('checked')) {
-                $("#label_is_active").append('<p>ใช้งาน</p>')
-            } else {
-                $("#label_is_active").append('<p>ไม่ใช้งาน</p>')
-            }
-        })
+
 
         var today = new Date();
         // set input id hour = current hour
@@ -242,7 +258,7 @@
         $("#minute").val(today.getMinutes())
 
         // When Click toggle sorting
-        $("#sorting_date").click(function() {
+        $("#sorting_date").on(function() {
             if ($("#type_sorting_date").val() == "ASC") {
                 $("#icon_sorting_date").attr('class', 'mdi mdi-arrow-down-bold');
                 $("#type_sorting_date").val("DESC")
@@ -287,8 +303,38 @@
             report_get_table_by_page_number_search(1)
         })
 
+        $("#label_is_active").append('<p>ใช้งาน</p>')
+
+        $("#is_active").on("change", () => {
+            $("#label_is_active").empty()
+            if ($("#is_active").prop('checked')) {
+                $("#label_is_active").append('<p>ใช้งาน</p>')
+            } else {
+                $("#label_is_active").append('<p>ไม่ใช้งาน</p>')
+            }
+        })
+
+        $("#label_is_active_edit").append('<p>ใช้งาน</p>')
+
+        $("#is_active_edit").on("change", () => {
+            $("#label_is_active_edit").empty()
+            if ($("#is_active_edit").prop('checked')) {
+                $("#label_is_active_edit").append('<p>ใช้งาน</p>')
+            } else {
+                $("#label_is_active_edit").append('<p>ไม่ใช้งาน</p>')
+            }
+        })
+
+
     })
 
+    jQuery(document).ready(function() {
+        // Switchery
+        var elems = Array.prototype.slice.call(document.querySelectorAll('.js-switch'))
+        $('.js-switch').each(function() {
+            new Switchery($(this)[0], $(this).data())
+        })
+    })
 
     function report_get_table_by_page_number_search(page_number) {
 
@@ -332,7 +378,11 @@
                         } else {
                             status = "รายจ่าย";
                         }
-
+                        if (element.category_status == 1) {
+                            is_active = "ใช้งาน"
+                        } else {
+                            is_active = "ไม่ใช้งาน"
+                        }
                         let btn_edit = '<a data-toggle="modal" data-target="#modal_edit" onclick="master_data_edit(' + element.category_id + ')"  type="button" class="btn btn-warning btn-circle" title="แก้ไข" ><i class="fa fa-pencil "></i></a >';
                         let btn_delete = '<a onclick="delete_category(' + element.category_id + ')"  type="button" class="btn btn-danger btn-circle"><i class="fa fa-minus-circle " title="ลบ"></i></a >';
                         table.append($('<tr>')
@@ -341,6 +391,7 @@
                             .append($('<td>').append("<center>" + status + "<center>"))
                             .append($('<td>').append("<center>" + element.date_create + "</center>"))
                             .append($('<td>').append("<center>" + date_modify + "</center>"))
+                            .append($('<td>').append("<center>" + is_active + "</center>"))
                             .append($('<td>').append("<center>" + btn_edit + ' ' + btn_delete + "</center>"))
                         )
                         count_data++
@@ -369,12 +420,12 @@
                         count_loop = 1
                     }
                     //---------------------------------  end declare count number pagination --------------------------------------------------
-                   
+
                     page.append('<a style="color:black; " href="javascript:report_search_first_page()">&emsp;< |&emsp;</a>')
                     page.append('<a style="color:black; " href="javascript:report_search_page_previous()">&emsp;<&emsp;</a>')
                     $("#count_of_master_data").text("แสดง " + count_data + " ข้อมูล จาก " + json_data.rs_count[0].count_category + " ข้อมูล")
                     for (count = count_loop; count <= max_page; count++) {
-                     
+
                         if (count <= count_section_page * 10) {
                             if (current_page == count) {
                                 page.append('<a style="color:#0000FF; font-weight:bold" href="javascript:report_get_table_by_page_number_search(' + count + ')">&emsp;' + 1 + '&emsp;</a>')
@@ -460,6 +511,12 @@
                         $("#type2_edit").prop('checked', true).trigger("click")
                     }
                     $('#category_name').val(json_data[0].category_name)
+
+                    if ((json_data[0].category_status) == "1") {
+                        $("#is_active_edit").prop('checked', false).trigger("click")
+                    } else {
+                        $("#is_active_edit").prop('checked', true).trigger("click")
+                    }
                 }
             })
         } catch (e) {
@@ -480,9 +537,12 @@
         let category_id = $('#category_id_edit').val()
         let category_detail = $('#category_name').val()
         let category_types = $('input[name=type]:checked', '#type_category').val()
-        // var_dump(category_type);
-        // die();
-
+        let is_active = $('#is_active_edit').is(":checked")
+        if (is_active == true) {
+            is_active = 1
+        } else {
+            is_active = 0
+        }
 
         if ($('#category_name').val().trim() == '') {
             $('#category_name').css("border", "1px solid red");
@@ -501,7 +561,8 @@
 
                 'category_id': category_id,
                 'category_name': category_detail,
-                'category_type': category_types
+                'category_type': category_types,
+                'is_active': is_active
 
             },
             dataType: "json",
@@ -591,7 +652,12 @@
         let category_name = $('#list').val()
         let category_seq = $('#order_no').val()
 
-
+        let is_active = $('#is_active').is(":checked")
+        if (is_active == true) {
+            is_active = 1
+        } else {
+            is_active = 2
+        }
 
         if ($('#list').val().trim() == '') {
             $('#list').css("border", "1px solid red");
@@ -612,7 +678,8 @@
 
                     'category_name': category_name,
                     'category_tpye': category_tpye,
-                    'category_seq': category_seq
+                    'category_seq': category_seq,
+                    'is_active': is_active
 
                 },
                 dataType: 'JSON',

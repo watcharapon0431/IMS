@@ -11,13 +11,13 @@ class Category_manage_controller extends IMS_controller
 
 
 	function load_v_category_manage()
- 	{
-  		$this->load->model('M_category', 'mcg');
-  		$data['count'] = ($this->mcg->get_count_category("")->result())[0]->count_cata + 1;
-  		$this->output('v_category_manage', $data);
- 	}
+	{
+		$this->load->model('M_category', 'mcg');
+		$data['count'] = ($this->mcg->get_count_category("")->result())[0]->count_cata + 1;
+		$this->output('v_category_manage', $data);
+	}
 
-	
+
 	function show_category_data()
 	{
 		$this->load->model('M_category', 'mcg');
@@ -45,6 +45,7 @@ class Category_manage_controller extends IMS_controller
 		$this->mc->category_name = $category_name;
 		$category_type = $this->input->post("category_type");
 		$this->mc->category_type = $category_type;
+		$this->mc->category_status = $this->input->post("is_active");
 		// var_dump($category_name);
 		// die;
 		$this->mc->update_edit();
@@ -53,14 +54,14 @@ class Category_manage_controller extends IMS_controller
 	}
 	function category_insert()
 	{
-	$this->load->model('M_category', 'mcg');
-	$this->mcg->category_name = $this->input->post("category_name");
-	$this->mcg->category_type = $this->input->post("category_tpye");
-	$this->mcg->category_sequence = $this->input->post("category_seq");
-	$this->mcg->category_status = 1;
-	$this->mcg->insert();
-	$data = true;
-	echo json_encode($data);
+		$this->load->model('M_category', 'mcg');
+		$this->mcg->category_name = $this->input->post("category_name");
+		$this->mcg->category_type = $this->input->post("category_tpye");
+		$this->mcg->category_sequence = $this->input->post("category_seq");
+		$this->mcg->category_status = $this->input->post("is_active");;
+		$this->mcg->insert();
+		$data = true;
+		echo json_encode($data);
 	}
 	public function category_delete()
 	{
