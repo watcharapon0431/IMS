@@ -4,6 +4,7 @@
         border-width: 5px;
         border-color: gray;
         margin: 10px;
+        
     }
 
     .img-logo-login {
@@ -22,7 +23,7 @@
     // start $(document).ready()
     $(document).ready(function() {
 
-        // when press enter button on login-btn (ID HTML) call login_authentication
+        //// when press enter button on login-btn (ID HTML) call login_authentication
         $('body').keypress(function(event) {
             if (event.key === "Enter") {
                 login_authentication()
