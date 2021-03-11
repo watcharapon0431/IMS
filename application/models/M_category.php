@@ -11,6 +11,15 @@ class M_category extends Da_category
 		$query = $this->db->query($sql);
 		return $query;
 	}
+	
+	function count_category()
+	{
+		$sql = " SELECT count(category_id) AS count_category
+        FROM   category";
+		$query = $this->db->query($sql);
+		return $query;
+	}
+
 	function update_edit() {
 		$sql = "UPDATE `category`
 				SET	category_modify_date=NOW(),category_name=?, category_type=? 

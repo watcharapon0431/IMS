@@ -23,6 +23,7 @@ class Category_manage_controller extends IMS_controller
 		$this->load->model('M_category', 'mcg');
 		$this->mcg->get_all_category();
 		$data['rs_all'] = $this->mcg->get_all_category()->result();
+		$data['rs_count'] = $this->mcg->count_category()->result();
 		echo json_encode($data);
 	}
 

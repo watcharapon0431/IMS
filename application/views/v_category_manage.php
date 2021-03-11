@@ -399,7 +399,7 @@
 
                     page.append('<a style="color:black; " href="javascript:report_search_first_page()">&emsp;< |&emsp;</a>')
                     page.append('<a style="color:black; " href="javascript:report_search_page_previous()">&emsp;<&emsp;</a>')
-                    $("#count_of_master_data").text("แสดง " + count_data + " ข้อมูล จาก " + json_data.count_question + " ข้อมูล")
+                    $("#count_of_master_data").text("แสดง " + count_data + " ข้อมูล จาก " + json_data.rs_count[0].count_category + " ข้อมูล")
                     for (count = count_loop; count <= max_page; count++) {
                         if (count <= count_section_page * 10) {
                             if (current_page == count) {
