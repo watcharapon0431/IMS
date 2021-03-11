@@ -59,7 +59,7 @@
                         )
                         count_data++
                     })
-                   
+
                     $("#income_all").text(json_data.sum_income[0].sl_income + " บาท")
                     $("#expend_all").text(json_data.sum_income[0].sl_expend + " บาท")
                     $("#balance_all").text(json_data.sum_income[0].sl_balance + " บาท")
@@ -234,54 +234,47 @@
         let list_detail = $('#list_edit').val()
         let list_type = $('input[name=type]:checked', '#type_list').val()
 
-        if (list_detail != '' && const_list_edit != '' && list_category_edit != '') {
-            $.ajax({
-                type: "POST",
-                url: "<?php echo site_url() . "/Income_manage_controller/list_update/" ?>",
-                data: {
-                    'list_id_edit': list_id_edit,
-                    'list_category_edit': list_category_edit,
-                    'const_list_edit': const_list_edit,
-                    'list_create_date': list_create_date,
-                    'list_detail': list_detail,
-                    'list_type': list_type,
-                    'year': year,
-                    'mount': mount
-                },
-                dataType: "json",
-                async: false,
-                success: function(data) {
 
-                    if (data == true) {
-                        $('#modal_edit').modal('toggle')
-                        // notify alert when update success
-                        swal({
-                            title: "แก้ไขข้อมูลสำเร็จ",
-                            text: "ข้อมูลของคุณถูกแก้ไขเรียบร้อย",
-                            type: "success",
-                            confirmButtonText: "ตกลง"
-                        })
-                        window.location.reload();
+        $.ajax({
+            type: "POST",
+            url: "<?php echo site_url() . "/Income_manage_controller/list_update/" ?>",
+            data: {
+                'list_id_edit': list_id_edit,
+                'list_category_edit': list_category_edit,
+                'const_list_edit': const_list_edit,
+                'list_create_date': list_create_date,
+                'list_detail': list_detail,
+                'list_type': list_type,
+                'year': year,
+                'mount': mount
+            },
+            dataType: "json",
+            async: false,
+            success: function(data) {
 
-                    } else {
-                        // notify alert when update unsuccess
-                        swal({
-                            title: "แก้ไขข้อมูลไม่สำเร็จ",
-                            type: "error",
-                            confirmButtonText: "ตกลง"
-                        })
+                if (data == true) {
+                    $('#modal_edit').modal('toggle')
+                    // notify alert when update success
+                    swal({
+                        title: "แก้ไขข้อมูลสำเร็จ",
+                        text: "ข้อมูลของคุณถูกแก้ไขเรียบร้อย",
+                        type: "success",
+                        confirmButtonText: "ตกลง"
+                    })
+                    window.location.reload();
 
-                    }
+                } else {
+                    // notify alert when update unsuccess
+                    swal({
+                        title: "แก้ไขข้อมูลไม่สำเร็จ",
+                        type: "error",
+                        confirmButtonText: "ตกลง"
+                    })
+
                 }
-            });
-        } else {
-            swal({
-                title: "แก้ไขข้อมูลไม่สำเร็จ",
-                text: "กรุณากรอกข้อมูลที่สำคัญให้ครบ",
-                type: "error",
-                confirmButtonText: "ตกลง"
-            })
-        }
+            }
+        });
+
     }
 </script>
 <?php
@@ -475,6 +468,9 @@ $cur_year = intval(date("Y"));
                             <label class="col-md-12">ชื่อรายการ : <span style="color:red;"> * </span></label>
                             <div class="col-md-12">
                                 <input type="text" class="form-control" id="list_edit" maxlength="100">
+                                <span style="color:red;">
+                                    <p for="" id="validate_list_edit"></p>
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -557,6 +553,9 @@ $cur_year = intval(date("Y"));
                             <label class="col-md-12">จำนวนเงิน : <span style="color:red;"> * </span></label>
                             <div class="col-md-4">
                                 <input type="number" class="form-control" id="money_list_edit" maxlength="50" min="1">
+                                <span style="color:red;">
+                                    <p for="" id="validate_money_edit"></p>
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -611,6 +610,9 @@ $cur_year = intval(date("Y"));
                             <label class="col-md-12">ชื่อรายการ : <span style="color:red;"> * </span></label>
                             <div class="col-md-12">
                                 <input type="text" class="form-control" id="list" maxlength="100">
+                                <span style="color:red;">
+                                    <p for="" id="validate_list"></p>
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -689,9 +691,15 @@ $cur_year = intval(date("Y"));
                             <label class="col-md-12">จำนวนเงิน : <span style="color:red;"> * </span></label>
                             <div class="col-md-5">
                                 <input type="number" class="form-control check" id="money" maxlength="50" min="1">
+                                <span style="color:red;">
+                                    <p for="" id="validate_money"></p>
+                                </span>
                             </div>
+
                         </div>
+
                     </div>
+
                     <div class="modal-footer">
                         <div class="col-md-12" align="center">
                             <!-- ----------------------- start ยกเลิก submit ----------------------- -->
@@ -724,6 +732,49 @@ $cur_year = intval(date("Y"));
 </style>
 <script>
     $(document).ready(() => {
+
+        $("#money").change(function() {
+            if ($('#money').val().trim() == '') {
+                $('#money').css("border", "1px solid red");
+                $('#money').focus();
+                $('#validate_money').text('กรุณากรอกจำนวนเงิน')
+            } else {
+                $('#money').css("border", "");
+                $('#validate_money').text('')
+            }
+        });
+
+        $("#list").change(function() {
+            if ($('#list').val().trim() == '') {
+                $('#list').css("border", "1px solid red");
+                $('#list').focus();
+                $('#validate_list').text('กรุณากรอกชื่อรายการ')
+            } else {
+                $('#list').css("border", "");
+                $('#validate_list').text('')
+            }
+        });
+
+        $("#list_edit").change(function() {
+            if ($('#list_edit').val().trim() == '') {
+                $('#list_edit').css("border", "1px solid red");
+                $('#list_edit').focus();
+                $('#validate_list_edit').text('กรุณากรอกชื่อรายการ')
+            } else {
+                $('#list_edit').css("border", "");
+                $('#validate_list_edit').text('')
+            }
+        });
+        $("#money_list_edit").change(function() {
+            if ($('#money_list_edit').val().trim() == '') {
+                $('#money_list_edit').css("border", "1px solid red");
+                $('#money_list_edit').focus();
+                $('#validate_money_edit').text('กรุณากรอกจำนวนเงิน')
+            } else {
+                $('#money_list_edit').css("border", "");
+                $('#validate_money_edit').text('')
+            }
+        });
         var input = document.querySelector('input.check');
         input.addEventListener('keyup', function(e) {
             this.value = this.value.replace(/[^0-9]/, '');
@@ -821,20 +872,31 @@ $cur_year = intval(date("Y"));
         let year = parseInt($("#create_report").data('datepicker').getFormattedDate('yyyy') - 543)
         let month = $("#create_report").data('datepicker').getFormattedDate('m')
 
+        if ($('#money').val().trim() == '') {
+            $('#money').css("border", "1px solid red");
+            $('#money').focus();
+            $('#validate_money').text('กรุณากรอกจำนวนเงิน')
+        } else {
+            $('#money').css("border", "");
+            $('#validate_money').text('')
+        }
+
+        if ($('#list').val().trim() == '') {
+            $('#list').css("border", "1px solid red");
+            $('#list').focus();
+            $('#validate_list').text('กรุณากรอกชื่อรายการ')
+        } else {
+            $('#list').css("border", "");
+            $('#validate_list').text('')
+        }
+
+
         if (is_active_search == 0) {
             $('#category_id').css("border", "1px solid red");
             $('#category_id').focus();
         }
 
-        if (money == '' || money < 1) {
-            $('#money').css("border", "1px solid red");
-            $('#money').focus();
-        }
 
-        if (list == '') {
-            $('#list').css("border", "1px solid red");
-            $('#list').focus();
-        }
 
         if ($("#type1").is(":checked") == false && $("#type2").is(":checked") == false) {
             $('#validate_type_id').text('กรุณาเลือกประเภทรายรับ - รายจ่าย')
