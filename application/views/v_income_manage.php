@@ -233,8 +233,6 @@
         let mount = $("#create_date_list").data('datepicker').getFormattedDate('m')
         let list_detail = $('#list_edit').val()
         let list_type = $('input[name=type]:checked', '#type_list').val()
-
-
         $.ajax({
             type: "POST",
             url: "<?php echo site_url() . "/Income_manage_controller/list_update/" ?>",
@@ -274,6 +272,7 @@
                 }
             }
         });
+
 
     }
 </script>
@@ -765,6 +764,7 @@ $cur_year = intval(date("Y"));
                 $('#validate_list_edit').text('')
             }
         });
+
         $("#money_list_edit").change(function() {
             if ($('#money_list_edit').val().trim() == '') {
                 $('#money_list_edit').css("border", "1px solid red");
