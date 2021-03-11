@@ -20,7 +20,7 @@ class M_note extends Da_note
 					when DATE_FORMAT(note_create_date,'%m') = 10 then 'ต.ค.' 
 					when DATE_FORMAT(note_create_date,'%m') = 11 then 'พ.ย.' 
 					else 'ธ.ค.'
-				end as 'Month',DATE_FORMAT(note_create_date,'%Y') AS 'year'
+				end as 'Month',DATE_FORMAT(note_create_date,'%Y') AS 'year', note_type
 				FROM   note";
 		$query = $this->db->query($sql);
 		return $query;
