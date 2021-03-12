@@ -163,6 +163,7 @@
                 dataType: "json",
                 async: false,
                 success: function(json_data) {
+
                     console.log(json_data)
                     $('#list_id_edit').val(json_data[0].list_id)
                     if ((json_data[0].list_type) == "1") {
@@ -170,6 +171,7 @@
                     } else {
                         $("#type2_edit").prop('checked', true).trigger("click")
                     }
+
                     $('#list_edit').val(json_data[0].list_detail)
                     var hour = moment(json_data[0].list_create_date, 'YYYY-MM-DD h:m:s').format('HH');
                     var minute = moment(json_data[0].list_create_date, 'YYYY-MM-DD h:m:s').format('mm');
@@ -451,11 +453,11 @@ $cur_year = intval(date("Y"));
                             <div id="type_list">
                                 <div class="col-md-9">
                                     <div class="col-md-3">
-                                        <input type="radio" id="type1_edit" name="type" value="1">
+                                        <input type="radio" id="type1_edit" name="type" value="1" onclick="check_category_edit(1)">
                                         <label for="female"> รายรับ</label>
                                     </div>
                                     <div class="col-md-3">
-                                        <input type="radio" id="type2_edit" name="type" value="2">
+                                        <input type="radio" id="type2_edit" name="type" value="2" onclick="check_category_edit(2)">
                                         <label for="female"> รายจ่าย</label>
                                     </div>
                                 </div>
@@ -481,10 +483,7 @@ $cur_year = intval(date("Y"));
                             <label class="col-md-12">ประเภทการใช้จ่าย : <span style="color:red;"> * </span></label>
                             <div class="col-md-6">
                                 <select class="form-control" id="list_category_edit">
-                                    <option value='' selected>- เลือกประเภทการใช้จ่ายที่ต้องการ -</option>
-                                    <option value=1>ใช้หนี้</option>
-                                    <option value=2>เงินเดือน</option>
-                                    <option value=3>อาหาร</option>
+
                                 </select>
                             </div>
                         </div>
@@ -834,13 +833,42 @@ $cur_year = intval(date("Y"));
         format: 'dd/mm/yyyy',
     }).datepicker("setDate", 'now');
 
+    function check_category_edit(case_status) {
+        $("#list_category_edit").empty();
+
+        if ($("#type1_edit").is(":checked") == true) {
+            var case_status = 1
+        } else if ($("#type1_edit").is(":checked") == true) {
+            var case_status = 2
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "<?php echo site_url() . "/Income_manage_controller/get_category/" ?>",
+            dataType: "json",
+            async: false,
+            success: function(json_data) {
+                console.log(json_data)
+                // alert("success")
+                json_data.rs_category.forEach(function(element) {
+                    if (element.category_type == case_status) {
+                        $("#list_category_edit").append(new Option(element.category_name, element.category_id));
+                    }
+
+                })
+            }
+        })
+    }
+
     function check_category(case_status) {
         $("#category_id").empty();
+
         if ($("#type1").is(":checked") == true) {
             var case_status = 1
         } else if ($("#type2").is(":checked") == true) {
             var case_status = 2
         }
+
         $.ajax({
             type: "POST",
             url: "<?php echo site_url() . "/Income_manage_controller/get_category/" ?>",
@@ -852,6 +880,7 @@ $cur_year = intval(date("Y"));
                 json_data.rs_category.forEach(function(element) {
                     if (element.category_type == case_status) {
                         $("#category_id").append(new Option(element.category_name, element.category_id));
+
                     }
 
                 })
@@ -898,7 +927,6 @@ $cur_year = intval(date("Y"));
         }
 
 
-
         if ($("#type1").is(":checked") == false && $("#type2").is(":checked") == false) {
             $('#validate_type_id').text('กรุณาเลือกประเภทรายรับ - รายจ่าย')
         } else if (money != '' && money > 0 && list != '') {
@@ -927,17 +955,11 @@ $cur_year = intval(date("Y"));
                         type: "success",
                         confirmButtonText: "ตกลง",
                     })
-
                     window.location.reload();
                     // btn_clear_modal();
-
-
-
                 }
             })
         }
-
-
     }
 
     function delete_list(delete_id, cost_list, type_list) {
